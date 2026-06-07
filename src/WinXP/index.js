@@ -267,9 +267,14 @@ function WinXP() {
     'Text Diff': 'Compare Documents',
     Pomodoro: 'Pomodoro Timer',
     'Run...': 'Run',
+    Search: 'Search',
     'Help and Support': 'Help and Support',
+    'Windows Explorer': 'My Computer',
+    'Tour Windows XP': 'Help and Support',
+    'Windows Media Player': 'Winamp',
     'My Computer': 'My Computer',
     'Control Panel': 'Control Panel',
+    'Recycle Bin': 'Recycle Bin',
     'Outlook Express': 'Outlook Express',
     Bible: 'Bible',
     Calendar: 'Calendar',
@@ -282,6 +287,7 @@ function WinXP() {
     Paint: 'Paint',
     Winamp: 'Winamp',
     Minesweeper: 'Minesweeper',
+    'Internet Explorer': 'Internet Explorer',
   };
 
   function onClickMenuItem(o) {

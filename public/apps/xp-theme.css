@@ -194,6 +194,16 @@ body {
   border-bottom: 1px solid #8db2e3;
 }
 
+/* Search companion */
+.xp-app-host .search-results {
+  border-color: #7f9db9;
+}
+
+.xp-app-host .search-result-item:hover {
+  background: #316ac5;
+  color: #fff;
+}
+
 /* Kanban toolbar */
 .xp-app-host .kanban-toolbar {
   background: linear-gradient(180deg, #f3f6fb 0%, #e8eef8 50%, #d6e4f7 100%);

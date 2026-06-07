@@ -33,6 +33,7 @@ import painter from 'assets/windowsIcons/680(16x16).png';
 import sound from 'assets/windowsIcons/690(16x16).png';
 import recent from 'assets/windowsIcons/716(16x16).png';
 import compatibility from 'assets/windowsIcons/747(16x16).png';
+import help from 'assets/windowsIcons/747(16x16).png';
 import magnifier from 'assets/windowsIcons/817(16x16).png';
 import mediaPlayer from 'assets/windowsIcons/846(16x16).png';
 import tour from 'assets/windowsIcons/853(32x32).png';
@@ -54,6 +55,18 @@ import narrator from 'assets/windowsIcons/narrator.ico';
 import pinball from 'assets/windowsIcons/pinball.png';
 import restore from 'assets/windowsIcons/restore.ico';
 import mine from 'assets/minesweeper/mine-icon.png';
+import computer from 'assets/windowsIcons/676(16x16).png';
+import controlPanel from 'assets/windowsIcons/300(16x16).png';
+import winamp from 'assets/windowsIcons/winamp.png';
+
+const P = process.env.PUBLIC_URL || '';
+const v98task = `${P}/apps/vendor/98/images/icons/task-16x16.png`;
+const v98chm = `${P}/apps/vendor/98/images/icons/chm-16x16.png`;
+const v98cal = `${P}/apps/vendor/98/images/icons/favorites-folder-16x16.png`;
+const v98kanban = `${P}/apps/vendor/98/images/icons/programs-folder-16x16.png`;
+const v98recycle = `${P}/apps/vendor/98/images/icons/recycle-bin-16x16.png`;
+const v98search = `${P}/apps/vendor/98/images/icons/find-file-16x16.png`;
+const v98diff = `${P}/apps/vendor/98/images/icons/find-file-16x16.png`;
 
 export const MyRecentDocuments = [
   {
@@ -75,6 +88,32 @@ export const ConnectTo = [
   },
 ];
 export const AllPrograms = [
+  {
+    type: 'menu',
+    icon: menu,
+    text: 'Productivity Suite',
+    bottom: 'initial',
+    items: [
+      { type: 'item', icon: outlook, text: 'Outlook Express' },
+      { type: 'item', icon: notepad, text: 'Notepad' },
+      { type: 'item', icon: computer, text: 'My Computer' },
+      { type: 'item', icon: controlPanel, text: 'Control Panel' },
+      { type: 'item', icon: v98recycle, text: 'Recycle Bin' },
+      { type: 'separator' },
+      { type: 'item', icon: v98task, text: 'Todo Tasks' },
+      { type: 'item', icon: v98chm, text: 'Bible' },
+      { type: 'item', icon: v98cal, text: 'Calendar' },
+      { type: 'item', icon: calculator, text: 'Pomodoro Timer' },
+      { type: 'item', icon: v98kanban, text: 'Kanban Board' },
+      { type: 'item', icon: compatibility, text: 'Office Assistant' },
+      { type: 'item', icon: v98diff, text: 'Compare Documents' },
+      { type: 'item', icon: ie, text: 'QRx Transmitter' },
+      { type: 'separator' },
+      { type: 'item', icon: v98search, text: 'Search' },
+      { type: 'item', icon: help, text: 'Help and Support' },
+    ],
+  },
+  { type: 'separator' },
   {
     type: 'item',
     icon: access,
@@ -172,6 +211,11 @@ export const AllPrograms = [
         items: [
           {
             type: 'item',
+            icon: winamp,
+            text: 'Winamp',
+          },
+          {
+            type: 'item',
             icon: sound,
             text: 'Sound Recorder',
           },
@@ -239,6 +283,16 @@ export const AllPrograms = [
             text: 'System Restore',
           },
         ],
+      },
+      {
+        type: 'item',
+        icon: computer,
+        text: 'My Computer',
+      },
+      {
+        type: 'item',
+        icon: v98recycle,
+        text: 'Recycle Bin',
       },
       {
         type: 'item',

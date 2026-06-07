@@ -530,6 +530,29 @@
   </div>
 </template>
 
+<!-- Search Companion -->
+<template id="tpl-search">
+  <div class="win95-window" style="width:480px;height:400px;">
+    <div class="win-titlebar">
+      <span class="win-title">Search</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body search-body">
+      <div class="search-bar">
+        <span style="font-size:11px;white-space:nowrap;">Search for:</span>
+        <input class="win95-input" id="search-query" placeholder="Files, notes, mail, tasks..." onkeydown="searchKey(event, this)" oninput="searchRun(this)">
+        <button class="win95-button" onclick="searchRun(this)" style="height:23px;padding:0 12px;font-weight:bold;">Search</button>
+      </div>
+      <div class="search-results" id="search-results"></div>
+    </div>
+    <div class="win-statusbar" id="search-status">Ready</div>
+  </div>
+</template>
+
 <!-- Run Dialog -->
 <template id="tpl-run">
   <div class="win95-window" style="width:360px;height:165px;">
@@ -629,7 +652,8 @@
         <ul style="padding-left:18px;margin-top:6px;margin-bottom:0;">
           <li><b>Start Menu:</b> Use the Start button in the taskbar to launch applications, open recent documents, adjust settings, lock the computer, or shut down.</li>
           <li><b>Lock Screen & PIN:</b> Lock your workstation via Start Menu &rarr; <b>Lock Computer</b>, or type <b>lock</b> in the Run dialog (Win+R). Set a 4-digit PIN in Control Panel &rarr; <b>Security</b>.</li>
-          <li><b>Run Command:</b> Use the shortcut <b>Win+R</b> (or click Start -> Run) to run applications by name (e.g. <i>control</i>, <i>bible</i>, <i>mail</i>, <i>journal</i>, <i>clippy</i>, <i>lock</i>, <i>help</i>).</li>
+          <li><b>Run Command:</b> Use <b>Win+R</b> (or Start &rarr; Run) to launch apps by name (e.g. <i>mail</i>, <i>journal</i>, <i>search</i>, <i>lock</i>, <i>help</i>).</li>
+          <li><b>Search:</b> Start &rarr; <b>Search</b> finds notes, mail templates, tasks, calendar events, and Office Assistant prompts. Double-click a result to open that app.</li>
           <li><b>Office Assistant:</b> Launch "Office Assistant" from the desktop or Start menu to store, search, and copy prompt templates with dynamic variables.</li>
           <li id="help-backup-section"><b>Backup Filesystem:</b> Open "My Computer" and double-click "Backup to PC" to download a local backup file (.winxp), or "Restore from PC" to load your data back. Legacy .win95 backups are also supported. You can drag a backup file onto the My Computer window. Use selective restore to import only specific data areas. Enable auto-backup on exit in (C:) Properties.</li>
         </ul>

@@ -29,6 +29,8 @@ const calendar32 = `${P}/apps/vendor/98/images/icons/favorites-folder-32x32.png`
 const calendar16 = `${P}/apps/vendor/98/images/icons/favorites-folder-16x16.png`;
 const kanban32 = `${P}/apps/vendor/98/images/icons/programs-folder-32x32.png`;
 const kanban16 = `${P}/apps/vendor/98/images/icons/programs-folder-16x16.png`;
+const findFile32 = `${P}/apps/vendor/98/images/icons/find-file-32x32.png`;
+const findFile16 = `${P}/apps/vendor/98/images/icons/find-file-16x16.png`;
 
 /**
  * displayTitle — desktop icon & Start menu label (XP names where applicable)
@@ -125,6 +127,18 @@ export const embeddedAppDefs = [
     defaultOffset: { x: 240, y: 140 },
     showOnDesktop: false,
     resizable: false,
+  },
+  {
+    appKey: 'search',
+    templateId: 'tpl-search',
+    initFn: 'initSearchApp',
+    displayTitle: 'Search',
+    headerTitle: 'Search',
+    desktopIcon: findFile32,
+    headerIcon: findFile16,
+    defaultSize: { width: 480, height: 400 },
+    defaultOffset: { x: 220, y: 100 },
+    showOnDesktop: false,
   },
   {
     appKey: 'todo',

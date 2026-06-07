@@ -58,6 +58,7 @@ async function ensureAppScripts() {
     '/apps/apps/mail.js',
     '/apps/apps/clippy.js',
     '/apps/apps/textdiff.js',
+    '/apps/apps/search.js',
     '/apps/apps/lockscreen.js',
     '/apps/apps/controlpanel.js',
     '/apps/apps/qrtx.js',
