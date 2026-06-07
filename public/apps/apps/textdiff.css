@@ -1,0 +1,93 @@
+/* ===== TEXT DIFF APP ===== */
+.diff-layout {
+  display: flex;
+  gap: 4px;
+  height: 55%;
+  background: #c0c0c0;
+  flex-shrink: 0;
+  padding: 4px;
+}
+.diff-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.diff-panel-header {
+  padding: 4px 8px;
+  font-size: 11px;
+  background: #c0c0c0;
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #000000;
+  border-right: 1px solid #000000;
+  box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+.diff-textarea {
+  flex: 1;
+  width: 100%;
+  padding: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  border: none;
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+  border-bottom: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+  box-shadow: inset 1px 1px #000000, inset -1px -1px #dfdfdf;
+  outline: none;
+  resize: none;
+  background: #ffffff;
+  color: #000;
+  box-sizing: border-box;
+}
+
+.diff-result-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #c0c0c0;
+  padding: 4px;
+  border-top: 1px solid #ffffff;
+}
+.diff-result-header {
+  padding: 4px 8px;
+  font-size: 11px;
+  background: #c0c0c0;
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #000000;
+  border-right: 1px solid #000000;
+  box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+.diff-result {
+  padding: 6px;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-y: auto;
+  flex: 1;
+  background: #ffffff;
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+  border-bottom: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+  box-shadow: inset 1px 1px #000000, inset -1px -1px #dfdfdf;
+}
+.diff-added {
+  background: #ccffcc;
+  color: #006600;
+}
+.diff-removed {
+  background: #ffcccc;
+  color: #cc0000;
+  text-decoration: line-through;
+}
+.diff-unchanged {
+  color: #808080;
+}

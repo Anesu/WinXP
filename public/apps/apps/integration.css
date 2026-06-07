@@ -1,0 +1,76 @@
+/* ===== CROSS-APP INTEGRATION STYLES ===== */
+/* Task completion dot on calendar (green, alongside journal entry dot) */
+.journal-cal-day.has-tasks::before {
+  content: '✅';
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  font-size: 6px;
+  line-height: 1;
+}
+.journal-cal-day.has-tasks {
+  position: relative;
+}
+
+/* Pomodoro task link dropdown */
+.pomodoro-task-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+.pomodoro-task-select {
+  font-family: inherit;
+  font-size: 10px;
+  height: 20px;
+  padding: 0 4px;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-bottom: 2px solid #ffffff;
+  border-right: 2px solid #ffffff;
+  background: #ffffff;
+  outline: none;
+  max-width: 180px;
+}
+
+/* Todo due dates */
+.todo-due-badge {
+  font-size: 9px;
+  padding: 1px 4px;
+  margin-left: 4px;
+  background: #e8e8ff;
+  border: 1px solid #a0a0c0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.todo-due-badge.overdue-badge {
+  background: #ffe0e0;
+  border-color: #cc6666;
+  color: #cc0000;
+  font-weight: bold;
+}
+.todo-overdue {
+  background: #fff5f5 !important;
+}
+.todo-overdue:hover {
+  background: #ffe8e8 !important;
+}
+.overdue-text {
+  color: #cc0000;
+}
+.todo-due-input {
+  width: 100px;
+}
+
+/* Journal calendar due-task dot */
+.journal-cal-day.has-due::before {
+  content: '📅';
+  position: absolute;
+  bottom: 0px;
+  left: 1px;
+  font-size: 5px;
+  line-height: 1;
+}
+.journal-cal-day.has-due {
+  position: relative;
+}

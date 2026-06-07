@@ -1,0 +1,138 @@
+/* ===== TODO APP ===== */
+.todo-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #ffffff;
+}
+.todo-header {
+  display: flex;
+  gap: 4px;
+  padding: 8px;
+  border-bottom: 1px solid #808080;
+  background: #c0c0c0;
+}
+.todo-input {
+  flex: 1;
+}
+.todo-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2px;
+}
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 4px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 11px;
+}
+.todo-item:hover {
+  background: #e8f0ff;
+}
+.todo-drag-handle {
+  cursor: grab;
+  color: #808080;
+  font-size: 12px;
+  user-select: none;
+  flex-shrink: 0;
+}
+.todo-drag-handle:active {
+  cursor: grabbing;
+}
+.todo-dragging {
+  opacity: 0.4;
+}
+.todo-drag-over {
+  border-top: 2px solid #000080;
+}
+.todo-item-text {
+  flex: 1;
+  cursor: pointer;
+}
+.todo-item-text.completed {
+  text-decoration: line-through;
+  color: #808080;
+}
+.todo-item-delete {
+  width: 20px;
+  height: 18px;
+  font-family: inherit;
+  font-size: 10px;
+  background: #c0c0c0;
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #000000;
+  border-right: 1px solid #000000;
+  cursor: pointer;
+  color: #800000;
+  padding: 0;
+  line-height: 1;
+}
+.todo-item-delete:active {
+  border-top: 1px solid #000000;
+  border-left: 1px solid #000000;
+  border-bottom: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+}
+.todo-count {
+  padding: 4px 8px;
+  font-size: 11px;
+  color: #808080;
+  background: #c0c0c0;
+  border-top: 1px solid #808080;
+}
+
+/* Todo filter tabs */
+.todo-filters {
+  display: flex;
+  gap: 0;
+  padding: 0;
+  background: #c0c0c0;
+  border-bottom: 1px solid #808080;
+  flex-shrink: 0;
+}
+.todo-filter-tab {
+  font-family: inherit;
+  font-size: 11px;
+  padding: 3px 12px;
+  cursor: pointer;
+  background: #c0c0c0;
+  border: none;
+  border-right: 1px solid #808080;
+  color: #000;
+}
+.todo-filter-tab:hover {
+  background: #d4d0c8;
+}
+.todo-filter-tab.active-filter {
+  background: #ffffff;
+  border-bottom: 1px solid #ffffff;
+  margin-bottom: -1px;
+  font-weight: bold;
+}
+.todo-filter-tab .filter-count {
+  font-size: 9px;
+  color: #808080;
+  margin-left: 2px;
+}
+.todo-clear-completed {
+  font-family: inherit;
+  font-size: 10px;
+  padding: 3px 8px;
+  cursor: pointer;
+  background: #c0c0c0;
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #000000;
+  border-right: 1px solid #000000;
+  margin-left: auto;
+  margin-right: 2px;
+}
+.todo-clear-completed:active {
+  border-top: 1px solid #000000;
+  border-left: 1px solid #000000;
+  border-bottom: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+}

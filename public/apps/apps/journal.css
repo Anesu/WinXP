@@ -1,0 +1,323 @@
+/* ===== NOTES APP ===== */
+.notes-layout {
+  display: flex;
+  background: #ffffff;
+}
+.notes-sidebar {
+  width: 140px;
+  background: #ffffff;
+  border-right: 1px solid #808080;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+.notes-sidebar-item {
+  padding: 4px 8px;
+  font-size: 11px;
+  cursor: pointer;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.notes-sidebar-item:hover {
+  background: #000080;
+  color: #fff;
+}
+.notes-sidebar-item.active {
+  background: #000080;
+  color: #fff;
+}
+.notes-editor-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+}
+.notes-title-input {
+  margin-bottom: 4px;
+}
+.notes-editor {
+  flex: 1;
+  padding: 8px;
+  font-family: inherit;
+  font-size: 11px;
+  overflow-y: auto;
+  outline: none;
+  line-height: 1.5;
+}
+
+/* Notes toolbar */
+.notes-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 4px;
+  background: #c0c0c0;
+  border-bottom: 1px solid #808080;
+  flex-shrink: 0;
+}
+.notes-tb-btn {
+  width: 24px;
+  height: 22px;
+  font-family: inherit;
+  font-size: 11px;
+  background: #c0c0c0;
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #000000;
+  border-right: 1px solid #000000;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.notes-tb-btn:active {
+  border-top: 1px solid #000000;
+  border-left: 1px solid #000000;
+  border-bottom: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+}
+.notes-tb-sep {
+  width: 4px;
+  height: 20px;
+  border-left: 1px solid #808080;
+  border-right: 1px solid #ffffff;
+  margin: 0 2px;
+}
+.notes-search {
+  margin-left: auto;
+  width: 130px;
+  height: 20px;
+  font-size: 10px;
+}
+.notes-sidebar-item-time {
+  font-size: 9px;
+  color: #808080;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.notes-sidebar-item.active .notes-sidebar-item-time {
+  color: #c0c0c0;
+}
+
+
+/* ===== JOURNAL APP ===== */
+.journal-layout {
+  display: flex;
+  height: 100%;
+  background: #ffffff;
+}
+.journal-simple-layout {
+  display: flex;
+  height: 100%;
+  background: #ffffff;
+}
+
+.journal-sidebar {
+  width: 210px;
+  background: #ffffff;
+  border-right: 1px solid #808080;
+  overflow-y: auto;
+  flex-shrink: 0;
+  padding: 4px;
+}
+.journal-minical {
+  font-size: 11px;
+}
+.journal-minical .journal-cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+.journal-minical .journal-cal-nav {
+  width: 20px;
+  height: 18px;
+  font-family: inherit;
+  font-size: 10px;
+  background: #c0c0c0;
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #000000;
+  border-right: 1px solid #000000;
+  cursor: pointer;
+  padding: 0;
+}
+.journal-minical .journal-cal-nav:active {
+  border-top: 1px solid #000000;
+  border-left: 1px solid #000000;
+  border-bottom: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+}
+.journal-minical .journal-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background: #808080;
+  border: 1px solid #808080;
+}
+.journal-minical .journal-cal-day-header {
+  background: #c0c0c0;
+  text-align: center;
+  padding: 2px 0;
+  font-size: 9px;
+  font-weight: bold;
+}
+.journal-minical .journal-cal-day {
+  background: #ffffff;
+  text-align: center;
+  padding: 3px 0;
+  font-size: 10px;
+  cursor: pointer;
+  color: #000;
+}
+.journal-minical .journal-cal-day:hover {
+  background: #000080;
+  color: #fff;
+}
+.journal-minical .journal-cal-day.today {
+  font-weight: bold;
+  border: 1px solid #000080;
+}
+.journal-minical .journal-cal-day.selected {
+  background: #000080;
+  color: #fff;
+}
+.journal-minical .journal-cal-day.has-entry {
+  position: relative;
+}
+.journal-minical .journal-cal-day.has-entry::after {
+  content: '•';
+  position: absolute;
+  bottom: 1px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  color: #000080;
+  line-height: 1;
+}
+.journal-minical .journal-cal-day.selected.has-entry::after {
+  color: #fff;
+}
+.journal-editor-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.journal-date-header {
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: bold;
+  border-bottom: 1px solid #c0c0c0;
+  background: #f0f0f0;
+  flex-shrink: 0;
+}
+.journal-editor {
+  flex: 1;
+  width: 100%;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.7;
+  border: none;
+  outline: none;
+  resize: none;
+  background: #ffffff;
+}
+
+
+/* ===== NOTES-IN-JOURNAL ===== */
+.notes-layout {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+.notes-sidebar {
+  width: 160px;
+  border-right: 1px solid #808080;
+  overflow-y: auto;
+  background: #ffffff;
+  flex-shrink: 0;
+}
+.notes-sidebar-item {
+  padding: 5px 8px;
+  font-size: 11px;
+  cursor: pointer;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.notes-sidebar-item:hover {
+  background: #e0e0ff;
+}
+.notes-sidebar-item.active {
+  background: #000080;
+  color: #ffffff;
+}
+.notes-sidebar-item-time {
+  font-size: 9px;
+  color: #808080;
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+.notes-sidebar-item.active .notes-sidebar-item-time {
+  color: #c0c0c0;
+}
+.notes-editor-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.notes-title-input {
+  width: 100%;
+  height: 24px;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-bottom: none;
+}
+.notes-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 4px;
+  background: #c0c0c0;
+  border-bottom: 1px solid #808080;
+  flex-shrink: 0;
+}
+.notes-tb-btn {
+  height: 20px;
+  padding: 0 5px;
+  font-size: 10px;
+  min-width: 22px;
+}
+.notes-search-input {
+  width: 110px;
+  height: 20px;
+  font-size: 10px;
+}
+.notes-editor-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  background: #ffffff;
+  font-size: 11px;
+  line-height: 1.5;
+  outline: none;
+  color: #000000;
+}
+.notes-editor-body:empty::before {
+  content: 'Start writing...';
+  color: #808080;
+}

@@ -1,0 +1,219 @@
+/* Windows XP Luna theme for embedded productivity apps */
+
+body {
+  background: transparent !important;
+  font-family: Tahoma, 'Segoe UI', sans-serif;
+}
+
+.xp-app-host {
+  font-family: Tahoma, 'Segoe UI', sans-serif;
+  font-size: 11px;
+  color: #000;
+  background: #ece9d8;
+}
+
+.xp-app-host .win95-embedded,
+.xp-app-host .win-body {
+  background: #ece9d8;
+}
+
+.xp-app-host .win-menubar {
+  background: linear-gradient(180deg, #fff 0%, #ece9d8 100%);
+  border-bottom: 1px solid #aca899;
+  gap: 0;
+  padding: 0 4px;
+}
+
+.xp-app-host .win-menu-item {
+  padding: 3px 8px;
+  border-radius: 3px 3px 0 0;
+}
+
+.xp-app-host .win-menu-item:hover {
+  background: #316ac5;
+  color: #fff;
+}
+
+.xp-app-host .win-content {
+  background: #fff;
+  border: 1px solid #7f9db9;
+}
+
+.xp-app-host .win-statusbar {
+  background: #ece9d8;
+  border-top: 1px solid #fff;
+  box-shadow: inset 0 1px 0 #aca899;
+  height: 22px;
+}
+
+.xp-app-host .win-statusbar::after {
+  background: linear-gradient(
+    135deg,
+    #aca899 0 25%,
+    transparent 25% 50%,
+    #aca899 50% 75%,
+    transparent 75%
+  );
+  background-size: 4px 4px;
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+
+/* XP-style controls (class names kept for app JS compatibility) */
+.xp-app-host .win95-button {
+  font-family: Tahoma, sans-serif;
+  font-size: 11px;
+  height: 23px;
+  padding: 0 14px;
+  background: linear-gradient(180deg, #fff 0%, #ece9d8 86%, #d6d2c2 100%);
+  border: 1px solid #003c74;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 #fff;
+  cursor: pointer;
+}
+
+.xp-app-host .win95-button:hover {
+  background: linear-gradient(180deg, #fff 0%, #e8f4fd 60%, #d0e8ff 100%);
+  border-color: #2c628b;
+}
+
+.xp-app-host .win95-button:active {
+  background: #d6d2c2;
+  border-color: #003c74;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  padding: 1px 13px 0 15px;
+}
+
+.xp-app-host .win95-input,
+.xp-app-host select.win95-input,
+.xp-app-host textarea.win95-input {
+  font-family: Tahoma, sans-serif;
+  font-size: 11px;
+  border: 1px solid #7f9db9;
+  border-radius: 2px;
+  background: #fff;
+  padding: 3px 4px;
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.08);
+}
+
+.xp-app-host .win95-input:focus {
+  outline: 1px solid #316ac5;
+  border-color: #316ac5;
+}
+
+.xp-app-host .win95-inset {
+  border: 1px solid #7f9db9;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.xp-app-host .win95-checkbox {
+  width: 13px;
+  height: 13px;
+  border: 1px solid #7f9db9;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.08);
+}
+
+.xp-app-host .win95-checkbox:checked {
+  background: #316ac5;
+  border-color: #316ac5;
+}
+
+.xp-app-host .win95-checkbox:checked::after {
+  color: #fff;
+  top: -3px;
+}
+
+/* Explorer / My Computer toolbar */
+.xp-app-host .pc-explorer-toolbar {
+  background: linear-gradient(180deg, #f3f6fb 0%, #e8eef8 50%, #d6e4f7 100%);
+  border-bottom: 1px solid #8db2e3;
+}
+
+.xp-app-host .pc-address-bar {
+  background: #fff;
+  border: 1px solid #7f9db9;
+  border-radius: 2px;
+}
+
+/* Mail / template apps */
+.xp-app-host .mail-folder.active,
+.xp-app-host .mail-list-item.active,
+.xp-app-host .todo-filter-tab.active-filter {
+  background: #316ac5;
+  color: #fff;
+}
+
+.xp-app-host .mail-folder:hover,
+.xp-app-host .mail-list-item:hover {
+  background: #e8f4fd;
+}
+
+/* Journal / notes */
+.xp-app-host .journal-sidebar,
+.xp-app-host .journal-toolbar {
+  background: #ece9d8;
+  border-color: #aca899;
+}
+
+/* Calendar */
+.xp-app-host .cal-day.today {
+  background: #316ac5;
+  color: #fff;
+}
+
+.xp-app-host .cal-day:hover {
+  background: #e8f4fd;
+}
+
+/* Control panel */
+.xp-app-host .cp-section {
+  background: #fff;
+  border: 1px solid #7f9db9;
+  border-radius: 3px;
+}
+
+.xp-app-host .cp-section-title {
+  background: linear-gradient(180deg, #fff 0%, #ece9d8 100%);
+  border-bottom: 1px solid #aca899;
+  color: #003399;
+  font-weight: bold;
+}
+
+/* Pomodoro */
+.xp-app-host .pomodoro-timer-display {
+  color: #003399;
+}
+
+/* Kanban columns */
+.xp-app-host .kanban-column {
+  background: #f5f5f5;
+  border: 1px solid #aca899;
+  border-radius: 3px;
+}
+
+.xp-app-host .kanban-card {
+  background: #fff;
+  border: 1px solid #7f9db9;
+  border-radius: 3px;
+}
+
+/* Scrollbars (WebKit) */
+.xp-app-host ::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+.xp-app-host ::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+.xp-app-host ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #c8d6f0 0%, #8db2e3 100%);
+  border: 1px solid #6b8cc7;
+  border-radius: 2px;
+}

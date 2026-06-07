@@ -1,0 +1,28 @@
+/* ===== CONTROL PANEL ===== */
+.cp-content {
+  padding: 8px;
+  overflow-y: auto;
+  height: 100%;
+  background: #ffffff;
+}
+.cp-section {
+  border: 1px solid #808080;
+  padding: 8px;
+  margin-bottom: 8px;
+  background: #c0c0c0;
+}
+.cp-section-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+.cp-row {
+  display: flex;
+  align-items: center;
+  margin: 4px 0;
+  font-size: 10px;
+}
+.cp-label {
+  width: 140px;
+  flex-shrink: 0;
+}

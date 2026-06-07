@@ -1,0 +1,270 @@
+/* ===== MY COMPUTER ===== */
+.pc-explorer-toolbar .pc-address-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 4px;
+  background: #fff;
+  border: 2px solid;
+  border-color: #808080 #dfdfdf #dfdfdf #808080;
+  min-width: 0;
+  margin-left: 4px;
+}
+.pc-address-icon {
+  flex-shrink: 0;
+}
+.pc-address-label {
+  color: #808080;
+  white-space: nowrap;
+}
+.pc-address-path {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #000;
+}
+
+.mycomputer-content {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px;
+  gap: 16px;
+  align-content: flex-start;
+  flex: 1;
+  overflow: auto;
+  background: #fff;
+  outline: none;
+}
+.mycomputer-content.pc-view-list {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0;
+  padding: 0;
+}
+
+.mycomputer-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 11px;
+  width: 72px;
+  gap: 2px;
+  cursor: default;
+  padding: 4px;
+  user-select: none;
+  text-align: center;
+}
+.mycomputer-icon .v98-pc-icon {
+  width: 32px;
+  height: 32px;
+}
+.mycomputer-icon:hover {
+  background: rgba(0,0,128,0.08);
+}
+.mycomputer-icon.selected {
+  background: #000080;
+  color: #fff;
+}
+.mycomputer-icon.selected .mycomputer-icon-desc {
+  color: #c0c0ff;
+}
+
+.mycomputer-icon-desc {
+  font-size: 9px;
+  color: #808080;
+  margin-top: 1px;
+  line-height: 1.2;
+}
+.mycomputer-icon.selected .mycomputer-icon-desc,
+.mycomputer-icon.selected {
+  color: #fff;
+}
+
+/* List view */
+.pc-list-header,
+.pc-list-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  gap: 8px;
+  padding: 3px 8px;
+  font-size: 11px;
+  border-bottom: 1px solid #e0e0e0;
+}
+.pc-list-header {
+  background: #c0c0c0;
+  font-weight: bold;
+  border-bottom: 1px solid #808080;
+}
+.pc-list-row {
+  cursor: default;
+}
+.pc-list-row:hover {
+  background: rgba(0,0,128,0.06);
+}
+.pc-list-row.selected {
+  background: #000080;
+  color: #fff;
+}
+.pc-list-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pc-list-icon {
+  font-size: 16px;
+}
+
+/* Progress bar */
+.pc-progress {
+  padding: 4px 8px;
+  background: #c0c0c0;
+  border-bottom: 1px solid #808080;
+}
+.pc-progress.hidden {
+  display: none;
+}
+.pc-progress-label {
+  font-size: 10px;
+  margin-bottom: 2px;
+}
+.pc-progress-track {
+  height: 12px;
+  background: #fff;
+  border: 2px solid;
+  border-color: #808080 #dfdfdf #dfdfdf #808080;
+}
+.pc-progress-fill {
+  height: 100%;
+  width: 0;
+  background: #000080;
+  transition: width 0.15s linear;
+}
+
+/* Drop highlight */
+.win95-window .win-body.pc-drop-active {
+  outline: 2px dashed #000080;
+  outline-offset: -4px;
+  background: rgba(0,0,128,0.05);
+}
+
+/* Dialogs */
+.pc-restore-dialog,
+.pc-properties-dialog,
+.pc-printers-dialog {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+.pc-dialog-panel {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #dfdfdf #404040 #404040 #dfdfdf;
+  box-shadow: 2px 2px 0 #000;
+  min-width: 320px;
+  max-width: 90%;
+  max-height: 85%;
+  display: flex;
+  flex-direction: column;
+}
+.pc-dialog-title {
+  background: #000080;
+  color: #fff;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 3px 6px;
+}
+.pc-dialog-body {
+  padding: 10px;
+  font-size: 11px;
+  overflow-y: auto;
+  background: #c0c0c0;
+  color: #000;
+}
+.pc-dialog-body p {
+  margin: 4px 0;
+}
+.pc-dialog-btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 8px;
+  border-top: 1px solid #808080;
+}
+.pc-restore-options label {
+  display: block;
+  margin: 4px 0;
+}
+.pc-restore-domains {
+  margin-top: 8px;
+  max-height: 140px;
+  overflow-y: auto;
+  background: #fff;
+  border: 2px solid;
+  border-color: #808080 #dfdfdf #dfdfdf #808080;
+  padding: 6px;
+}
+.pc-restore-domains.hidden {
+  display: none;
+}
+.pc-restore-domain {
+  display: block;
+  margin: 2px 0;
+  font-size: 11px;
+}
+.pc-restore-warn {
+  color: #800000;
+  font-size: 10px;
+  margin: 6px 0;
+}
+.pc-props-body hr {
+  border: none;
+  border-top: 1px solid #808080;
+  margin: 8px 0;
+}
+.pc-props-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.pc-props-icon {
+  font-size: 32px;
+}
+.pc-props-apps {
+  font-size: 10px;
+  line-height: 1.4;
+  max-height: 60px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px inset #808080;
+  padding: 4px;
+  margin-bottom: 8px;
+}
+.pc-auto-backup {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+}
+
+/* My Computer context menu */
+#pc-context-menu {
+  position: fixed;
+  z-index: 9999;
+  min-width: 140px;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #dfdfdf #404040 #404040 #dfdfdf;
+  box-shadow: 2px 2px 0 #000;
+  font-size: 11px;
+}
+#pc-context-menu.hidden {
+  display: none;
+}
+#pc-context-menu .context-menu-item.disabled {
+  color: #808080;
+  pointer-events: none;
+}

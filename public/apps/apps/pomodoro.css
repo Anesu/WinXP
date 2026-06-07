@@ -1,0 +1,168 @@
+/* ===== POMODORO APP ===== */
+.pomodoro-container {
+  height: 100%;
+  padding: 12px;
+  background: #c0c0c0;
+  overflow-y: auto;
+}
+.pomodoro-lcd {
+  background: #000000;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-bottom: 2px solid #ffffff;
+  border-right: 2px solid #ffffff;
+  padding: 12px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.pomodoro-timer {
+  font-size: 56px;
+  font-weight: bold;
+  font-family: "Courier New", monospace;
+  color: #ff0000;
+  text-shadow: 0 0 5px #ff0000;
+  line-height: 1;
+}
+.pomodoro-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ff0000;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+
+.pomodoro-progress-container {
+  padding: 0 12px;
+}
+.pomodoro-progress {
+  width: 100%;
+  height: 12px;
+  background: #c0c0c0;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-bottom: 2px solid #ffffff;
+  border-right: 2px solid #ffffff;
+}
+.pomodoro-progress-fill {
+  height: 100%;
+  background: #000080;
+  transition: width 1s linear;
+}
+
+/* Phase colors for LCD */
+.pomodoro-container.phase-work .pomodoro-timer,
+.pomodoro-container.phase-work .pomodoro-label { color: #ff3333; text-shadow: 0 0 5px #ff3333; }
+.pomodoro-container.phase-break .pomodoro-timer,
+.pomodoro-container.phase-break .pomodoro-label { color: #33ff33; text-shadow: 0 0 5px #33ff33; }
+
+.pomodoro-container.phase-work .pomodoro-progress-fill { background: #800000; }
+.pomodoro-container.phase-break .pomodoro-progress-fill { background: #006000; }
+
+/* Group Box (Fieldset) */
+.pomodoro-settings {
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #808080;
+  border-right: 2px solid #808080;
+  box-shadow: inset -1px -1px #000000, inset 1px 1px #dfdfdf;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.pomodoro-settings legend {
+  padding: 0 4px;
+  font-size: 11px;
+}
+.pomodoro-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 11px;
+}
+.pomodoro-row > label:first-child {
+  width: 80px;
+}
+.pomodoro-task-select {
+  flex: 1;
+  max-width: 200px;
+}
+
+/* Preset buttons */
+.pomodoro-presets {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.pomodoro-preset-btn {
+  font-family: inherit;
+  font-size: 11px;
+  min-width: 28px;
+  height: 22px;
+  background: #c0c0c0;
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  border-bottom: 1px solid #000000;
+  border-right: 1px solid #000000;
+  box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080;
+  cursor: pointer;
+}
+.pomodoro-preset-btn:active {
+  border-top: 1px solid #000000;
+  border-left: 1px solid #000000;
+  border-bottom: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
+  padding-top: 1px;
+  padding-left: 1px;
+}
+.pomodoro-preset-btn.active-preset {
+  border-top: 1px solid #000000;
+  border-left: 1px solid #000000;
+  border-bottom: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
+  background: #d4d0c8;
+  background-image: 
+    linear-gradient(45deg, #c0c0c0 25%, transparent 25%, transparent 75%, #c0c0c0 75%, #c0c0c0),
+    linear-gradient(45deg, #c0c0c0 25%, transparent 25%, transparent 75%, #c0c0c0 75%, #c0c0c0);
+  background-size: 2px 2px;
+  background-position: 0 0, 1px 1px;
+  background-color: #ffffff;
+  padding-top: 1px;
+  padding-left: 1px;
+  font-weight: bold;
+}
+
+/* Session log */
+.pomodoro-log {
+  width: 100%;
+  max-height: 80px;
+  overflow-y: auto;
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+  border-bottom: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+  background: #ffffff;
+  margin-top: 8px;
+}
+.pomodoro-log-title {
+  display: none;
+}
+.pomodoro-log-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  padding: 2px 4px;
+}
+.pomodoro-log-item:hover {
+  background: #000080;
+  color: #ffffff;
+}
+.pomodoro-log-item:hover .pom-log-time {
+  color: #ffffff;
+}
+.pom-log-time {
+  margin-left: auto;
+  color: #808080;
+  font-size: 11px;
+}

@@ -1,0 +1,70 @@
+/* Explorer toolbar adapted from 98.js programs/explorer/explorer.css */
+.pc-explorer-toolbar {
+  display: flex;
+  flex-direction: column;
+  padding: 1px;
+  margin-top: 1px;
+  margin-bottom: 4px;
+  border: 1px solid var(--ButtonShadow, #808080);
+  box-shadow: 0 1px 0 var(--ButtonHilight, #fff), 0 1px 0 var(--ButtonHilight, #fff) inset;
+  background: var(--ButtonFace, #c0c0c0);
+}
+.pc-explorer-toolbar-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1px;
+  padding: 1px 2px;
+}
+.pc-explorer-toolbar-row + .pc-explorer-toolbar-row {
+  border-top: 1px solid var(--ButtonHilight, #fff);
+  box-shadow: 0 -1px 0 var(--ButtonShadow, #808080);
+}
+.pc-toolbar-explorer-btn {
+  width: 24px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  position: relative;
+  cursor: default;
+  flex-shrink: 0;
+}
+.pc-toolbar-explorer-btn:enabled:hover {
+  border-color: var(--ButtonHilight, #fff) var(--ButtonShadow, #808080) var(--ButtonShadow, #808080) var(--ButtonHilight, #fff);
+}
+.pc-toolbar-explorer-btn:enabled:active {
+  border-color: var(--ButtonShadow, #808080) var(--ButtonHilight, #fff) var(--ButtonHilight, #fff) var(--ButtonShadow, #808080);
+}
+.pc-toolbar-explorer-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.pc-toolbar-explorer-btn .pc-tb-icon {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 1px;
+  top: 0;
+  background-image: url("images/browse-ui-icons-grayscale.png");
+  background-repeat: no-repeat;
+}
+.pc-toolbar-explorer-btn:enabled:hover .pc-tb-icon,
+.pc-toolbar-explorer-btn:enabled:focus .pc-tb-icon {
+  background-image: url("images/browse-ui-icons.png");
+}
+.pc-tb-back .pc-tb-icon { background-position: 0 0; }
+.pc-tb-forward .pc-tb-icon { background-position: -20px 0; }
+.pc-tb-up .pc-tb-icon { background-position: -880px 0; }
+.pc-tb-view .pc-tb-icon { background-position: -620px 0; }
+.pc-explorer-toolbar .pc-address-bar {
+  flex: 1;
+  min-width: 0;
+}
+.pc-explorer-sep {
+  width: 0;
+  height: 22px;
+  border-left: 1px solid var(--ButtonShadow, #808080);
+  border-right: 1px solid var(--ButtonHilight, #fff);
+  margin: 0 2px;
+}
