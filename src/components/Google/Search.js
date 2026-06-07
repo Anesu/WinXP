@@ -18,7 +18,7 @@ function Search({ className, goMain, onSearch, query }) {
     onSearch(value);
   }
   function renderTags() {
-    return 'All,Maps,Images,News,Videos,More'.split(',').map(tagName => (
+    return 'All,Maps,Images,News,Videos,More'.split(',').map((tagName) => (
       <div
         onClick={() => setTag(tagName)}
         className={`tag ${tagName === tag ? 'active' : ''}`}

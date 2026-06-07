@@ -2,7 +2,7 @@
 .lockscreen-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: #008080;
+  background: linear-gradient(180deg, #5a9fd4 0%, #3a7fc8 40%, #245edb 100%);
   z-index: 100000;
   display: flex;
   align-items: center;
@@ -18,11 +18,13 @@
   padding: 40px;
 }
 .lockscreen-title {
-  font-size: 36px;
+  font-size: 42px;
   font-weight: bold;
   letter-spacing: -1px;
   margin-bottom: 16px;
   font-style: italic;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.35);
+  font-family: Tahoma, 'Segoe UI', sans-serif;
 }
 .lockscreen-datetime {
   font-size: 14px;

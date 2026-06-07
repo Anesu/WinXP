@@ -12,8 +12,8 @@ function Icons({
 }) {
   const [iconsRect, setIconsRect] = useState([]);
   function measure(rect) {
-    if (iconsRect.find(r => r.id === rect.id)) return;
-    setIconsRect(iconsRect => [...iconsRect, rect]);
+    if (iconsRect.find((r) => r.id === rect.id)) return;
+    setIconsRect((iconsRect) => [...iconsRect, rect]);
   }
   useEffect(() => {
     if (!selecting) return;
@@ -22,16 +22,16 @@ function Icons({
     const sw = Math.abs(selecting.x - mouse.docX);
     const sh = Math.abs(selecting.y - mouse.docY);
     const selectedIds = iconsRect
-      .filter(rect => {
+      .filter((rect) => {
         const { x, y, w, h } = rect;
         return x - sx < sw && sx - x < w && y - sy < sh && sy - y < h;
       })
-      .map(icon => icon.id);
+      .map((icon) => icon.id);
     setSelectedIcons(selectedIds);
   }, [iconsRect, setSelectedIcons, selecting, mouse.docX, mouse.docY]);
   return (
     <IconsContainer>
-      {icons.map(icon => (
+      {icons.map((icon) => (
         <StyledIcon
           key={icon.id}
           {...icon}

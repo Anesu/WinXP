@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import FooterMenu from './FooterMenu';
 import Balloon from 'components/Balloon';
@@ -32,12 +32,17 @@ function Footer({
   focusedAppId,
   onMouseDown,
   onClickMenuItem,
+  onPomodoroClick,
 }) {
   const [time, setTime] = useState(getTime);
   const [menuOn, setMenuOn] = useState(false);
+  const [pomodoro, setPomodoro] = useState(null);
+  const [flashIds, setFlashIds] = useState(() => new Set());
+  const flashTimers = useRef({});
   const menu = useRef(null);
+
   function toggleMenu() {
-    setMenuOn(on => !on);
+    setMenuOn((on) => !on);
   }
   function _onMouseDown(e) {
     if (e.target.closest('.footer__window')) return;
@@ -47,6 +52,7 @@ function Footer({
     onClickMenuItem(name);
     setMenuOn(false);
   }
+
   useEffect(() => {
     const timer = setInterval(() => {
       const newTime = getTime();
@@ -54,6 +60,7 @@ function Footer({
     }, 1000);
     return () => clearInterval(timer);
   }, [time]);
+
   useEffect(() => {
     const target = menu.current;
     if (!target) return;
@@ -63,6 +70,60 @@ function Footer({
     window.addEventListener('mousedown', onMouseDown);
     return () => window.removeEventListener('mousedown', onMouseDown);
   }, [menuOn]);
+
+  useEffect(() => {
+    const timers = flashTimers.current;
+
+    function onPomodoro(e) {
+      setPomodoro(e.detail || null);
+    }
+    function onFlashStart(e) {
+      const winId = e.detail;
+      if (timers[winId]) {
+        clearTimeout(timers[winId]);
+        delete timers[winId];
+      }
+      setFlashIds(prev => new Set(prev).add(String(winId)));
+      timers[winId] = setTimeout(() => {
+        delete timers[winId];
+        setFlashIds(prev => {
+          if (!prev.has(String(winId))) return prev;
+          const next = new Set(prev);
+          next.delete(String(winId));
+          return next;
+        });
+      }, 8000);
+    }
+    function onFlashStop(e) {
+      const winId = e.detail;
+      if (timers[winId]) {
+        clearTimeout(timers[winId]);
+        delete timers[winId];
+      }
+      setFlashIds(prev => {
+        if (!prev.has(String(winId))) return prev;
+        const next = new Set(prev);
+        next.delete(String(winId));
+        return next;
+      });
+    }
+    window.addEventListener('winxp:pomodoro', onPomodoro);
+    window.addEventListener('winxp:window-flash-start', onFlashStart);
+    window.addEventListener('winxp:window-flash-stop', onFlashStop);
+    return () => {
+      window.removeEventListener('winxp:pomodoro', onPomodoro);
+      window.removeEventListener('winxp:window-flash-start', onFlashStart);
+      window.removeEventListener('winxp:window-flash-stop', onFlashStop);
+      Object.values(timers).forEach(clearTimeout);
+    };
+  }, []);
+
+  const pomodoroLabel = pomodoro
+    ? `${pomodoro.isWork ? '🍅' : '☕'} ${String(pomodoro.minutes).padStart(
+        2,
+        '0',
+      )}:${String(pomodoro.seconds).padStart(2, '0')}`
+    : null;
 
   return (
     <Container onMouseDown={_onMouseDown}>
@@ -77,7 +138,7 @@ function Footer({
           onMouseDown={toggleMenu}
         />
         {[...apps].map(
-          app =>
+          (app) =>
             !app.header.noFooterWindow && (
               <FooterWindow
                 key={app.id}
@@ -86,12 +147,33 @@ function Footer({
                 title={app.header.title}
                 onMouseDown={onMouseDownApp}
                 isFocus={focusedAppId === app.id}
+                isFlashing={flashIds.has(String(app.id))}
               />
             ),
         )}
       </div>
 
-      <div className="footer__items right">
+      <div id="taskbar-tray" className="footer__items right">
+        {pomodoroLabel && (
+          <PomodoroIndicator
+            className={
+              pomodoro.isWork
+                ? 'taskbar-pomodoro running'
+                : 'taskbar-pomodoro break'
+            }
+            onMouseDown={(e) => {
+              e.stopPropagation();
+              onPomodoroClick && onPomodoroClick();
+            }}
+            title={
+              pomodoro.isWork
+                ? 'Focus session in progress'
+                : 'Break in progress'
+            }
+          >
+            {pomodoroLabel}
+          </PomodoroIndicator>
+        )}
         <img className="footer__icon" src={sound} alt="" />
         <img className="footer__icon" src={usb} alt="" />
         <img className="footer__icon" src={risk} alt="" />
@@ -104,20 +186,54 @@ function Footer({
   );
 }
 
-function FooterWindow({ id, icon, title, onMouseDown, isFocus }) {
+function FooterWindow({ id, icon, title, onMouseDown, isFocus, isFlashing }) {
   function _onMouseDown() {
     onMouseDown(id);
   }
   return (
     <div
+      data-win-id={id}
       onMouseDown={_onMouseDown}
-      className={`footer__window ${isFocus ? 'focus' : 'cover'}`}
+      className={`footer__window ${isFocus ? 'focus' : 'cover'} ${
+        isFlashing ? 'pomodoro-flash' : ''
+      }`}
     >
       <img className="footer__icon" src={icon} alt={title} />
       <div className="footer__text">{title}</div>
     </div>
   );
 }
+
+const pomodoroFlash = keyframes`
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+`;
+
+const PomodoroIndicator = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 6px;
+  height: 18px;
+  font-size: 10px;
+  font-family: Tahoma, sans-serif;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 2px;
+  margin-right: 6px;
+  cursor: pointer;
+  &.running {
+    color: #ffcccc;
+    font-weight: bold;
+  }
+  &.break {
+    color: #ccffcc;
+  }
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+`;
 
 const Container = styled.footer`
   height: 30px;
@@ -205,11 +321,15 @@ const Container = styled.footer`
     height: 22px;
     font-size: 11px;
     background-color: #3c81f3;
-    box-shadow: inset -1px 0px rgba(0, 0, 0, 0.3),
+    box-shadow:
+      inset -1px 0px rgba(0, 0, 0, 0.3),
       inset 1px 1px 1px rgba(255, 255, 255, 0.2);
     position: relative;
     display: flex;
     align-items: center;
+  }
+  .footer__window.pomodoro-flash {
+    animation: ${pomodoroFlash} 0.8s step-end infinite;
   }
   .footer__icon {
     height: 15px;
@@ -225,7 +345,8 @@ const Container = styled.footer`
   }
   .footer__window.cover:hover {
     background-color: #53a3ff;
-    box-shadow: inset -1px 0px rgba(0, 0, 0, 0.3),
+    box-shadow:
+      inset -1px 0px rgba(0, 0, 0, 0.3),
       inset 1px 1px 1px rgba(255, 255, 255, 0.2);
   }
   .footer__window.cover:before {
@@ -241,7 +362,8 @@ const Container = styled.footer`
   }
   .footer__window.cover:hover:active {
     background-color: #1e52b7;
-    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.3),
+    box-shadow:
+      inset 0 0 1px 1px rgba(0, 0, 0, 0.3),
       inset 1px 0 1px rgba(0, 0, 0, 0.7);
   }
   .footer__window.focus:hover {
@@ -252,7 +374,8 @@ const Container = styled.footer`
   }
   .footer__window.focus {
     background-color: #1e52b7;
-    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.2),
+    box-shadow:
+      inset 0 0 1px 1px rgba(0, 0, 0, 0.2),
       inset 1px 0 1px rgba(0, 0, 0, 0.7);
   }
   .footer__time {

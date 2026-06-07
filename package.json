@@ -2,6 +2,7 @@
   "name": "winxp-productivity",
   "version": "1.0.0",
   "description": "Windows XP Luna desktop with a full productivity suite — Outlook Express, Notepad, My Computer, and more.",
+  "homepage": "https://anesu.github.io/WinXP",
   "private": true,
   "author": "Anesu",
   "license": "MIT",
@@ -38,11 +39,11 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "eslint": "^6.4.0",
-    "eslint-config-prettier": "^6.3.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-prettier": "^3.1.0",
-    "prettier": "^1.18.2"
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.4.2"
   },
   "engines": {
     "node": ">=16.0.0"

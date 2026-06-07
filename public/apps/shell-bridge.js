@@ -1742,6 +1742,26 @@ function closeWindow() {}
 if (typeof initFileDrop === 'function') initFileDrop();
 if (typeof initAutoBackupOnExit === 'function') initAutoBackupOnExit();
 
+// Bridge legacy shell events to the React Luna taskbar
+shellEvents.on('pomodoro:update', data => {
+  window.dispatchEvent(new CustomEvent('winxp:pomodoro', { detail: data }));
+});
+shellEvents.on('window:flash_start', winId => {
+  window.dispatchEvent(
+    new CustomEvent('winxp:window-flash-start', { detail: winId }),
+  );
+});
+shellEvents.on('window:flash_stop', winId => {
+  window.dispatchEvent(
+    new CustomEvent('winxp:window-flash-stop', { detail: winId }),
+  );
+});
+shellEvents.on('window:focused', winId => {
+  window.dispatchEvent(
+    new CustomEvent('winxp:window-flash-stop', { detail: winId }),
+  );
+});
+
 setInterval(() => {
   for (const [id, w] of Object.entries(state.windows)) {
     if (w.app === 'journal' && !w.minimized && typeof journalNotesAutoSave === 'function') {

@@ -215,12 +215,18 @@ const StyledContainer = styled(Container)`
     margin-right: 10px;
     height: 16px;
     border-radius: 1px;
-    box-shadow: 2px 2px 4px 1px #0005b0, 2px 2px 2px 0px white,
-      inset 0 0 0 1px skyblue, inset 2px -2px skyblue;
+    box-shadow:
+      2px 2px 4px 1px #0005b0,
+      2px 2px 2px 0px white,
+      inset 0 0 0 1px skyblue,
+      inset 2px -2px skyblue;
     border: none;
     outline: none;
     &:hover {
-      box-shadow: 1px 1px black, 1px 1px 2px 0px white, inset 0 0 0 1px orange,
+      box-shadow:
+        1px 1px black,
+        1px 1px 2px 0px white,
+        inset 0 0 0 1px orange,
         inset 2px -2px orange;
     }
     &:hover:active {

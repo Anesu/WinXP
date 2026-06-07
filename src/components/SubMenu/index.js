@@ -72,7 +72,9 @@ const StyledSubMenu = styled(SubMenu)`
   bottom: ${({ bottom }) => bottom || '-1px'};
   background-color: white;
   padding-left: 1px;
-  box-shadow: inset 0 0 0 1px #72ade9, 2px 3px 3px rgb(0, 0, 0, 0.5);
+  box-shadow:
+    inset 0 0 0 1px #72ade9,
+    2px 3px 3px rgb(0, 0, 0, 0.5);
   &-separator {
     padding: 0 5px;
     height: 2px;

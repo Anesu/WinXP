@@ -28,7 +28,7 @@ export function WindowDropDowns({
   }, []);
   return (
     <div className={className} ref={dropDown}>
-      {Object.keys(items).map(name => (
+      {Object.keys(items).map((name) => (
         <div className="drop-down" key={name}>
           <div
             key={name}

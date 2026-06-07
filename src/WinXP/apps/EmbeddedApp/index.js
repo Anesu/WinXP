@@ -1,4 +1,4 @@
-export { default as AppShell } from './AppShell';
+export { default as AppShell, preloadEmbeddedApps } from './AppShell';
 export { createEmbeddedApp } from './createEmbeddedApp';
 export {
   embeddedAppDefs,

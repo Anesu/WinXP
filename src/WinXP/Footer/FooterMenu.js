@@ -57,8 +57,14 @@ function FooterMenu({ className, onClick }) {
             onClick={onClick}
             items={[
               { icon: notepad, text: 'Notepad' },
-              { icon: `${process.env.PUBLIC_URL}/apps/vendor/98/images/icons/task-32x32.png`, text: 'Todo Tasks' },
-              { icon: `${process.env.PUBLIC_URL}/apps/vendor/98/images/icons/chm-32x32.png`, text: 'Bible' },
+              {
+                icon: `${process.env.PUBLIC_URL}/apps/vendor/98/images/icons/task-32x32.png`,
+                text: 'Todo Tasks',
+              },
+              {
+                icon: `${process.env.PUBLIC_URL}/apps/vendor/98/images/icons/chm-32x32.png`,
+                text: 'Bible',
+              },
               { icon: mine, text: 'Minesweeper' },
               { icon: winamp, text: 'Winamp' },
               { icon: paint, text: 'Paint' },

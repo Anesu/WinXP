@@ -34,6 +34,12 @@ async function ensureTemplates() {
 }
 
 let scriptsReady = false;
+
+export async function preloadEmbeddedApps() {
+  await ensureTemplates();
+  await ensureAppScripts();
+}
+
 async function ensureAppScripts() {
   if (scriptsReady) return;
   window.APPS_PUBLIC_BASE = APPS_BASE;
@@ -61,6 +67,13 @@ async function ensureAppScripts() {
     await loadScriptOnce(src);
   }
   scriptsReady = true;
+  if (
+    !window.__winxpLockScreenInit &&
+    typeof window.initLockScreen === 'function'
+  ) {
+    window.initLockScreen();
+    window.__winxpLockScreenInit = true;
+  }
 }
 
 export default function AppShell({ appKey, templateId, initFn, winId }) {

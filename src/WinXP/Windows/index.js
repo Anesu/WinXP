@@ -15,7 +15,7 @@ function Windows({
 }) {
   return (
     <div style={{ position: 'relative', zIndex: 0 }}>
-      {apps.map(app => (
+      {apps.map((app) => (
         <StyledWindow
           show={!app.minimized}
           key={app.id}
@@ -32,7 +32,7 @@ function Windows({
   );
 }
 
-const Window = memo(function({
+const Window = memo(function ({
   injectProps,
   id,
   onMouseDown,

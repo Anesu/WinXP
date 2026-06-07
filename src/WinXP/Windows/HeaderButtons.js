@@ -39,7 +39,7 @@ function HeaderButtons({
   return (
     <div className={className}>
       {buttons ? (
-        buttons.map(b => buttonElements[b])
+        buttons.map((b) => buttonElements[b])
       ) : (
         <>
           {buttonElements.minimize}
@@ -108,7 +108,9 @@ export default styled(HeaderButtons)`
       display: block;
       left: 4px;
       top: 4px;
-      box-shadow: inset 0 3px white, inset 0 0 0 1px white;
+      box-shadow:
+        inset 0 3px white,
+        inset 0 0 0 1px white;
       height: 12px;
       width: 12px;
     }
@@ -129,7 +131,9 @@ export default styled(HeaderButtons)`
       display: block;
       left: 7px;
       top: 4px;
-      box-shadow: inset 0 2px white, inset 0 0 0 1px white;
+      box-shadow:
+        inset 0 2px white,
+        inset 0 0 0 1px white;
       height: 8px;
       width: 8px;
     }
@@ -139,7 +143,10 @@ export default styled(HeaderButtons)`
       display: block;
       left: 4px;
       top: 7px;
-      box-shadow: inset 0 2px white, inset 0 0 0 1px white, 1px -1px #136dff;
+      box-shadow:
+        inset 0 2px white,
+        inset 0 0 0 1px white,
+        1px -1px #136dff;
       height: 8px;
       width: 8px;
       background-color: #136dff;

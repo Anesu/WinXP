@@ -199,7 +199,7 @@ export const embeddedAppDefs = [
 export const embeddedAppSettings = {};
 export const embeddedComponents = {};
 
-embeddedAppDefs.forEach(def => {
+embeddedAppDefs.forEach((def) => {
   const component = createEmbeddedApp({
     ...def,
     title: def.displayTitle,
@@ -217,14 +217,20 @@ embeddedAppDefs.forEach(def => {
     resizable: true,
     minimized: false,
     maximized: window.innerWidth < 800,
-    multiInstance: def.appKey === 'journal' || def.appKey === 'mail' || def.appKey === 'textdiff',
+    multiInstance:
+      def.appKey === 'journal' ||
+      def.appKey === 'mail' ||
+      def.appKey === 'textdiff',
   };
 });
 
 export const appByKey = Object.fromEntries(
-  embeddedAppDefs.map(def => [def.appKey, embeddedAppSettings[def.displayTitle]]),
+  embeddedAppDefs.map((def) => [
+    def.appKey,
+    embeddedAppSettings[def.displayTitle],
+  ]),
 );
 
 export const desktopEmbeddedApps = embeddedAppDefs.filter(
-  def => def.showOnDesktop !== false,
+  (def) => def.showOnDesktop !== false,
 );

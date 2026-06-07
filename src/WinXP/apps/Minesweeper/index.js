@@ -40,7 +40,7 @@ function reducer(state, action = {}) {
     case 'OPEN_CEIL': {
       const indexes = autoCeils(state, action.payload);
       const ceils = [...state.ceils];
-      indexes.forEach(i => {
+      indexes.forEach((i) => {
         const ceil = ceils[i];
         ceils[i] = { ...ceil, state: 'open' };
       });
@@ -74,7 +74,7 @@ function reducer(state, action = {}) {
       };
     }
     case 'GAME_OVER': {
-      const ceils = state.ceils.map(ceil => {
+      const ceils = state.ceils.map((ceil) => {
         if (ceil.minesAround < 0 && ceil.state !== 'flag') {
           return {
             ...ceil,
@@ -100,7 +100,7 @@ function reducer(state, action = {}) {
       };
     }
     case 'WON': {
-      const ceils = state.ceils.map(ceil => {
+      const ceils = state.ceils.map((ceil) => {
         if (ceil.minesAround >= 0) {
           return {
             ...ceil,
@@ -121,7 +121,7 @@ function reducer(state, action = {}) {
     }
     case 'OPENING_CEIL': {
       const ceil = state.ceils[action.payload];
-      const ceils = state.ceils.map(ceil => ({
+      const ceils = state.ceils.map((ceil) => ({
         ...ceil,
         opening: false,
       }));
@@ -133,11 +133,11 @@ function reducer(state, action = {}) {
     }
     case 'OPENING_CEILS': {
       const indexes = getNearIndexes(action.payload, state.rows, state.columns);
-      const ceils = state.ceils.map(ceil => ({
+      const ceils = state.ceils.map((ceil) => ({
         ...ceil,
         opening: false,
       }));
-      [...indexes, action.payload].forEach(index => {
+      [...indexes, action.payload].forEach((index) => {
         const ceil = { ...ceils[index] };
         ceil.opening = true;
         ceils[index] = ceil;
@@ -192,19 +192,19 @@ function MineSweeper({ defaultDifficulty, onClose }) {
     )
       return;
     const indexes = getNearIndexes(index, state.rows, state.columns);
-    const nearCeils = indexes.map(i => state.ceils[i]);
+    const nearCeils = indexes.map((i) => state.ceils[i]);
     if (
-      nearCeils.filter(ceil => ceil.state === 'flag').length !==
+      nearCeils.filter((ceil) => ceil.state === 'flag').length !==
       ceil.minesAround
     )
       return;
     const mineIndex = indexes.find(
-      i => state.ceils[i].minesAround < 0 && state.ceils[i].state !== 'flag',
+      (i) => state.ceils[i].minesAround < 0 && state.ceils[i].state !== 'flag',
     );
     if (mineIndex) {
       dispatch({ type: 'GAME_OVER', payload: mineIndex });
     } else {
-      indexes.forEach(i => dispatch({ type: 'OPEN_CEIL', payload: i }));
+      indexes.forEach((i) => dispatch({ type: 'OPEN_CEIL', payload: i }));
     }
   }
   useEffect(() => {
@@ -217,8 +217,8 @@ function MineSweeper({ defaultDifficulty, onClose }) {
   }
   function checkRemains() {
     const safeCeils = state.ceils
-      .filter(ceil => ceil.state !== 'open')
-      .filter(ceil => ceil.minesAround >= 0);
+      .filter((ceil) => ceil.state !== 'open')
+      .filter((ceil) => ceil.minesAround >= 0);
     return safeCeils.length;
   }
   function openingCeil(index) {
@@ -248,7 +248,7 @@ function genGameConfig(config) {
   const { rows, columns, mines } = config;
   const ceils = Array(rows * columns)
     .fill()
-    .map(_ => ({
+    .map((_) => ({
       state: 'cover',
       minesAround: 0,
       opening: false,
@@ -263,16 +263,16 @@ function genGameConfig(config) {
 
 function insertMines(config, originCeils) {
   const { rows, columns, mines, exclude } = config;
-  const ceils = originCeils.map(ceil => ({ ...ceil }));
+  const ceils = originCeils.map((ceil) => ({ ...ceil }));
   if (rows * columns !== ceils.length)
     throw new Error('rows and columns not equal to ceils');
   const indexArray = [...Array(rows * columns).keys()];
   sampleSize(
-    indexArray.filter(i => i !== exclude),
+    indexArray.filter((i) => i !== exclude),
     mines,
-  ).forEach(chosen => {
+  ).forEach((chosen) => {
     ceils[chosen].minesAround = -10;
-    getNearIndexes(chosen, rows, columns).forEach(nearIndex => {
+    getNearIndexes(chosen, rows, columns).forEach((nearIndex) => {
       ceils[nearIndex].minesAround += 1;
     });
   });
@@ -286,7 +286,7 @@ function insertMines(config, originCeils) {
 
 function autoCeils(state, index) {
   const { rows, columns } = state;
-  const ceils = state.ceils.map(ceil => ({
+  const ceils = state.ceils.map((ceil) => ({
     ...ceil,
     walked: false,
   }));
@@ -333,7 +333,7 @@ function getNearIndexes(index, rows, columns) {
 function useTimer(status) {
   const [seconds, setSeconds] = useState(0);
   function addSecond() {
-    setSeconds(sec => sec + 1);
+    setSeconds((sec) => sec + 1);
   }
   useEffect(() => {
     let timer;

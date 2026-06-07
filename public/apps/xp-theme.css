@@ -155,9 +155,55 @@ body {
 
 /* Journal / notes */
 .xp-app-host .journal-sidebar,
-.xp-app-host .journal-toolbar {
+.xp-app-host .journal-toolbar,
+.xp-app-host .notes-toolbar {
+  background: linear-gradient(180deg, #f3f6fb 0%, #e8eef8 50%, #d6e4f7 100%);
+  border-color: #8db2e3;
+}
+
+.xp-app-host .notes-tb-btn {
+  background: linear-gradient(180deg, #fff 0%, #ece9d8 86%, #d6d2c2 100%);
+  border: 1px solid #003c74;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+.xp-app-host .notes-tb-btn:hover {
+  background: linear-gradient(180deg, #fff 0%, #e8f4fd 60%, #d0e8ff 100%);
+}
+
+.xp-app-host .notes-tb-btn:active {
+  background: #d6d2c2;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Mail / Outlook Express toolbar */
+.xp-app-host .mail-toolbar {
+  background: linear-gradient(180deg, #f3f6fb 0%, #e8eef8 50%, #d6e4f7 100%);
+  border-bottom: 1px solid #8db2e3;
+}
+
+.xp-app-host .mail-sidebar {
+  background: #f5f8fc;
+  border-right: 1px solid #8db2e3;
+}
+
+/* Bible reader toolbar */
+.xp-app-host .bible-toolbar {
+  background: linear-gradient(180deg, #f3f6fb 0%, #e8eef8 50%, #d6e4f7 100%);
+  border-bottom: 1px solid #8db2e3;
+}
+
+/* Kanban toolbar */
+.xp-app-host .kanban-toolbar {
+  background: linear-gradient(180deg, #f3f6fb 0%, #e8eef8 50%, #d6e4f7 100%);
+  border: 1px solid #8db2e3;
+  border-radius: 3px;
+  padding: 4px 6px;
+}
+
+.xp-app-host .kanban-container {
   background: #ece9d8;
-  border-color: #aca899;
 }
 
 /* Calendar */

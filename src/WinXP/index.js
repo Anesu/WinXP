@@ -19,6 +19,7 @@ import {
 import { FOCUSING, POWER_STATE } from './constants';
 import { defaultIconState, defaultAppState, appSettings } from './apps';
 import { appByKey } from './apps/EmbeddedApp';
+import { preloadEmbeddedApps } from './apps/EmbeddedApp/AppShell';
 import Modal from './Modal';
 import Footer from './Footer';
 import Windows from './Windows';
@@ -38,7 +39,7 @@ const reducer = (state, action = { type: '' }) => {
   switch (action.type) {
     case ADD_APP:
       const app = state.apps.find(
-        _app => _app.component === action.payload.component,
+        (_app) => _app.component === action.payload.component,
       );
       if (action.payload.multiInstance || !app) {
         return {
@@ -56,7 +57,7 @@ const reducer = (state, action = { type: '' }) => {
           focusing: FOCUSING.WINDOW,
         };
       }
-      const apps = state.apps.map(app =>
+      const apps = state.apps.map((app) =>
         app.component === action.payload.component
           ? { ...app, zIndex: state.nextZIndex, minimized: false }
           : app,
@@ -71,16 +72,16 @@ const reducer = (state, action = { type: '' }) => {
       if (state.focusing !== FOCUSING.WINDOW) return state;
       return {
         ...state,
-        apps: state.apps.filter(app => app.id !== action.payload),
+        apps: state.apps.filter((app) => app.id !== action.payload),
         focusing:
           state.apps.length > 1
             ? FOCUSING.WINDOW
-            : state.icons.find(icon => icon.isFocus)
-            ? FOCUSING.ICON
-            : FOCUSING.DESKTOP,
+            : state.icons.find((icon) => icon.isFocus)
+              ? FOCUSING.ICON
+              : FOCUSING.DESKTOP,
       };
     case FOCUS_APP: {
-      const apps = state.apps.map(app =>
+      const apps = state.apps.map((app) =>
         app.id === action.payload
           ? { ...app, zIndex: state.nextZIndex, minimized: false }
           : app,
@@ -94,7 +95,7 @@ const reducer = (state, action = { type: '' }) => {
     }
     case MINIMIZE_APP: {
       if (state.focusing !== FOCUSING.WINDOW) return state;
-      const apps = state.apps.map(app =>
+      const apps = state.apps.map((app) =>
         app.id === action.payload ? { ...app, minimized: true } : app,
       );
       return {
@@ -105,7 +106,7 @@ const reducer = (state, action = { type: '' }) => {
     }
     case TOGGLE_MAXIMIZE_APP: {
       if (state.focusing !== FOCUSING.WINDOW) return state;
-      const apps = state.apps.map(app =>
+      const apps = state.apps.map((app) =>
         app.id === action.payload ? { ...app, maximized: !app.maximized } : app,
       );
       return {
@@ -115,7 +116,7 @@ const reducer = (state, action = { type: '' }) => {
       };
     }
     case FOCUS_ICON: {
-      const icons = state.icons.map(icon => ({
+      const icons = state.icons.map((icon) => ({
         ...icon,
         isFocus: icon.id === action.payload,
       }));
@@ -126,7 +127,7 @@ const reducer = (state, action = { type: '' }) => {
       };
     }
     case SELECT_ICONS: {
-      const icons = state.icons.map(icon => ({
+      const icons = state.icons.map((icon) => ({
         ...icon,
         isFocus: action.payload.includes(icon.id),
       }));
@@ -140,7 +141,7 @@ const reducer = (state, action = { type: '' }) => {
       return {
         ...state,
         focusing: FOCUSING.DESKTOP,
-        icons: state.icons.map(icon => ({
+        icons: state.icons.map((icon) => ({
           ...icon,
           isFocus: false,
         })),
@@ -149,7 +150,7 @@ const reducer = (state, action = { type: '' }) => {
       return {
         ...state,
         focusing: FOCUSING.DESKTOP,
-        icons: state.icons.map(icon => ({
+        icons: state.icons.map((icon) => ({
           ...icon,
           isFocus: false,
         })),
@@ -179,11 +180,11 @@ function WinXP() {
   const ref = useRef(null);
   const mouse = useMouse(ref);
   const focusedAppId = getFocusedAppId();
-  const onFocusApp = useCallback(id => {
+  const onFocusApp = useCallback((id) => {
     dispatch({ type: FOCUS_APP, payload: id });
   }, []);
   const onMaximizeWindow = useCallback(
-    id => {
+    (id) => {
       if (focusedAppId === id) {
         dispatch({ type: TOGGLE_MAXIMIZE_APP, payload: id });
       }
@@ -191,7 +192,7 @@ function WinXP() {
     [focusedAppId],
   );
   const onMinimizeWindow = useCallback(
-    id => {
+    (id) => {
       if (focusedAppId === id) {
         dispatch({ type: MINIMIZE_APP, payload: id });
       }
@@ -199,7 +200,7 @@ function WinXP() {
     [focusedAppId],
   );
   const onCloseApp = useCallback(
-    id => {
+    (id) => {
       if (focusedAppId === id) {
         dispatch({ type: DEL_APP, payload: id });
       }
@@ -218,7 +219,7 @@ function WinXP() {
   }
   function onDoubleClickIcon(component) {
     const appSetting = Object.values(appSettings).find(
-      setting => setting.component === component,
+      (setting) => setting.component === component,
     );
     dispatch({ type: ADD_APP, payload: appSetting });
   }
@@ -226,14 +227,14 @@ function WinXP() {
     if (state.focusing !== FOCUSING.WINDOW) return -1;
     const focusedApp = [...state.apps]
       .sort((a, b) => b.zIndex - a.zIndex)
-      .find(app => !app.minimized);
+      .find((app) => !app.minimized);
     return focusedApp ? focusedApp.id : -1;
   }
   function onMouseDownFooter() {
     dispatch({ type: FOCUS_DESKTOP });
   }
   const openEmbeddedApp = useCallback(
-    appKey => {
+    (appKey) => {
       const setting = appByKey[appKey];
       if (setting) dispatch({ type: ADD_APP, payload: setting });
       else
@@ -250,6 +251,7 @@ function WinXP() {
 
   useEffect(() => {
     window.__winxpOpenApp = openEmbeddedApp;
+    preloadEmbeddedApps().catch(() => {});
     return () => {
       delete window.__winxpOpenApp;
     };
@@ -298,7 +300,7 @@ function WinXP() {
     dispatch({ type: END_SELECT });
   }
   const onIconsSelected = useCallback(
-    iconIds => {
+    (iconIds) => {
       dispatch({ type: SELECT_ICONS, payload: iconIds });
     },
     [dispatch],
@@ -345,6 +347,16 @@ function WinXP() {
         focusedAppId={focusedAppId}
         onMouseDown={onMouseDownFooter}
         onClickMenuItem={onClickMenuItem}
+        onPomodoroClick={() => {
+          const pomodoroWin = state.apps.find(
+            (app) => app.header.title === 'Pomodoro Timer' && !app.minimized,
+          );
+          if (pomodoroWin) {
+            dispatch({ type: FOCUS_APP, payload: pomodoroWin.id });
+          } else {
+            openEmbeddedApp('pomodoro');
+          }
+        }}
       />
       {state.powerState !== POWER_STATE.START && (
         <Modal

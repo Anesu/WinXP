@@ -103,8 +103,9 @@ function MineSweeperView({
   function remainMines() {
     return (
       mines -
-      ceils.filter(ceil => ceil.state === 'flag' || ceil.state === 'misflagged')
-        .length
+      ceils.filter(
+        (ceil) => ceil.state === 'flag' || ceil.state === 'misflagged',
+      ).length
     );
   }
   function statusFace() {
@@ -211,7 +212,7 @@ function MineSweeperView({
     };
   }, []);
   return (
-    <div className={className} onContextMenu={e => e.preventDefault()}>
+    <div className={className} onContextMenu={(e) => e.preventDefault()}>
       <div className="mine__options">
         <WindowDropDowns
           items={genDropDownData(difficulty)}

@@ -3,10 +3,7 @@ import Minesweeper from './Minesweeper';
 import ErrorBox from './ErrorBox';
 import Winamp from './Winamp';
 import Paint from './Paint';
-import {
-  embeddedAppSettings,
-  desktopEmbeddedApps,
-} from './EmbeddedApp';
+import { embeddedAppSettings, desktopEmbeddedApps } from './EmbeddedApp';
 import iePaper from 'assets/windowsIcons/ie-paper.png';
 import ie from 'assets/windowsIcons/ie.png';
 import mine from 'assets/minesweeper/mine-icon.png';

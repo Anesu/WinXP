@@ -458,11 +458,17 @@ const Div = styled.div`
       bottom: -1px;
       width: 2px;
       height: 2px;
-      box-shadow: 2px 0px rgba(0, 0, 0, 0.25), 5.5px 0px rgba(0, 0, 0, 0.25),
-        9px 0px rgba(0, 0, 0, 0.25), 5.5px -3.5px rgba(0, 0, 0, 0.25),
-        9px -3.5px rgba(0, 0, 0, 0.25), 9px -7px rgba(0, 0, 0, 0.25),
-        3px 1px rgba(255, 255, 255, 1), 6.5px 1px rgba(255, 255, 255, 1),
-        10px 1px rgba(255, 255, 255, 1), 10px -2.5px rgba(255, 255, 255, 1),
+      box-shadow:
+        2px 0px rgba(0, 0, 0, 0.25),
+        5.5px 0px rgba(0, 0, 0, 0.25),
+        9px 0px rgba(0, 0, 0, 0.25),
+        5.5px -3.5px rgba(0, 0, 0, 0.25),
+        9px -3.5px rgba(0, 0, 0, 0.25),
+        9px -7px rgba(0, 0, 0, 0.25),
+        3px 1px rgba(255, 255, 255, 1),
+        6.5px 1px rgba(255, 255, 255, 1),
+        10px 1px rgba(255, 255, 255, 1),
+        10px -2.5px rgba(255, 255, 255, 1),
         10px -6px rgba(255, 255, 255, 1);
     }
   }
