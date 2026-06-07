@@ -50,12 +50,28 @@ function Icon({
   onMouseDown,
   onDoubleClick,
   icon,
+  iconFull,
+  appKey,
   className,
   id,
   component,
   measure,
 }) {
   const ref = useRef(null);
+  const [displayIcon, setDisplayIcon] = useState(icon);
+
+  useEffect(() => {
+    setDisplayIcon(icon);
+  }, [icon]);
+
+  useEffect(() => {
+    if (appKey !== 'recyclebin' || !iconFull) return;
+    function onRecycleBin(e) {
+      setDisplayIcon(e.detail?.full ? iconFull : icon);
+    }
+    window.addEventListener('winxp:recyclebin', onRecycleBin);
+    return () => window.removeEventListener('winxp:recyclebin', onRecycleBin);
+  }, [appKey, icon, iconFull]);
   function _onMouseDown() {
     onMouseDown(id);
   }
@@ -78,7 +94,7 @@ function Icon({
       ref={ref}
     >
       <div className={`${className}__img__container`}>
-        <img src={icon} alt={title} className={`${className}__img`} />
+        <img src={displayIcon} alt={title} className={`${className}__img`} />
       </div>
       <div className={`${className}__text__container`}>
         <div className={`${className}__text`}>{title}</div>

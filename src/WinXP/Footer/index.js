@@ -83,10 +83,10 @@ function Footer({
         clearTimeout(timers[winId]);
         delete timers[winId];
       }
-      setFlashIds(prev => new Set(prev).add(String(winId)));
+      setFlashIds((prev) => new Set(prev).add(String(winId)));
       timers[winId] = setTimeout(() => {
         delete timers[winId];
-        setFlashIds(prev => {
+        setFlashIds((prev) => {
           if (!prev.has(String(winId))) return prev;
           const next = new Set(prev);
           next.delete(String(winId));
@@ -100,7 +100,7 @@ function Footer({
         clearTimeout(timers[winId]);
         delete timers[winId];
       }
-      setFlashIds(prev => {
+      setFlashIds((prev) => {
         if (!prev.has(String(winId))) return prev;
         const next = new Set(prev);
         next.delete(String(winId));
@@ -180,7 +180,18 @@ function Footer({
         <div style={{ position: 'relative', width: 0, height: 0 }}>
           <Balloon />
         </div>
-        <div className="footer__time">{time}</div>
+        <div
+          className="footer__time"
+          onDoubleClick={(e) => {
+            e.stopPropagation();
+            if (typeof window.showDateTimeDialog === 'function') {
+              window.showDateTimeDialog();
+            }
+          }}
+          title="Double-click to open Date/Time"
+        >
+          {time}
+        </div>
       </div>
     </Container>
   );

@@ -10,7 +10,6 @@ import controlPanel32 from 'assets/windowsIcons/300(32x32).png';
 import controlPanel16 from 'assets/windowsIcons/300(16x16).png';
 import calculator32 from 'assets/windowsIcons/74(32x32).png';
 import calculator16 from 'assets/windowsIcons/74(16x16).png';
-import folder32 from 'assets/windowsIcons/folder.png';
 import help32 from 'assets/windowsIcons/747(32x32).png';
 import help16 from 'assets/windowsIcons/747(16x16).png';
 import search32 from 'assets/windowsIcons/299(32x32).png';
@@ -20,6 +19,8 @@ import ie32 from 'assets/windowsIcons/896(16x16).png';
 const P = process.env.PUBLIC_URL || '';
 const recycle32 = `${P}/apps/vendor/98/images/icons/recycle-bin-32x32.png`;
 const recycle16 = `${P}/apps/vendor/98/images/icons/recycle-bin-16x16.png`;
+const recycleFull32 = `${P}/apps/vendor/98/images/icons/recycle-bin-full-32x32.png`;
+const recycleFull16 = `${P}/apps/vendor/98/images/icons/recycle-bin-full-16x16.png`;
 const task32 = `${P}/apps/vendor/98/images/icons/task-32x32.png`;
 const task16 = `${P}/apps/vendor/98/images/icons/task-16x16.png`;
 const chm32 = `${P}/apps/vendor/98/images/icons/chm-32x32.png`;
@@ -93,10 +94,37 @@ export const embeddedAppDefs = [
     displayTitle: 'Recycle Bin',
     headerTitle: 'Recycle Bin',
     desktopIcon: recycle32,
+    desktopIconFull: recycleFull32,
     headerIcon: recycle16,
+    headerIconFull: recycleFull16,
     defaultSize: { width: 480, height: 360 },
     defaultOffset: { x: 190, y: 170 },
     showOnDesktop: true,
+  },
+  {
+    appKey: 'help',
+    templateId: 'tpl-help',
+    initFn: null,
+    displayTitle: 'Help and Support',
+    headerTitle: 'Help and Support',
+    desktopIcon: help32,
+    headerIcon: help16,
+    defaultSize: { width: 420, height: 350 },
+    defaultOffset: { x: 200, y: 120 },
+    showOnDesktop: false,
+  },
+  {
+    appKey: 'run',
+    templateId: 'tpl-run',
+    initFn: null,
+    displayTitle: 'Run',
+    headerTitle: 'Run',
+    desktopIcon: search32,
+    headerIcon: search16,
+    defaultSize: { width: 360, height: 165 },
+    defaultOffset: { x: 240, y: 140 },
+    showOnDesktop: false,
+    resizable: false,
   },
   {
     appKey: 'todo',
@@ -210,11 +238,12 @@ embeddedAppDefs.forEach((def) => {
     header: {
       title: def.headerTitle,
       icon: def.headerIcon,
+      iconFull: def.headerIconFull,
     },
     component,
     defaultSize: def.defaultSize,
     defaultOffset: def.defaultOffset,
-    resizable: true,
+    resizable: def.resizable !== false,
     minimized: false,
     maximized: window.innerWidth < 800,
     multiInstance:

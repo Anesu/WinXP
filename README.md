@@ -28,6 +28,7 @@ Built on [ShizukuIchi/winXP](https://github.com/ShizukuIchi/winXP) (MIT). Produc
 
 ```powershell
 cd C:\Users\Anesu\Documents\GitHub\WinXP
+copy .env.example .env
 npm.cmd install
 npm.cmd start
 ```

@@ -6,8 +6,7 @@ import ie from 'assets/windowsIcons/ie.png';
 import mine from 'assets/minesweeper/mine-icon.png';
 import setAccess from 'assets/windowsIcons/227(32x32).png';
 import outlook from 'assets/windowsIcons/887(32x32).png';
-import mediaPlayer from 'assets/windowsIcons/846(32x32).png';
-import messenger from 'assets/windowsIcons/msn.png';
+
 import documents from 'assets/windowsIcons/308(32x32).png';
 import recentDocuments from 'assets/windowsIcons/301(32x32).png';
 import pictures from 'assets/windowsIcons/307(32x32).png';
@@ -23,9 +22,11 @@ import run from 'assets/windowsIcons/743(32x32).png';
 import lock from 'assets/windowsIcons/546(32x32).png';
 import user from 'assets/windowsIcons/user.png';
 import shut from 'assets/windowsIcons/310(32x32).png';
+import logOff from 'assets/windowsIcons/restore.ico';
 import allProgramsIcon from 'assets/windowsIcons/all-programs.ico';
 import winamp from 'assets/windowsIcons/winamp.png';
 import notepad from 'assets/windowsIcons/327(32x32).png';
+import calculator from 'assets/windowsIcons/74(32x32).png';
 import empty from 'assets/empty.png';
 
 import { AllPrograms, ConnectTo, MyRecentDocuments } from './FooterMenuData';
@@ -65,7 +66,16 @@ function FooterMenu({ className, onClick }) {
                 icon: `${process.env.PUBLIC_URL}/apps/vendor/98/images/icons/chm-32x32.png`,
                 text: 'Bible',
               },
+              {
+                icon: `${process.env.PUBLIC_URL}/apps/vendor/98/images/icons/favorites-folder-32x32.png`,
+                text: 'Calendar',
+              },
               { icon: mine, text: 'Minesweeper' },
+              {
+                icon: `${process.env.PUBLIC_URL}/apps/vendor/98/images/icons/programs-folder-32x32.png`,
+                text: 'Kanban Board',
+              },
+              { icon: calculator, text: 'Pomodoro Timer' },
               { icon: winamp, text: 'Winamp' },
               { icon: paint, text: 'Paint' },
             ]}
@@ -181,8 +191,12 @@ function FooterMenu({ className, onClick }) {
         </div>
       </section>
       <footer>
-        <div className="footer__item" onClick={() => onClick('Log Off')}>
+        <div className="footer__item" onClick={() => onClick('Lock Computer')}>
           <img className="footer__item__img" src={lock} alt="" />
+          <span>Lock Computer</span>
+        </div>
+        <div className="footer__item" onClick={() => onClick('Log Off')}>
+          <img className="footer__item__img" src={logOff} alt="" />
           <span>Log Off</span>
         </div>
         <div

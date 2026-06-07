@@ -262,12 +262,33 @@ function WinXP() {
     'E-mail': 'Outlook Express',
     Mail: 'Outlook Express',
     Journal: 'Notepad',
+    Notepad: 'Notepad',
     'Clippy Prompts': 'Office Assistant',
     'Text Diff': 'Compare Documents',
     Pomodoro: 'Pomodoro Timer',
+    'Run...': 'Run',
+    'Help and Support': 'Help and Support',
+    'My Computer': 'My Computer',
+    'Control Panel': 'Control Panel',
+    'Outlook Express': 'Outlook Express',
+    Bible: 'Bible',
+    Calendar: 'Calendar',
+    'Kanban Board': 'Kanban Board',
+    'Todo Tasks': 'Todo Tasks',
+    'Compare Documents': 'Compare Documents',
+    'QRx Transmitter': 'QRx Transmitter',
+    'Office Assistant': 'Office Assistant',
+    'Pomodoro Timer': 'Pomodoro Timer',
+    Paint: 'Paint',
+    Winamp: 'Winamp',
+    Minesweeper: 'Minesweeper',
   };
 
   function onClickMenuItem(o) {
+    if (o === 'Lock Computer') {
+      if (typeof window.showLockScreen === 'function') window.showLockScreen();
+      return;
+    }
     if (o === 'Log Off') {
       dispatch({ type: POWER_OFF, payload: POWER_STATE.LOG_OFF });
       return;

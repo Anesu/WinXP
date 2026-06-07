@@ -66,6 +66,8 @@ export const defaultAppState = [
 const productivityDesktopIcons = desktopEmbeddedApps.map((def, index) => ({
   id: 100 + index,
   icon: def.desktopIcon,
+  iconFull: def.desktopIconFull,
+  appKey: def.appKey,
   title: def.displayTitle,
   component: embeddedAppSettings[def.displayTitle].component,
   isFocus: false,

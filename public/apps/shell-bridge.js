@@ -1030,14 +1030,16 @@ function toggleSubmenu(e, submenuId) {
 
 // ===== RECYCLE BIN ICON STATE =====
 function updateRecycleBinIcon() {
+  const full = recycleBinStore.count() > 0;
   const icon = document.querySelector('.desktop-icon[data-app="recyclebin"]');
-  if (!icon) return;
-  const count = (recycleBinStore || []).length;
-  icon.dataset.full = count > 0 ? 'true' : 'false';
-  const img = icon.querySelector('.desktop-icon-img');
-  if (img) {
-    img.textContent = '🗑️';
+  if (icon) {
+    icon.dataset.full = full ? 'true' : 'false';
+    const img = icon.querySelector('.desktop-icon-img');
+    if (img) img.textContent = '🗑️';
   }
+  window.dispatchEvent(
+    new CustomEvent('winxp:recyclebin', { detail: { full } }),
+  );
 }
 
 // ===== DATE/TIME DIALOG =====
@@ -1761,6 +1763,8 @@ shellEvents.on('window:focused', winId => {
     new CustomEvent('winxp:window-flash-stop', { detail: winId }),
   );
 });
+shellEvents.on('store:recyclebin:changed', updateRecycleBinIcon);
+updateRecycleBinIcon();
 
 setInterval(() => {
   for (const [id, w] of Object.entries(state.windows)) {
