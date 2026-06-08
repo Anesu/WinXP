@@ -2,6 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import FooterMenu from './FooterMenu';
+import {
+  ShellEvents,
+  subscribeShellEvent,
+} from '../apps/EmbeddedApp/shellBridge';
 import Balloon from 'components/Balloon';
 import startButton from 'assets/windowsIcons/start.png';
 import sound from 'assets/windowsIcons/690(16x16).png';
@@ -74,11 +78,10 @@ function Footer({
   useEffect(() => {
     const timers = flashTimers.current;
 
-    function onPomodoro(e) {
-      setPomodoro(e.detail || null);
+    function onPomodoro(detail) {
+      setPomodoro(detail || null);
     }
-    function onFlashStart(e) {
-      const winId = e.detail;
+    function onFlashStart(winId) {
       if (timers[winId]) {
         clearTimeout(timers[winId]);
         delete timers[winId];
@@ -94,8 +97,7 @@ function Footer({
         });
       }, 8000);
     }
-    function onFlashStop(e) {
-      const winId = e.detail;
+    function onFlashStop(winId) {
       if (timers[winId]) {
         clearTimeout(timers[winId]);
         delete timers[winId];
@@ -107,13 +109,19 @@ function Footer({
         return next;
       });
     }
-    window.addEventListener('winxp:pomodoro', onPomodoro);
-    window.addEventListener('winxp:window-flash-start', onFlashStart);
-    window.addEventListener('winxp:window-flash-stop', onFlashStop);
+    const unsubPomodoro = subscribeShellEvent(ShellEvents.POMODORO, onPomodoro);
+    const unsubFlashStart = subscribeShellEvent(
+      ShellEvents.WINDOW_FLASH_START,
+      onFlashStart,
+    );
+    const unsubFlashStop = subscribeShellEvent(
+      ShellEvents.WINDOW_FLASH_STOP,
+      onFlashStop,
+    );
     return () => {
-      window.removeEventListener('winxp:pomodoro', onPomodoro);
-      window.removeEventListener('winxp:window-flash-start', onFlashStart);
-      window.removeEventListener('winxp:window-flash-stop', onFlashStop);
+      unsubPomodoro();
+      unsubFlashStart();
+      unsubFlashStop();
       Object.values(timers).forEach(clearTimeout);
     };
   }, []);
@@ -184,9 +192,7 @@ function Footer({
           className="footer__time"
           onDoubleClick={(e) => {
             e.stopPropagation();
-            if (typeof window.showDateTimeDialog === 'function') {
-              window.showDateTimeDialog();
-            }
+            if (window.ShellAPI) window.ShellAPI.showDateTimeDialog();
           }}
           title="Double-click to open Date/Time"
         >

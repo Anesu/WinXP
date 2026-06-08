@@ -111,3 +111,5 @@ function unlockScreen(overlay) {
   if (interval) clearInterval(interval);
   if (overlay) overlay.remove();
 }
+
+ShellAPI.registerEmbedded({ showLockScreen, initLockScreen });

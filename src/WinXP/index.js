@@ -20,6 +20,7 @@ import { FOCUSING, POWER_STATE } from './constants';
 import { defaultIconState, defaultAppState, appSettings } from './apps';
 import { appByKey, buildMenuAliasMap } from './apps/EmbeddedApp';
 import { preloadEmbeddedApps } from './apps/EmbeddedApp/AppShell';
+import { wireShellBridge } from './apps/EmbeddedApp/shellBridge';
 import Modal from './Modal';
 import Footer from './Footer';
 import Windows from './Windows';
@@ -250,10 +251,10 @@ function WinXP() {
   );
 
   useEffect(() => {
-    window.__winxpOpenApp = openEmbeddedApp;
+    wireShellBridge(openEmbeddedApp);
     preloadEmbeddedApps().catch(() => {});
     return () => {
-      delete window.__winxpOpenApp;
+      if (window.ShellAPI) window.ShellAPI.registerShell(null);
     };
   }, [openEmbeddedApp]);
 
@@ -269,7 +270,7 @@ function WinXP() {
 
   function onClickMenuItem(o) {
     if (o === 'Lock Computer') {
-      if (typeof window.showLockScreen === 'function') window.showLockScreen();
+      if (window.ShellAPI) window.ShellAPI.showLockScreen();
       return;
     }
     if (o === 'Log Off') {

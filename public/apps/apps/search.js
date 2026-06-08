@@ -141,7 +141,7 @@ function searchOpenResult(index, winId) {
   const results = el?._searchResults;
   if (!results || !results[index]) return;
   const r = results[index];
-  if (typeof window.__winxpOpenApp === 'function') window.__winxpOpenApp(r.app);
+  ShellAPI.openApp(r.app);
 }
 
 function searchEscapeHtml(str) {

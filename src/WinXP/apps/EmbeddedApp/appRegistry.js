@@ -351,6 +351,7 @@ export const APP_REGISTRY = [
 export const EMBEDDED_BOOTSTRAP_SCRIPTS = [
   '/apps/qrcode.js',
   '/apps/stores.js',
+  '/apps/shell-api.js',
   '/apps/shell-events.js',
   '/apps/shell-state.js',
   '/apps/shell-helpers.js',
@@ -378,7 +379,7 @@ export function getEmbeddedScriptChain() {
   ];
 }
 
-/** Serializable manifest for embedded-bridge (injected on window before global scripts load). */
+/** Serializable manifest for ShellAPI / embedded-bridge (set before global scripts load). */
 export function getEmbeddedAppManifest() {
   return APP_REGISTRY.map((def) => ({
     appKey: def.appKey,

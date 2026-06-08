@@ -1,4 +1,10 @@
 export { default as AppShell, preloadEmbeddedApps } from './AppShell';
+export {
+  ShellEvents,
+  wireShellBridge,
+  subscribeShellEvent,
+  useShellEvent,
+} from './shellBridge';
 export { createEmbeddedApp } from './createEmbeddedApp';
 export {
   APP_REGISTRY,

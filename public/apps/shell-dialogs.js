@@ -57,3 +57,5 @@ function updateDateTimeDisplay() {
   timeEl.textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0') + ' ' + ampm;
   dateEl.textContent = MONTHS_FULL[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
 }
+
+ShellAPI.registerEmbedded({ showDateTimeDialog });

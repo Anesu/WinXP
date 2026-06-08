@@ -44,18 +44,17 @@ export async function preloadEmbeddedApps() {
 async function ensureAppScripts() {
   if (scriptsReady) return;
   window.APPS_PUBLIC_BASE = APPS_BASE;
-  window.__winxpAppManifest = getEmbeddedAppManifest();
-  const chain = getEmbeddedScriptChain();
+  await loadScriptOnce('/apps/shell-api.js');
+  window.ShellAPI.setManifest(getEmbeddedAppManifest());
+  const chain = getEmbeddedScriptChain().filter(
+    (src) => src !== '/apps/shell-api.js',
+  );
   for (const src of chain) {
     await loadScriptOnce(src);
   }
   scriptsReady = true;
-  if (
-    !window.__winxpLockScreenInit &&
-    typeof window.initLockScreen === 'function'
-  ) {
-    window.initLockScreen();
-    window.__winxpLockScreenInit = true;
+  if (window.ShellAPI && !window.ShellAPI.isLockScreenInitialized()) {
+    window.ShellAPI.initLockScreen();
   }
 }
 
@@ -87,7 +86,9 @@ export default function AppShell({ appKey, templateId, initFn, winId }) {
       hostRef.current.innerHTML = '';
       hostRef.current.appendChild(clone);
 
-      if (typeof window.initEmbeddedApp === 'function') {
+      if (window.ShellAPI) {
+        window.ShellAPI.mount(appKey, bridgeWinId, clone);
+      } else if (typeof window.initEmbeddedApp === 'function') {
         window.initEmbeddedApp(appKey, bridgeWinId, clone);
       } else if (initFn && typeof window[initFn] === 'function') {
         window.registerAppWindow(bridgeWinId, clone, appKey);
@@ -99,7 +100,9 @@ export default function AppShell({ appKey, templateId, initFn, winId }) {
 
     return () => {
       mounted = false;
-      if (typeof window.unregisterAppWindow === 'function') {
+      if (window.ShellAPI) {
+        window.ShellAPI.unmount(bridgeWinId);
+      } else if (typeof window.unregisterAppWindow === 'function') {
         window.unregisterAppWindow(bridgeWinId);
       }
       if (hostRef.current) hostRef.current.innerHTML = '';

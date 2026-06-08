@@ -1,7 +1,7 @@
-// React ↔ embedded app bridge: window registry, manifest controllers, event forwarding.
+// Embedded runtime: window registry, manifest controllers, ShellAPI registration.
 
 function openApp(app) {
-  if (typeof window.__winxpOpenApp === 'function') window.__winxpOpenApp(app);
+  ShellAPI.openApp(app);
 }
 
 function cleanupPomodoro(winId) {
@@ -47,7 +47,7 @@ function buildAppControllersFromManifest(manifest) {
   return controllers;
 }
 
-const appControllers = buildAppControllersFromManifest(window.__winxpAppManifest);
+const appControllers = buildAppControllersFromManifest(ShellAPI.getManifest());
 
 function getAppTitle(app) {
   const ctrl = appControllers[app];
@@ -171,9 +171,7 @@ function updateRecycleBinIcon() {
     const img = icon.querySelector('.desktop-icon-img');
     if (img) img.textContent = '🗑️';
   }
-  window.dispatchEvent(
-    new CustomEvent('winxp:recyclebin', { detail: { full } }),
-  );
+  ShellAPI.notify(ShellAPI.events.RECYCLEBIN, { full });
 }
 
 function showAboutWindows() {
@@ -196,25 +194,24 @@ if (typeof initFileDrop === 'function') initFileDrop();
 if (typeof initAutoBackupOnExit === 'function') initAutoBackupOnExit();
 
 shellEvents.on('pomodoro:update', data => {
-  window.dispatchEvent(new CustomEvent('winxp:pomodoro', { detail: data }));
+  ShellAPI.notify(ShellAPI.events.POMODORO, data);
 });
 shellEvents.on('window:flash_start', winId => {
-  window.dispatchEvent(
-    new CustomEvent('winxp:window-flash-start', { detail: winId }),
-  );
+  ShellAPI.notify(ShellAPI.events.WINDOW_FLASH_START, winId);
 });
 shellEvents.on('window:flash_stop', winId => {
-  window.dispatchEvent(
-    new CustomEvent('winxp:window-flash-stop', { detail: winId }),
-  );
+  ShellAPI.notify(ShellAPI.events.WINDOW_FLASH_STOP, winId);
 });
 shellEvents.on('window:focused', winId => {
-  window.dispatchEvent(
-    new CustomEvent('winxp:window-flash-stop', { detail: winId }),
-  );
+  ShellAPI.notify(ShellAPI.events.WINDOW_FLASH_STOP, winId);
 });
 shellEvents.on('store:recyclebin:changed', updateRecycleBinIcon);
 updateRecycleBinIcon();
+
+ShellAPI.registerEmbedded({
+  mount: initEmbeddedApp,
+  unmount: unregisterAppWindow,
+});
 
 setInterval(() => {
   for (const [id, w] of Object.entries(state.windows)) {
