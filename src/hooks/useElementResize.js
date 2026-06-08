@@ -12,6 +12,7 @@ function useElementResize(ref, options) {
   const [offset, setOffset] = useState(defaultOffset);
   const [size, setSize] = useState(defaultSize);
   const cursorPos = useCursor(ref, resizeThreshold, resizable);
+
   useEffect(() => {
     const target = ref.current;
     if (!target) return;
@@ -22,11 +23,13 @@ function useElementResize(ref, options) {
     cover.style.left = 0;
     cover.style.right = 0;
     cover.style.bottom = 0;
-    const previousOffset = { ...offset };
-    const previousSize = { ...size };
+
+    let previousOffset = { ...offset };
+    let previousSize = { ...size };
     let _boundary;
     let originMouseX;
     let originMouseY;
+    let mode = null;
     let shouldCover = false;
 
     function onDragging(e) {
@@ -34,273 +37,121 @@ function useElementResize(ref, options) {
         document.body.appendChild(cover);
       }
       const { pageX, pageY } = getComputedPagePosition(e, _boundary);
-      const x = pageX - originMouseX + previousOffset.x;
-      const y = pageY - originMouseY + previousOffset.y;
-      setOffset({ x, y });
+      const deltaX = pageX - originMouseX;
+      const deltaY = pageY - originMouseY;
+
+      if (mode === 'drag') {
+        setOffset({
+          x: previousOffset.x + deltaX,
+          y: previousOffset.y + deltaY,
+        });
+        return;
+      }
+
+      let newWidth = previousSize.width;
+      let newHeight = previousSize.height;
+      let newX = previousOffset.x;
+      let newY = previousOffset.y;
+
+      const lowerMode = mode.toLowerCase();
+
+      if (lowerMode.includes('right')) {
+        newWidth = previousSize.width + deltaX;
+      } else if (lowerMode.includes('left')) {
+        newWidth = previousSize.width - deltaX;
+        newX = previousOffset.x + deltaX;
+      }
+
+      if (lowerMode.includes('bottom')) {
+        newHeight = previousSize.height + deltaY;
+      } else if (lowerMode.includes('top')) {
+        newHeight = previousSize.height - deltaY;
+        newY = previousOffset.y + deltaY;
+      }
+
+      setSize({ width: newWidth, height: newHeight });
+
+      if (lowerMode.includes('left') || lowerMode.includes('top')) {
+        setOffset({ x: newX, y: newY });
+      }
     }
+
     function onDragEnd(e) {
       cover.remove();
       shouldCover = false;
       const { pageX, pageY } = getComputedPagePosition(e, _boundary);
-      previousOffset.x += pageX - originMouseX;
-      previousOffset.y += pageY - originMouseY;
+      const deltaX = pageX - originMouseX;
+      const deltaY = pageY - originMouseY;
+
+      if (mode === 'drag') {
+        previousOffset.x += deltaX;
+        previousOffset.y += deltaY;
+      } else {
+        const lowerMode = mode.toLowerCase();
+        if (lowerMode.includes('right')) {
+          previousSize.width += deltaX;
+        } else if (lowerMode.includes('left')) {
+          previousSize.width -= deltaX;
+          previousOffset.x += deltaX;
+        }
+
+        if (lowerMode.includes('bottom')) {
+          previousSize.height += deltaY;
+        } else if (lowerMode.includes('top')) {
+          previousSize.height -= deltaY;
+          previousOffset.y += deltaY;
+        }
+      }
+
       window.removeEventListener('mousemove', onDragging);
       window.removeEventListener('mouseup', onDragEnd);
+      mode = null;
     }
-    function onDragStart(e) {
-      window.addEventListener('mousemove', onDragging);
-      window.addEventListener('mouseup', onDragEnd);
-    }
-    function onDraggingTop(e) {
-      const { pageY } = getComputedPagePosition(e, _boundary);
-      const { x } = previousOffset;
-      const y = pageY - originMouseY + previousOffset.y;
-      setOffset({ x, y });
-    }
-    function onDragEndTop(e) {
-      const { pageY } = getComputedPagePosition(e, _boundary);
-      previousOffset.y += pageY - originMouseY;
-      window.removeEventListener('mousemove', onDraggingTop);
-      window.removeEventListener('mouseup', onDragEndTop);
-    }
-    function onDragStartTop(e) {
-      window.addEventListener('mousemove', onDraggingTop);
-      window.addEventListener('mouseup', onDragEndTop);
-    }
-    function onDraggingLeft(e) {
-      const { pageX } = getComputedPagePosition(e, _boundary);
-      const x = pageX - originMouseX + previousOffset.x;
-      const { y } = previousOffset;
-      setOffset({ x, y });
-    }
-    function onDragEndLeft(e) {
-      const { pageX } = getComputedPagePosition(e, _boundary);
-      previousOffset.x += pageX - originMouseX;
-      window.removeEventListener('mousemove', onDraggingLeft);
-      window.removeEventListener('mouseup', onDragEndLeft);
-    }
-    function onDragStartLeft(e) {
-      window.addEventListener('mousemove', onDraggingLeft);
-      window.addEventListener('mouseup', onDragEndLeft);
-    }
-    function onResizingRight(e) {
-      const { pageX } = getComputedPagePosition(e, _boundary);
-      const width = pageX - originMouseX + previousSize.width;
-      const { height } = previousSize;
-      setSize({ width, height });
-    }
-    function onResizeEndRight(e) {
-      const { pageX } = getComputedPagePosition(e, _boundary);
-      previousSize.width += pageX - originMouseX;
-      window.removeEventListener('mousemove', onResizingRight);
-      window.removeEventListener('mouseup', onResizeEndRight);
-    }
-    function onResizeStartRight(e) {
-      window.addEventListener('mousemove', onResizingRight);
-      window.addEventListener('mouseup', onResizeEndRight);
-    }
-    function onResizingBottom(e) {
-      const { pageY } = getComputedPagePosition(e, _boundary);
-      const { width } = previousSize;
-      const height = pageY - originMouseY + previousSize.height;
-      setSize({ width, height });
-    }
-    function onResizeEndBottom(e) {
-      const { pageY } = getComputedPagePosition(e, _boundary);
-      previousSize.height += pageY - originMouseY;
-      window.removeEventListener('mousemove', onResizingBottom);
-      window.removeEventListener('mouseup', onResizeEndBottom);
-    }
-    function onResizeStartBottom(e) {
-      window.addEventListener('mousemove', onResizingBottom);
-      window.addEventListener('mouseup', onResizeEndBottom);
-    }
-    function onResizingLeft(e) {
-      const { pageX } = getComputedPagePosition(e, _boundary);
-      const width = -pageX + originMouseX + previousSize.width;
-      const { height } = previousSize;
-      setSize({ width, height });
-    }
-    function onResizeEndLeft(e) {
-      const { pageX } = getComputedPagePosition(e, _boundary);
-      previousSize.width += -pageX + originMouseX;
-      window.removeEventListener('mousemove', onResizingLeft);
-      window.removeEventListener('mouseup', onResizeEndLeft);
-    }
-    function onResizeStartLeft(e) {
-      window.addEventListener('mousemove', onResizingLeft);
-      window.addEventListener('mouseup', onResizeEndLeft);
-    }
-    function onResizingTop(e) {
-      const { pageY } = getComputedPagePosition(e, _boundary);
-      const height = -pageY + originMouseY + previousSize.height;
-      const { width } = previousSize;
-      setSize({ width, height });
-    }
-    function onResizeEndTop(e) {
-      const { pageY } = getComputedPagePosition(e, _boundary);
-      previousSize.height += -pageY + originMouseY;
-      window.removeEventListener('mousemove', onResizingTop);
-      window.removeEventListener('mouseup', onResizeEndTop);
-    }
-    function onResizeStartTop(e) {
-      window.addEventListener('mousemove', onResizingTop);
-      window.addEventListener('mouseup', onResizeEndTop);
-    }
-    function onResizingTopLeft(e) {
-      const { pageX, pageY } = getComputedPagePosition(e, _boundary);
-      const width = -pageX + originMouseX + previousSize.width;
-      const height = -pageY + originMouseY + previousSize.height;
-      setSize({ width, height });
-    }
-    function onResizeEndTopLeft(e) {
-      const { pageX, pageY } = getComputedPagePosition(e, _boundary);
-      previousSize.width += -pageX + originMouseX;
-      previousSize.height += -pageY + originMouseY;
-      window.removeEventListener('mousemove', onResizingTopLeft);
-      window.removeEventListener('mouseup', onResizeEndTopLeft);
-    }
-    function onResizeStartTopLeft(e) {
-      window.addEventListener('mousemove', onResizingTopLeft);
-      window.addEventListener('mouseup', onResizeEndTopLeft);
-    }
-    function onResizingTopRight(e) {
-      const { pageX, pageY } = getComputedPagePosition(e, _boundary);
-      const width = pageX - originMouseX + previousSize.width;
-      const height = -pageY + originMouseY + previousSize.height;
-      setSize({ width, height });
-    }
-    function onResizeEndTopRight(e) {
-      const { pageX, pageY } = getComputedPagePosition(e, _boundary);
-      previousSize.width += pageX - originMouseX;
-      previousSize.height += -pageY + originMouseY;
-      window.removeEventListener('mousemove', onResizingTopRight);
-      window.removeEventListener('mouseup', onResizeEndTopRight);
-    }
-    function onResizeStartTopRight(e) {
-      window.addEventListener('mousemove', onResizingTopRight);
-      window.addEventListener('mouseup', onResizeEndTopRight);
-    }
-    function onResizingBottomLeft(e) {
-      const { pageX, pageY } = getComputedPagePosition(e, _boundary);
-      const width = -pageX + originMouseX + previousSize.width;
-      const height = pageY - originMouseY + previousSize.height;
-      setSize({ width, height });
-    }
-    function onResizeEndBottomLeft(e) {
-      const { pageX, pageY } = getComputedPagePosition(e, _boundary);
-      previousSize.width += -pageX + originMouseX;
-      previousSize.height += pageY - originMouseY;
-      window.removeEventListener('mousemove', onResizingBottomLeft);
-      window.removeEventListener('mouseup', onResizeEndBottomLeft);
-    }
-    function onResizeStartBottomLeft(e) {
-      window.addEventListener('mousemove', onResizingBottomLeft);
-      window.addEventListener('mouseup', onResizeEndBottomLeft);
-    }
-    function onResizingBottomRight(e) {
-      const { pageX, pageY } = getComputedPagePosition(e, _boundary);
-      const width = pageX - originMouseX + previousSize.width;
-      const height = pageY - originMouseY + previousSize.height;
-      setSize({ width, height });
-    }
-    function onResizeEndBottomRight(e) {
-      const { pageX, pageY } = getComputedPagePosition(e, _boundary);
-      previousSize.width += pageX - originMouseX;
-      previousSize.height += pageY - originMouseY;
-      window.removeEventListener('mousemove', onResizingBottomRight);
-      window.removeEventListener('mouseup', onResizeEndBottomRight);
-    }
-    function onResizeStartBottomRight(e) {
-      window.addEventListener('mousemove', onResizingBottomRight);
-      window.addEventListener('mouseup', onResizeEndBottomRight);
-    }
+
     function onMouseDown(e) {
       originMouseX = e.pageX;
       originMouseY = e.pageY;
       _boundary = { ...boundary };
+
       if (dragTarget && e.target === dragTarget) {
         shouldCover = true;
-        return onDragStart(e);
+        mode = 'drag';
+        window.addEventListener('mousemove', onDragging);
+        window.addEventListener('mouseup', onDragEnd);
+        return;
       }
-      if (e.target !== target || !resizable) return;
-      switch (cursorPos) {
-        case 'topLeft':
-          _boundary.right = originMouseX + previousSize.width - constraintSize;
-          _boundary.bottom =
-            originMouseY + previousSize.height - constraintSize;
-          onResizeStartTopLeft(e);
-          onDragStart(e);
-          break;
-        case 'left':
-          _boundary.right = originMouseX + previousSize.width - constraintSize;
-          onResizeStartLeft(e);
-          onDragStartLeft(e);
-          break;
-        case 'bottomLeft':
-          _boundary.right = originMouseX + previousSize.width - constraintSize;
-          _boundary.top = originMouseY - previousSize.height + constraintSize;
-          onResizeStartBottomLeft(e);
-          onDragStartLeft(e);
-          break;
-        case 'top':
-          _boundary.bottom =
-            originMouseY + previousSize.height - constraintSize;
-          onResizeStartTop(e);
-          onDragStartTop(e);
-          break;
-        case 'topRight':
-          _boundary.bottom =
-            originMouseY + previousSize.height - constraintSize;
-          _boundary.left = originMouseX - previousSize.width + constraintSize;
-          onDragStartTop(e);
-          onResizeStartTopRight(e);
-          break;
-        case 'right':
-          _boundary.left = originMouseX - previousSize.width + constraintSize;
-          onResizeStartRight(e);
-          break;
-        case 'bottomRight':
-          _boundary.top = originMouseY - previousSize.height + constraintSize;
-          _boundary.left = originMouseX - previousSize.width + constraintSize;
-          onResizeStartBottomRight(e);
-          break;
-        case 'bottom':
-          _boundary.top = originMouseY - previousSize.height + constraintSize;
-          onResizeStartBottom(e);
-          break;
-        default:
+
+      if (e.target !== target || !resizable || !cursorPos) return;
+
+      mode = cursorPos;
+      const lowerMode = mode.toLowerCase();
+
+      if (lowerMode.includes('left')) {
+        _boundary.right = originMouseX + previousSize.width - constraintSize;
+      } else if (lowerMode.includes('right')) {
+        _boundary.left = originMouseX - previousSize.width + constraintSize;
       }
+
+      if (lowerMode.includes('top')) {
+        _boundary.bottom = originMouseY + previousSize.height - constraintSize;
+      } else if (lowerMode.includes('bottom')) {
+        _boundary.top = originMouseY - previousSize.height + constraintSize;
+      }
+
+      window.addEventListener('mousemove', onDragging);
+      window.addEventListener('mouseup', onDragEnd);
     }
+
     target.addEventListener('mousedown', onMouseDown);
     return () => {
       target.removeEventListener('mousedown', onMouseDown);
-      window.removeEventListener('mousemove', onDraggingLeft);
-      window.removeEventListener('mousemove', onDraggingTop);
       window.removeEventListener('mousemove', onDragging);
-      window.removeEventListener('mouseup', onDragEndTop);
-      window.removeEventListener('mouseup', onDragEndLeft);
       window.removeEventListener('mouseup', onDragEnd);
-      window.removeEventListener('mousemove', onResizingTop);
-      window.removeEventListener('mousemove', onResizingRight);
-      window.removeEventListener('mousemove', onResizingBottom);
-      window.removeEventListener('mousemove', onResizingLeft);
-      window.removeEventListener('mousemove', onResizingBottomLeft);
-      window.removeEventListener('mousemove', onResizingTopLeft);
-      window.removeEventListener('mousemove', onResizingTopRight);
-      window.removeEventListener('mousemove', onResizingBottomRight);
-      window.removeEventListener('mouseup', onResizeEndTop);
-      window.removeEventListener('mouseup', onResizeEndRight);
-      window.removeEventListener('mouseup', onResizeEndBottom);
-      window.removeEventListener('mouseup', onResizeEndLeft);
-      window.removeEventListener('mouseup', onResizeEndBottomLeft);
-      window.removeEventListener('mouseup', onResizeEndTopLeft);
-      window.removeEventListener('mouseup', onResizeEndTopRight);
-      window.removeEventListener('mouseup', onResizeEndBottomRight);
       cover.remove();
     };
     // eslint-disable-next-line
   }, [boundary.top, boundary.right, boundary.bottom, boundary.left, cursorPos]);
+
   return { offset, size };
 }
 function useCursor(ref, threshold, resizable) {

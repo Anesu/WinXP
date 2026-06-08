@@ -73,11 +73,12 @@ export default function AppShell({ appKey, templateId, initFn, winId }) {
   useEffect(() => {
     let mounted = true;
     const bridgeWinId = String(winId);
+    const host = hostRef.current;
 
     async function mount() {
       await ensureAppTemplate(appKey, templateId);
       await ensureAppScripts();
-      if (!mounted || !hostRef.current) return;
+      if (!mounted || !host) return;
 
       const tpl = document.getElementById(templateId);
       if (!tpl) return;
@@ -92,15 +93,15 @@ export default function AppShell({ appKey, templateId, initFn, winId }) {
       clone.style.height = '100%';
       clone.style.boxShadow = 'none';
 
-      hostRef.current.innerHTML = '';
-      hostRef.current.appendChild(clone);
+      host.innerHTML = '';
+      host.appendChild(clone);
 
       if (window.ShellAPI) {
         window.ShellAPI.mount(appKey, bridgeWinId, clone);
-      } else if (typeof window.initEmbeddedApp === 'function') {
-        window.initEmbeddedApp(appKey, bridgeWinId, clone);
       } else if (initFn && typeof window[initFn] === 'function') {
-        window.registerAppWindow(bridgeWinId, clone, appKey);
+        if (typeof window.registerAppWindow === 'function') {
+          window.registerAppWindow(bridgeWinId, clone, appKey);
+        }
         window[initFn](bridgeWinId, clone);
       }
     }
@@ -114,7 +115,7 @@ export default function AppShell({ appKey, templateId, initFn, winId }) {
       } else if (typeof window.unregisterAppWindow === 'function') {
         window.unregisterAppWindow(bridgeWinId);
       }
-      if (hostRef.current) hostRef.current.innerHTML = '';
+      if (host) host.innerHTML = '';
     };
   }, [appKey, templateId, initFn, winId]);
 

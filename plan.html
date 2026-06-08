@@ -464,6 +464,11 @@
                     <td><span class="status" style="background:#166534;color:#86efac">✅ Done</span></td>
                     <td>Extracted reducer into state/reducer.js, created useDesktopState.js hook, and centralized POWER_STATE to remove local React state variables. WinXP shell is now purely a declarative UI wrapper.</td>
                 </tr>
+                <tr>
+                    <td>Phase 3: Bridge &amp; Window Infrastructure</td>
+                    <td><span class="status" style="background:#166534;color:#86efac">✅ Done</span></td>
+                    <td>Refactored useElementResize into a unified algorithm. Replaced manual event subscriptions with useShellEvent across the app. Cleaned up AppShell.</td>
+                </tr>
             </table>
 
             <p><strong>Work performed in this session (after saving the review):</strong></p>
@@ -477,9 +482,12 @@
                 <li><strong>Phase 2 Implementation:</strong> Extracted `initState` and `reducer` from `WinXP/index.js` into `src/WinXP/state/reducer.js`.</li>
                 <li>Created `useDesktopState.js` hook to wrap the reducer and expose stable action dispatchers.</li>
                 <li>Unified `booted` and `shutdown` local states into an expanded `POWER_STATE` (`BOOTING`, `SHUTDOWN`, `START`, `TURN_OFF`, `LOG_OFF`), dramatically simplifying `WinXP/index.js`.</li>
+                <li><strong>Phase 3 Implementation:</strong> Rewrote `useElementResize` from ~400 lines of duplicated code into a clean, unified algorithm.</li>
+                <li>Replaced verbose `subscribeShellEvent` usage with the clean `useShellEvent` hook in `Footer`, `Icons`, and `WinXP/index.js`.</li>
+                <li>Cleaned up `AppShell` and fixed stale React refs warnings.</li>
             </ul>
-            <p><strong>Build verification (Phase 2):</strong> `npm run build` and `npm run lint` succeeded cleanly.</p>
-            <p><strong>Next for Phase 3:</strong> Bridge &amp; Window Infrastructure. Audit and simplify `AppShell` + script loading. Refactor `useElementResize` to be smaller and clearer. Standardize shell event subscription.</p>
+            <p><strong>Build verification (Phase 3):</strong> `npm run build` and `npm run lint` succeeded cleanly.</p>
+            <p><strong>Next for Phase 4:</strong> Data &amp; Polish. Standardize `dropDownData.js` across legacy apps to eliminate boilerplate, unify `DesktopContextMenu.js` strings, and fix the `webamp.bundle.js.map` build warning.</p>
         </div>
 
         <footer>

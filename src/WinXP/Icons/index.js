@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import {
-  ShellEvents,
-  subscribeShellEvent,
-} from '../apps/EmbeddedApp/shellBridge';
+import { ShellEvents, useShellEvent } from '../apps/EmbeddedApp/shellBridge';
 
 function Icons({
   icons,
@@ -68,13 +65,10 @@ function Icon({
     setDisplayIcon(icon);
   }, [icon]);
 
-  useEffect(() => {
+  useShellEvent(ShellEvents.RECYCLEBIN, (detail) => {
     if (appKey !== 'recyclebin' || !iconFull) return;
-    function onRecycleBin(detail) {
-      setDisplayIcon(detail?.full ? iconFull : icon);
-    }
-    return subscribeShellEvent(ShellEvents.RECYCLEBIN, onRecycleBin);
-  }, [appKey, icon, iconFull]);
+    setDisplayIcon(detail?.full ? iconFull : icon);
+  });
   function _onMouseDown() {
     onMouseDown(id);
   }

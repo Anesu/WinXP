@@ -5,7 +5,7 @@ import useMouse from 'react-use/lib/useMouse';
 import { FOCUSING, POWER_STATE } from './constants';
 import {
   wireShellBridge,
-  subscribeShellEvent,
+  useShellEvent,
   ShellEvents,
 } from './apps/EmbeddedApp/shellBridge';
 import BootScreen from './BootScreen';
@@ -51,21 +51,18 @@ function WinXP() {
   useEffect(() => {
     if (state.powerState === POWER_STATE.BOOTING) return;
     wireShellBridge(openEmbeddedApp);
-    const unsubPowerOff = subscribeShellEvent(
-      ShellEvents.POWER_OFF,
-      (detail) => {
-        const mode =
-          detail && detail.mode === 'LOG_OFF'
-            ? POWER_STATE.LOG_OFF
-            : POWER_STATE.TURN_OFF;
-        triggerPowerOff(mode);
-      },
-    );
     return () => {
-      unsubPowerOff();
       if (window.ShellAPI) window.ShellAPI.registerShell(null);
     };
-  }, [state.powerState, openEmbeddedApp, triggerPowerOff]);
+  }, [state.powerState, openEmbeddedApp]);
+
+  useShellEvent(ShellEvents.POWER_OFF, (detail) => {
+    const mode =
+      detail && detail.mode === 'LOG_OFF'
+        ? POWER_STATE.LOG_OFF
+        : POWER_STATE.TURN_OFF;
+    triggerPowerOff(mode);
+  });
 
   function onMouseDownDesktop(e) {
     if (e.target === e.currentTarget)

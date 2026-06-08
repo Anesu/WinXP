@@ -2,10 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import FooterMenu from './FooterMenu';
-import {
-  ShellEvents,
-  subscribeShellEvent,
-} from '../apps/EmbeddedApp/shellBridge';
+import { ShellEvents, useShellEvent } from '../apps/EmbeddedApp/shellBridge';
 import Balloon from 'components/Balloon';
 import startButton from 'assets/windowsIcons/start.png';
 import sound from 'assets/windowsIcons/690(16x16).png';
@@ -81,58 +78,51 @@ function Footer({
   useEffect(() => {
     const settings = window.ShellAPI?.getSettings?.();
     if (settings?.userName) setUserName(settings.userName);
-    return subscribeShellEvent(ShellEvents.SETTINGS, (detail) => {
-      if (detail?.userName) setUserName(detail.userName);
-    });
   }, []);
 
-  useEffect(() => {
-    const timers = flashTimers.current;
+  useShellEvent(ShellEvents.SETTINGS, (detail) => {
+    if (detail?.userName) setUserName(detail.userName);
+  });
 
-    function onPomodoro(detail) {
-      setPomodoro(detail || null);
+  useShellEvent(ShellEvents.POMODORO, (detail) => {
+    setPomodoro(detail || null);
+  });
+
+  useShellEvent(ShellEvents.WINDOW_FLASH_START, (winId) => {
+    const timers = flashTimers.current;
+    if (timers[winId]) {
+      clearTimeout(timers[winId]);
+      delete timers[winId];
     }
-    function onFlashStart(winId) {
-      if (timers[winId]) {
-        clearTimeout(timers[winId]);
-        delete timers[winId];
-      }
-      setFlashIds((prev) => new Set(prev).add(String(winId)));
-      timers[winId] = setTimeout(() => {
-        delete timers[winId];
-        setFlashIds((prev) => {
-          if (!prev.has(String(winId))) return prev;
-          const next = new Set(prev);
-          next.delete(String(winId));
-          return next;
-        });
-      }, 8000);
-    }
-    function onFlashStop(winId) {
-      if (timers[winId]) {
-        clearTimeout(timers[winId]);
-        delete timers[winId];
-      }
+    setFlashIds((prev) => new Set(prev).add(String(winId)));
+    timers[winId] = setTimeout(() => {
+      delete timers[winId];
       setFlashIds((prev) => {
         if (!prev.has(String(winId))) return prev;
         const next = new Set(prev);
         next.delete(String(winId));
         return next;
       });
+    }, 8000);
+  });
+
+  useShellEvent(ShellEvents.WINDOW_FLASH_STOP, (winId) => {
+    const timers = flashTimers.current;
+    if (timers[winId]) {
+      clearTimeout(timers[winId]);
+      delete timers[winId];
     }
-    const unsubPomodoro = subscribeShellEvent(ShellEvents.POMODORO, onPomodoro);
-    const unsubFlashStart = subscribeShellEvent(
-      ShellEvents.WINDOW_FLASH_START,
-      onFlashStart,
-    );
-    const unsubFlashStop = subscribeShellEvent(
-      ShellEvents.WINDOW_FLASH_STOP,
-      onFlashStop,
-    );
+    setFlashIds((prev) => {
+      if (!prev.has(String(winId))) return prev;
+      const next = new Set(prev);
+      next.delete(String(winId));
+      return next;
+    });
+  });
+
+  useEffect(() => {
+    const timers = flashTimers.current;
     return () => {
-      unsubPomodoro();
-      unsubFlashStart();
-      unsubFlashStop();
       Object.values(timers).forEach(clearTimeout);
     };
   }, []);
