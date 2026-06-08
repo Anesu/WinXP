@@ -61,7 +61,9 @@ const Overlay = styled.div`
   cursor: default;
   touch-action: manipulation;
   background-color: ${({ $phase }) =>
-    $phase === 'off' || $phase === 'waking' ? '#000' : 'rgba(128, 128, 128, 0.2)'};
+    $phase === 'off' || $phase === 'waking'
+      ? '#000'
+      : 'rgba(128, 128, 128, 0.2)'};
 
   ${({ $phase }) =>
     $phase === 'shading' &&

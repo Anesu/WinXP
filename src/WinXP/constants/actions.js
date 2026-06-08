@@ -12,3 +12,4 @@ export const SORT_ICONS = 'SORT_ICONS';
 export const POWER_OFF = 'POWER_OFF';
 export const CANCEL_POWER_OFF = 'CANCEL_POWER_OFF';
 export const RESET_SESSION = 'RESET_SESSION';
+export const SET_POWER_STATE = 'SET_POWER_STATE';

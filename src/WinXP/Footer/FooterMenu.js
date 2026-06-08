@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import SubMenu from 'components/SubMenu';
 import ie from 'assets/windowsIcons/ie.png';
-import mine from 'assets/minesweeper/mine-icon.png';
 import setAccess from 'assets/windowsIcons/227(32x32).png';
 import outlook from 'assets/windowsIcons/887(32x32).png';
 
@@ -15,7 +14,6 @@ import computer from 'assets/windowsIcons/676(32x32).png';
 import controlPanel from 'assets/windowsIcons/300(32x32).png';
 import connect from 'assets/windowsIcons/309(32x32).png';
 import printer from 'assets/windowsIcons/549(32x32).png';
-import paint from 'assets/windowsIcons/680(32x32).png';
 import help from 'assets/windowsIcons/747(32x32).png';
 import search from 'assets/windowsIcons/299(32x32).png';
 import run from 'assets/windowsIcons/743(32x32).png';
@@ -24,10 +22,9 @@ import user from 'assets/windowsIcons/user.png';
 import shut from 'assets/windowsIcons/310(32x32).png';
 import logOff from 'assets/windowsIcons/restore.ico';
 import allProgramsIcon from 'assets/windowsIcons/all-programs.ico';
-import winamp from 'assets/windowsIcons/winamp.png';
 import empty from 'assets/empty.png';
 
-import { buildPinnedStartMenuItems } from '../apps/EmbeddedApp/appRegistry';
+import { buildPinnedStartMenuItems } from '../apps';
 import { AllPrograms, ConnectTo, MyRecentDocuments } from './FooterMenuData';
 
 function FooterMenu({ className, onClick, userName = 'User' }) {
@@ -54,15 +51,7 @@ function FooterMenu({ className, onClick, userName = 'User' }) {
             <div className="menu__item__subtext">Outlook Express</div>
           </Item>
           <div className="menu__separator" />
-          <Items
-            onClick={onClick}
-            items={[
-              ...buildPinnedStartMenuItems(),
-              { icon: mine, text: 'Minesweeper' },
-              { icon: winamp, text: 'Winamp' },
-              { icon: paint, text: 'Paint' },
-            ]}
-          />
+          <Items onClick={onClick} items={buildPinnedStartMenuItems()} />
           <div style={{ flex: 1 }} />
           <div className="menu__separator" />
           <Item

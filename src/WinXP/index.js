@@ -1,32 +1,8 @@
-import React, {
-  useReducer,
-  useRef,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import useMouse from 'react-use/lib/useMouse';
 
-import {
-  ADD_APP,
-  DEL_APP,
-  FOCUS_APP,
-  MINIMIZE_APP,
-  TOGGLE_MAXIMIZE_APP,
-  FOCUS_ICON,
-  SELECT_ICONS,
-  FOCUS_DESKTOP,
-  START_SELECT,
-  END_SELECT,
-  SORT_ICONS,
-  POWER_OFF,
-  CANCEL_POWER_OFF,
-  RESET_SESSION,
-} from './constants/actions';
 import { FOCUSING, POWER_STATE } from './constants';
-import { defaultIconState, defaultAppState, appSettings } from './apps';
-import { appByKey, buildMenuAliasMap } from './apps/EmbeddedApp';
 import {
   wireShellBridge,
   subscribeShellEvent,
@@ -40,373 +16,81 @@ import Footer from './Footer';
 import Windows from './Windows';
 import Icons from './Icons';
 import { DashedBox } from 'components';
+import { useDesktopState } from './state/useDesktopState';
 
-const initState = {
-  apps: defaultAppState,
-  nextAppID: defaultAppState.length,
-  nextZIndex: defaultAppState.length,
-  focusing: defaultAppState.length ? FOCUSING.WINDOW : FOCUSING.DESKTOP,
-  icons: defaultIconState,
-  selecting: false,
-  powerState: POWER_STATE.START,
-};
-const reducer = (state, action = { type: '' }) => {
-  switch (action.type) {
-    case ADD_APP:
-      const app = state.apps.find(
-        (_app) => _app.component === action.payload.component,
-      );
-      if (action.payload.multiInstance || !app) {
-        return {
-          ...state,
-          apps: [
-            ...state.apps,
-            {
-              ...action.payload,
-              id: state.nextAppID,
-              zIndex: state.nextZIndex,
-            },
-          ],
-          nextAppID: state.nextAppID + 1,
-          nextZIndex: state.nextZIndex + 1,
-          focusing: FOCUSING.WINDOW,
-        };
-      }
-      const apps = state.apps.map((app) =>
-        app.component === action.payload.component
-          ? { ...app, zIndex: state.nextZIndex, minimized: false }
-          : app,
-      );
-      return {
-        ...state,
-        apps,
-        nextZIndex: state.nextZIndex + 1,
-        focusing: FOCUSING.WINDOW,
-      };
-    case DEL_APP:
-      if (state.focusing !== FOCUSING.WINDOW) return state;
-      return {
-        ...state,
-        apps: state.apps.filter((app) => app.id !== action.payload),
-        focusing:
-          state.apps.length > 1
-            ? FOCUSING.WINDOW
-            : state.icons.find((icon) => icon.isFocus)
-              ? FOCUSING.ICON
-              : FOCUSING.DESKTOP,
-      };
-    case FOCUS_APP: {
-      const apps = state.apps.map((app) =>
-        app.id === action.payload
-          ? { ...app, zIndex: state.nextZIndex, minimized: false }
-          : app,
-      );
-      return {
-        ...state,
-        apps,
-        nextZIndex: state.nextZIndex + 1,
-        focusing: FOCUSING.WINDOW,
-      };
-    }
-    case MINIMIZE_APP: {
-      if (state.focusing !== FOCUSING.WINDOW) return state;
-      const apps = state.apps.map((app) =>
-        app.id === action.payload ? { ...app, minimized: true } : app,
-      );
-      return {
-        ...state,
-        apps,
-        focusing: FOCUSING.WINDOW,
-      };
-    }
-    case TOGGLE_MAXIMIZE_APP: {
-      if (state.focusing !== FOCUSING.WINDOW) return state;
-      const apps = state.apps.map((app) =>
-        app.id === action.payload ? { ...app, maximized: !app.maximized } : app,
-      );
-      return {
-        ...state,
-        apps,
-        focusing: FOCUSING.WINDOW,
-      };
-    }
-    case FOCUS_ICON: {
-      const icons = state.icons.map((icon) => ({
-        ...icon,
-        isFocus: icon.id === action.payload,
-      }));
-      return {
-        ...state,
-        focusing: FOCUSING.ICON,
-        icons,
-      };
-    }
-    case SELECT_ICONS: {
-      const icons = state.icons.map((icon) => ({
-        ...icon,
-        isFocus: action.payload.includes(icon.id),
-      }));
-      return {
-        ...state,
-        icons,
-        focusing: FOCUSING.ICON,
-      };
-    }
-    case FOCUS_DESKTOP:
-      return {
-        ...state,
-        focusing: FOCUSING.DESKTOP,
-        icons: state.icons.map((icon) => ({
-          ...icon,
-          isFocus: false,
-        })),
-      };
-    case START_SELECT:
-      return {
-        ...state,
-        focusing: FOCUSING.DESKTOP,
-        icons: state.icons.map((icon) => ({
-          ...icon,
-          isFocus: false,
-        })),
-        selecting: action.payload,
-      };
-    case END_SELECT:
-      return {
-        ...state,
-        selecting: null,
-      };
-    case SORT_ICONS:
-      return {
-        ...state,
-        icons: [...state.icons].sort((a, b) =>
-          a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }),
-        ),
-      };
-    case POWER_OFF:
-      return {
-        ...state,
-        powerState: action.payload,
-      };
-    case CANCEL_POWER_OFF:
-      return {
-        ...state,
-        powerState: POWER_STATE.START,
-      };
-    case RESET_SESSION:
-      return {
-        ...initState,
-        icons: state.icons,
-      };
-    default:
-      return state;
-  }
-};
 function WinXP() {
-  const [booted, setBooted] = useState(false);
-  const [shutdown, setShutdown] = useState(false);
   const [contextMenu, setContextMenu] = useState(null);
-  const [state, dispatch] = useReducer(reducer, initState);
   const ref = useRef(null);
   const mouse = useMouse(ref);
-  const focusedAppId = getFocusedAppId();
-  const onFocusApp = useCallback((id) => {
-    dispatch({ type: FOCUS_APP, payload: id });
-  }, []);
-  const onMaximizeWindow = useCallback(
-    (id) => {
-      if (focusedAppId === id) {
-        dispatch({ type: TOGGLE_MAXIMIZE_APP, payload: id });
-      }
-    },
-    [focusedAppId],
-  );
-  const onMinimizeWindow = useCallback(
-    (id) => {
-      if (focusedAppId === id) {
-        dispatch({ type: MINIMIZE_APP, payload: id });
-      }
-    },
-    [focusedAppId],
-  );
-  const onCloseApp = useCallback(
-    (id) => {
-      if (focusedAppId === id) {
-        dispatch({ type: DEL_APP, payload: id });
-      }
-    },
-    [focusedAppId],
-  );
-  function onMouseDownFooterApp(id) {
-    if (focusedAppId === id) {
-      dispatch({ type: MINIMIZE_APP, payload: id });
-    } else {
-      dispatch({ type: FOCUS_APP, payload: id });
-    }
-  }
-  function onMouseDownIcon(id) {
-    dispatch({ type: FOCUS_ICON, payload: id });
-  }
-  function onDoubleClickIcon(component) {
-    const appSetting = Object.values(appSettings).find(
-      (setting) => setting.component === component,
-    );
-    dispatch({ type: ADD_APP, payload: appSetting });
-  }
-  function getFocusedAppId() {
-    if (state.focusing !== FOCUSING.WINDOW) return -1;
-    const focusedApp = [...state.apps]
-      .sort((a, b) => b.zIndex - a.zIndex)
-      .find((app) => !app.minimized);
-    return focusedApp ? focusedApp.id : -1;
-  }
-  function onMouseDownFooter() {
-    dispatch({ type: FOCUS_DESKTOP });
-  }
-  const openEmbeddedApp = useCallback(
-    (appKey) => {
-      const setting = appByKey[appKey];
-      if (setting) dispatch({ type: ADD_APP, payload: setting });
-      else
-        dispatch({
-          type: ADD_APP,
-          payload: {
-            ...appSettings.Error,
-            injectProps: { message: 'C:\\\nApplication not found' },
-          },
-        });
-    },
-    [dispatch],
-  );
+
+  const {
+    state,
+    focusedAppId,
+    onFocusApp,
+    onMaximizeWindow,
+    onMinimizeWindow,
+    onCloseApp,
+    onMouseDownFooterApp,
+    onMouseDownIcon,
+    onDoubleClickIcon,
+    onMouseDownFooter,
+    openEmbeddedApp,
+    onClickMenuItem,
+    onDesktopMenuAction,
+    onClickModalButton,
+    onModalClose,
+    onBootComplete,
+    onShutdownWake,
+    onStartSelect,
+    onEndSelect,
+    onIconsSelected,
+    focusDesktop,
+    triggerPowerOff,
+  } = useDesktopState();
 
   useEffect(() => {
-    if (!booted) return;
+    if (state.powerState === POWER_STATE.BOOTING) return;
     wireShellBridge(openEmbeddedApp);
-    const unsubPowerOff = subscribeShellEvent(ShellEvents.POWER_OFF, (detail) => {
-      const mode =
-        detail && detail.mode === 'LOG_OFF'
-          ? POWER_STATE.LOG_OFF
-          : POWER_STATE.TURN_OFF;
-      dispatch({ type: POWER_OFF, payload: mode });
-    });
+    const unsubPowerOff = subscribeShellEvent(
+      ShellEvents.POWER_OFF,
+      (detail) => {
+        const mode =
+          detail && detail.mode === 'LOG_OFF'
+            ? POWER_STATE.LOG_OFF
+            : POWER_STATE.TURN_OFF;
+        triggerPowerOff(mode);
+      },
+    );
     return () => {
       unsubPowerOff();
       if (window.ShellAPI) window.ShellAPI.registerShell(null);
     };
-  }, [booted, openEmbeddedApp, dispatch]);
+  }, [state.powerState, openEmbeddedApp, triggerPowerOff]);
 
-  const menuAliases = {
-    ...buildMenuAliasMap(),
-    Internet: 'Internet Explorer',
-    'Windows Media Player': 'Winamp',
-    Paint: 'Paint',
-    Winamp: 'Winamp',
-    Minesweeper: 'Minesweeper',
-    'Internet Explorer': 'Internet Explorer',
-  };
-
-  function onClickMenuItem(o) {
-    if (o === 'Lock Computer') {
-      if (window.ShellAPI) window.ShellAPI.showLockScreen();
-      return;
-    }
-    if (o === 'Log Off') {
-      dispatch({ type: POWER_OFF, payload: POWER_STATE.LOG_OFF });
-      return;
-    }
-    if (o === 'Turn Off Computer') {
-      dispatch({ type: POWER_OFF, payload: POWER_STATE.TURN_OFF });
-      return;
-    }
-    const key = menuAliases[o] || o;
-    if (appSettings[key]) {
-      dispatch({ type: ADD_APP, payload: appSettings[key] });
-      return;
-    }
-    dispatch({
-      type: ADD_APP,
-      payload: {
-        ...appSettings.Error,
-        injectProps: { message: 'C:\\\nApplication not found' },
-      },
-    });
-  }
   function onMouseDownDesktop(e) {
     if (e.target === e.currentTarget)
-      dispatch({
-        type: START_SELECT,
-        payload: { x: mouse.docX, y: mouse.docY },
-      });
+      onStartSelect({ x: mouse.docX, y: mouse.docY });
   }
+
   function onContextMenuDesktop(e) {
     e.preventDefault();
     if (e.target !== e.currentTarget) return;
-    dispatch({ type: FOCUS_DESKTOP });
+    focusDesktop();
     setContextMenu({ x: e.clientX, y: e.clientY });
   }
-  function onDesktopMenuAction(action) {
-    switch (action) {
-      case 'refresh':
-        window.location.reload();
-        break;
-      case 'arrange-name':
-        dispatch({ type: SORT_ICONS });
-        break;
-      case 'new-notepad':
-        dispatch({ type: ADD_APP, payload: appSettings.Notepad });
-        break;
-      case 'new-paint':
-        dispatch({ type: ADD_APP, payload: appSettings.Paint });
-        break;
-      case 'new-ie':
-        dispatch({ type: ADD_APP, payload: appSettings['Internet Explorer'] });
-        break;
-      case 'properties':
-        dispatch({ type: ADD_APP, payload: appSettings['Control Panel'] });
-        break;
-      default:
-        break;
-    }
-  }
-  function onMouseUpDesktop(e) {
-    dispatch({ type: END_SELECT });
-  }
-  const onIconsSelected = useCallback(
-    (iconIds) => {
-      dispatch({ type: SELECT_ICONS, payload: iconIds });
-    },
-    [dispatch],
-  );
-  function onClickModalButton(text) {
-    dispatch({ type: CANCEL_POWER_OFF });
 
-    switch (text) {
-      case 'Turn Off':
-        if (window.ShellAPI) window.ShellAPI.saveSession();
-        setShutdown(true);
-        break;
-      case 'Restart':
-        window.setTimeout(() => window.location.reload(), 400);
-        break;
-      case 'Log Off':
-        dispatch({ type: RESET_SESSION });
-        setShutdown(false);
-        setBooted(false);
-        break;
-      case 'Switch User':
-        if (window.ShellAPI) window.ShellAPI.showLockScreen();
-        break;
-      default:
-        break;
-    }
+  function onMouseUpDesktop(e) {
+    onEndSelect();
   }
-  function onModalClose() {
-    dispatch({ type: CANCEL_POWER_OFF });
-  }
+
   return (
     <>
-      {!booted && <BootScreen onComplete={() => setBooted(true)} />}
-      {shutdown && <ShutdownScreen onWake={() => setShutdown(false)} />}
+      {state.powerState === POWER_STATE.BOOTING && (
+        <BootScreen onComplete={onBootComplete} />
+      )}
+      {state.powerState === POWER_STATE.SHUTDOWN && (
+        <ShutdownScreen onWake={onShutdownWake} />
+      )}
       {contextMenu && (
         <DesktopContextMenu
           x={contextMenu.x}
@@ -421,14 +105,13 @@ function WinXP() {
         onMouseDown={onMouseDownDesktop}
         onContextMenu={onContextMenuDesktop}
         state={state.powerState}
-        $booted={booted}
+        $booted={state.powerState !== POWER_STATE.BOOTING}
       >
         <Icons
           icons={state.icons}
           onMouseDown={onMouseDownIcon}
           onDoubleClick={onDoubleClickIcon}
           displayFocus={state.focusing === FOCUSING.ICON}
-          appSettings={appSettings}
           mouse={mouse}
           selecting={state.selecting}
           setSelectedIcons={onIconsSelected}
@@ -453,19 +136,20 @@ function WinXP() {
               (app) => app.header.title === 'Pomodoro Timer' && !app.minimized,
             );
             if (pomodoroWin) {
-              dispatch({ type: FOCUS_APP, payload: pomodoroWin.id });
+              onFocusApp(pomodoroWin.id);
             } else {
               openEmbeddedApp('pomodoro');
             }
           }}
         />
-        {state.powerState !== POWER_STATE.START && (
+        {state.powerState === POWER_STATE.TURN_OFF ||
+        state.powerState === POWER_STATE.LOG_OFF ? (
           <Modal
             onClose={onModalClose}
             onClickButton={onClickModalButton}
             mode={state.powerState}
           />
-        )}
+        ) : null}
       </Container>
     </>
   );
@@ -483,9 +167,11 @@ const powerOffAnimation = keyframes`
   }
 `;
 const animation = {
+  [POWER_STATE.BOOTING]: '',
   [POWER_STATE.START]: '',
   [POWER_STATE.TURN_OFF]: powerOffAnimation,
   [POWER_STATE.LOG_OFF]: powerOffAnimation,
+  [POWER_STATE.SHUTDOWN]: powerOffAnimation,
 };
 
 const Container = styled.div`

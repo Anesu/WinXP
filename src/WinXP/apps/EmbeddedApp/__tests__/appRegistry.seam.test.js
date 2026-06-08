@@ -16,7 +16,9 @@ const ROOT = path.resolve(__dirname, '../../../../..');
 
 describe('appRegistry seams', () => {
   it('resolves template paths by appKey convention', () => {
-    expect(getTemplatePath({ appKey: 'mail' })).toBe('/apps/templates/mail.html');
+    expect(getTemplatePath({ appKey: 'mail' })).toBe(
+      '/apps/templates/mail.html',
+    );
     expect(getTemplatePathByAppKey('journal')).toBe(
       '/apps/templates/journal.html',
     );
@@ -53,7 +55,8 @@ describe('appRegistry seams', () => {
     expect(STORE_SCRIPTS[STORE_SCRIPTS.length - 1]).toBe(
       '/apps/stores/init.js',
     );
-    const shellApiIdx = EMBEDDED_BOOTSTRAP_SCRIPTS.indexOf('/apps/shell-api.js');
+    const shellApiIdx =
+      EMBEDDED_BOOTSTRAP_SCRIPTS.indexOf('/apps/shell-api.js');
     const vendorIdx = EMBEDDED_BOOTSTRAP_SCRIPTS.indexOf(
       '/apps/vendor/98/vendor98.js',
     );
@@ -95,7 +98,10 @@ describe('appRegistry seams', () => {
     for (const src of chain) {
       expect(fs.existsSync(path.join(ROOT, 'public', src))).toBe(true);
     }
-    for (const src of [...EMBEDDED_BOOTSTRAP_SCRIPTS, ...EMBEDDED_GLOBAL_SCRIPTS]) {
+    for (const src of [
+      ...EMBEDDED_BOOTSTRAP_SCRIPTS,
+      ...EMBEDDED_GLOBAL_SCRIPTS,
+    ]) {
       expect(fs.existsSync(path.join(ROOT, 'public', src))).toBe(true);
     }
   });

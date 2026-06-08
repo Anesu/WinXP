@@ -4,7 +4,9 @@ export const FOCUSING = {
   DESKTOP: 'DESKTOP',
 };
 export const POWER_STATE = {
+  BOOTING: 'BOOTING',
   START: 'START',
   LOG_OFF: 'LOG_OFF',
   TURN_OFF: 'TURN_OFF',
+  SHUTDOWN: 'SHUTDOWN',
 };

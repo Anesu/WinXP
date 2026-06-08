@@ -1,4 +1,8 @@
-import { ShellEvents, subscribeShellEvent, wireShellBridge } from '../shellBridge';
+import {
+  ShellEvents,
+  subscribeShellEvent,
+  wireShellBridge,
+} from '../shellBridge';
 import fs from 'fs';
 import { publicPath } from '../testHelpers/loadPublicScript';
 

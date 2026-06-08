@@ -34,6 +34,20 @@ import textdiff16 from 'assets/windowsIcons/153(16x16).png';
 import qrtx32 from 'assets/windowsIcons/234(16x16).png';
 import qrtx16 from 'assets/windowsIcons/234(16x16).png';
 
+// Native (legacy React) app components + icons — being migrated into the single registry
+import InternetExplorer from '../InternetExplorer';
+import Minesweeper from '../Minesweeper';
+import ErrorBox from '../ErrorBox';
+import Winamp from '../Winamp';
+import Paint from '../Paint';
+import iePaper from 'assets/windowsIcons/ie-paper.png';
+import ie from 'assets/windowsIcons/ie.png';
+import mine from 'assets/minesweeper/mine-icon.png';
+import errorIcon from 'assets/windowsIcons/897(16x16).png';
+import winampIcon from 'assets/windowsIcons/winamp.png';
+import paintLarge from 'assets/windowsIcons/680(32x32).png';
+import paint from 'assets/windowsIcons/680(16x16).png';
+
 const P = process.env.PUBLIC_URL || '';
 const recycle32 = `${P}/apps/vendor/98/images/icons/recycle-bin-32x32.png`;
 const recycle16 = `${P}/apps/vendor/98/images/icons/recycle-bin-16x16.png`;
@@ -346,6 +360,80 @@ export const APP_REGISTRY = [
     showOnDesktop: false,
     resizable: false,
     menuAliases: ['Run...'],
+  },
+
+  // === Native (React) apps — now declared in the single source of truth ===
+  {
+    appKey: 'internet-explorer',
+    displayTitle: 'Internet Explorer',
+    headerTitle: 'Internet Explorer',
+    component: InternetExplorer,
+    desktopIcon: ie,
+    headerIcon: iePaper,
+    defaultSize: { width: 700, height: 500 },
+    defaultOffset: { x: 140, y: 30 },
+    resizable: true,
+    multiInstance: true,
+    menuAliases: ['Internet', 'Internet Explorer'],
+    // Note: maximized special case is handled at runtime in current appSettings
+  },
+  {
+    appKey: 'minesweeper',
+    displayTitle: 'Minesweeper',
+    headerTitle: 'Minesweeper',
+    component: Minesweeper,
+    desktopIcon: mine,
+    headerIcon: mine,
+    defaultSize: { width: 0, height: 0 },
+    defaultOffset: { x: 190, y: 180 },
+    resizable: false,
+    multiInstance: true,
+    menuAliases: ['Minesweeper'],
+    pinnedInStartMenu: true,
+    pinnedOrder: 100,
+  },
+  {
+    appKey: 'error',
+    displayTitle: 'Error',
+    headerTitle: 'C:\\',
+    component: ErrorBox,
+    desktopIcon: errorIcon,
+    headerIcon: errorIcon,
+    defaultSize: { width: 380, height: 0 },
+    defaultOffset: { x: 0, y: 0 }, // will be centered at runtime
+    resizable: false,
+    multiInstance: true,
+    // Special header flags are applied in the appSettings shape for now
+  },
+  {
+    appKey: 'winamp',
+    displayTitle: 'Winamp',
+    headerTitle: 'Winamp',
+    component: Winamp,
+    desktopIcon: winampIcon,
+    headerIcon: winampIcon,
+    defaultSize: { width: 0, height: 0 },
+    defaultOffset: { x: 0, y: 0 },
+    resizable: false,
+    multiInstance: false,
+    menuAliases: ['Windows Media Player', 'Winamp'],
+    pinnedInStartMenu: true,
+    pinnedOrder: 101,
+  },
+  {
+    appKey: 'paint',
+    displayTitle: 'Paint',
+    headerTitle: 'Untitled - Paint',
+    component: Paint,
+    desktopIcon: paintLarge,
+    headerIcon: paint,
+    defaultSize: { width: 660, height: 500 },
+    defaultOffset: { x: 280, y: 70 },
+    resizable: true,
+    multiInstance: true,
+    menuAliases: ['Paint'],
+    pinnedInStartMenu: true,
+    pinnedOrder: 102,
   },
 ];
 

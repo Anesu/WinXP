@@ -10,9 +10,8 @@ describe('templateLoader seam', () => {
   });
 
   it('rewrites vendor image paths and injects templates once', async () => {
-    const { loadTemplateBundle, isTemplateLoaded } = await import(
-      '../templateLoader'
-    );
+    const { loadTemplateBundle, isTemplateLoaded } =
+      await import('../templateLoader');
     global.fetch.mockResolvedValue({
       ok: true,
       text: async () =>
