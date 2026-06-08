@@ -14,6 +14,7 @@ export {
   appByKey,
   desktopEmbeddedApps,
   getEmbeddedScriptChain,
+  STORE_SCRIPTS,
   getEmbeddedAppManifest,
   buildMenuAliasMap,
   buildProductivitySuiteMenuItems,

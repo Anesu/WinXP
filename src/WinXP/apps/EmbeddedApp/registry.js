@@ -9,6 +9,7 @@ export {
 export {
   getEmbeddedScriptChain,
   getEmbeddedAppManifest,
+  STORE_SCRIPTS,
   buildMenuAliasMap,
   buildProductivitySuiteMenuItems,
   buildPinnedStartMenuItems,

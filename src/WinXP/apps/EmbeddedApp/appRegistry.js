@@ -348,9 +348,27 @@ export const APP_REGISTRY = [
   },
 ];
 
+/** @type {string[]} Per-domain localStorage stores (load order matters). */
+export const STORE_SCRIPTS = [
+  '/apps/stores/core.js',
+  '/apps/stores/todo.js',
+  '/apps/stores/event.js',
+  '/apps/stores/mail.js',
+  '/apps/stores/clippy.js',
+  '/apps/stores/notes.js',
+  '/apps/stores/pomodoro.js',
+  '/apps/stores/recyclebin.js',
+  '/apps/stores/controlpanel.js',
+  '/apps/stores/icon.js',
+  '/apps/stores/bible.js',
+  '/apps/stores/stickies.js',
+  '/apps/stores/backup.js',
+  '/apps/stores/init.js',
+];
+
 export const EMBEDDED_BOOTSTRAP_SCRIPTS = [
   '/apps/qrcode.js',
-  '/apps/stores.js',
+  ...STORE_SCRIPTS,
   '/apps/shell-api.js',
   '/apps/shell-events.js',
   '/apps/shell-state.js',
