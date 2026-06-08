@@ -44,7 +44,7 @@ Open **http://localhost:3002**
 npm.cmd run build
 ```
 
-Output in `build/` — deploy to any static host (Vercel, GitHub Pages, etc.).
+Output in `build/` — deploy to any static host (GitHub Pages, Netlify, etc.).
 
 **GitHub Pages:** After pushing to `Anesu/WinXP`, enable Pages under repo Settings → Pages → Source: **GitHub Actions**. The workflow in `.github/workflows/deploy.yml` publishes to https://anesu.github.io/WinXP
 

@@ -58,15 +58,18 @@ import mine from 'assets/minesweeper/mine-icon.png';
 import computer from 'assets/windowsIcons/676(16x16).png';
 import controlPanel from 'assets/windowsIcons/300(16x16).png';
 import winamp from 'assets/windowsIcons/winamp.png';
+import searchApp from 'assets/windowsIcons/554(16x16).png';
+import todoApp from 'assets/windowsIcons/360(32x32).png';
+import bibleApp from 'assets/windowsIcons/334(32x32).png';
+import calendarApp from 'assets/windowsIcons/301(32x32).png';
+import pomodoroApp from 'assets/windowsIcons/716(16x16).png';
+import kanbanApp from 'assets/windowsIcons/358(16x16).png';
+import clippyApp from 'assets/windowsIcons/357(16x16).png';
+import textdiffApp from 'assets/windowsIcons/153(16x16).png';
+import qrtxApp from 'assets/windowsIcons/234(16x16).png';
 
 const P = process.env.PUBLIC_URL || '';
-const v98task = `${P}/apps/vendor/98/images/icons/task-16x16.png`;
-const v98chm = `${P}/apps/vendor/98/images/icons/chm-16x16.png`;
-const v98cal = `${P}/apps/vendor/98/images/icons/favorites-folder-16x16.png`;
-const v98kanban = `${P}/apps/vendor/98/images/icons/programs-folder-16x16.png`;
 const v98recycle = `${P}/apps/vendor/98/images/icons/recycle-bin-16x16.png`;
-const v98search = `${P}/apps/vendor/98/images/icons/find-file-16x16.png`;
-const v98diff = `${P}/apps/vendor/98/images/icons/find-file-16x16.png`;
 
 export const MyRecentDocuments = [
   {
@@ -100,16 +103,16 @@ export const AllPrograms = [
       { type: 'item', icon: controlPanel, text: 'Control Panel' },
       { type: 'item', icon: v98recycle, text: 'Recycle Bin' },
       { type: 'separator' },
-      { type: 'item', icon: v98task, text: 'Todo Tasks' },
-      { type: 'item', icon: v98chm, text: 'Bible' },
-      { type: 'item', icon: v98cal, text: 'Calendar' },
-      { type: 'item', icon: calculator, text: 'Pomodoro Timer' },
-      { type: 'item', icon: v98kanban, text: 'Kanban Board' },
-      { type: 'item', icon: compatibility, text: 'Office Assistant' },
-      { type: 'item', icon: v98diff, text: 'Compare Documents' },
-      { type: 'item', icon: ie, text: 'QRx Transmitter' },
+      { type: 'item', icon: todoApp, text: 'Todo Tasks' },
+      { type: 'item', icon: bibleApp, text: 'Bible' },
+      { type: 'item', icon: calendarApp, text: 'Calendar' },
+      { type: 'item', icon: pomodoroApp, text: 'Pomodoro Timer' },
+      { type: 'item', icon: kanbanApp, text: 'Kanban Board' },
+      { type: 'item', icon: clippyApp, text: 'Office Assistant' },
+      { type: 'item', icon: textdiffApp, text: 'Compare Documents' },
+      { type: 'item', icon: qrtxApp, text: 'QRx Transmitter' },
       { type: 'separator' },
-      { type: 'item', icon: v98search, text: 'Search' },
+      { type: 'item', icon: searchApp, text: 'Search' },
       { type: 'item', icon: help, text: 'Help and Support' },
     ],
   },

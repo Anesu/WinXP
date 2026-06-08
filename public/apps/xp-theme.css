@@ -273,3 +273,445 @@ body {
   border: 1px solid #6b8cc7;
   border-radius: 2px;
 }
+
+/* ===== XP design tokens (legacy win95-* class names kept for JS) ===== */
+.xp-app-host {
+  --xp-face: #ece9d8;
+  --xp-face-light: #f5f4ea;
+  --xp-highlight: #316ac5;
+  --xp-highlight-hover: #e8f4fd;
+  --xp-title: #003399;
+  --xp-border: #aca899;
+  --xp-border-input: #7f9db9;
+  --xp-border-blue: #8db2e3;
+  --xp-muted: #5a5a5a;
+  --xp-toolbar: linear-gradient(180deg, #f3f6fb 0%, #e8eef8 50%, #d6e4f7 100%);
+  --xp-btn: linear-gradient(180deg, #fff 0%, #ece9d8 86%, #d6d2c2 100%);
+  --xp-btn-hover: linear-gradient(180deg, #fff 0%, #e8f4fd 60%, #d0e8ff 100%);
+}
+
+.xp-app-host .win95-window {
+  background: var(--xp-face) !important;
+}
+
+.xp-app-host .win-body,
+.xp-app-host .win95-embedded {
+  background: var(--xp-face) !important;
+}
+
+/* XP micro-buttons (nav arrows, small toolbar controls) */
+.xp-app-host .calendar-nav-btn,
+.xp-app-host .cal-today-btn,
+.xp-app-host .cal-view-btn,
+.xp-app-host .bible-nav-btn,
+.xp-app-host .journal-minical .journal-cal-nav,
+.xp-app-host .todo-item-delete,
+.xp-app-host .todo-clear-completed,
+.xp-app-host .recyclebin-restore-btn {
+  background: var(--xp-btn) !important;
+  border: 1px solid #003c74 !important;
+  border-radius: 3px !important;
+  box-shadow: inset 0 1px 0 #fff !important;
+}
+
+.xp-app-host .calendar-nav-btn:active,
+.xp-app-host .cal-today-btn:active,
+.xp-app-host .cal-view-btn:active,
+.xp-app-host .bible-nav-btn:active,
+.xp-app-host .journal-minical .journal-cal-nav:active,
+.xp-app-host .todo-item-delete:active,
+.xp-app-host .todo-clear-completed:active,
+.xp-app-host .recyclebin-restore-btn:active {
+  background: #d6d2c2 !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  border-color: #003c74 !important;
+}
+
+/* Navy Win95 selection → Luna blue */
+.xp-app-host .notes-sidebar-item:hover,
+.xp-app-host .notes-sidebar-item.active,
+.xp-app-host .mail-folder:hover,
+.xp-app-host .mail-folder.active,
+.xp-app-host .mail-list-item.active,
+.xp-app-host .bible-book-item:hover,
+.xp-app-host .bible-book-item.active,
+.xp-app-host .bible-sidebar-title,
+.xp-app-host .cal-view-btn.active-view,
+.xp-app-host .kanban-col-header,
+.xp-app-host .mycomputer-icon.selected,
+.xp-app-host .journal-cal-day.journal-cal-today,
+.xp-app-host .journal-cal-day.journal-cal-selected {
+  background: var(--xp-highlight) !important;
+  color: #fff !important;
+}
+
+.xp-app-host .bible-passage-header {
+  background: var(--xp-face-light) !important;
+  color: var(--xp-title) !important;
+  border-bottom-color: var(--xp-border-blue) !important;
+}
+
+.xp-app-host .mycomputer-icon:hover {
+  background: rgba(49, 106, 197, 0.12) !important;
+}
+
+.xp-app-host .mycomputer-icon.selected .mycomputer-icon-desc {
+  color: #d6e8ff !important;
+}
+
+/* Grey chrome → XP face / blue toolbar */
+.xp-app-host .mail-toolbar,
+.xp-app-host .bible-toolbar,
+.xp-app-host .notes-toolbar,
+.xp-app-host .journal-toolbar,
+.xp-app-host .todo-header,
+.xp-app-host .todo-filters,
+.xp-app-host .todo-count,
+.xp-app-host .pomodoro-container,
+.xp-app-host .pomodoro-stats,
+.xp-app-host .pomodoro-settings,
+.xp-app-host .kanban-container,
+.xp-app-host .kanban-col,
+.xp-app-host .diff-layout,
+.xp-app-host .diff-panel-header,
+.xp-app-host .diff-result-container,
+.xp-app-host .diff-result-header,
+.xp-app-host .qrtx-tabs,
+.xp-app-host .qrtx-tab,
+.xp-app-host .journal-minical .journal-cal-day-header {
+  background: var(--xp-face) !important;
+}
+
+.xp-app-host .mail-toolbar,
+.xp-app-host .bible-toolbar,
+.xp-app-host .notes-toolbar,
+.xp-app-host .journal-toolbar,
+.xp-app-host .todo-header,
+.xp-app-host .todo-filters {
+  background: var(--xp-toolbar) !important;
+  border-bottom-color: var(--xp-border-blue) !important;
+}
+
+/* Borders: Win95 grey → XP palette */
+.xp-app-host .notes-sidebar,
+.xp-app-host .journal-sidebar,
+.xp-app-host .bible-sidebar,
+.xp-app-host .mail-sidebar,
+.xp-app-host .mail-list-pane,
+.xp-app-host .todo-header,
+.xp-app-host .todo-filters,
+.xp-app-host .todo-count,
+.xp-app-host .clippy-preview-pane {
+  border-color: var(--xp-border-blue) !important;
+}
+
+.xp-app-host .notes-tb-sep {
+  border-left-color: var(--xp-border) !important;
+  border-right-color: #fff !important;
+}
+
+/* Todo app */
+.xp-app-host .todo-filter-tab {
+  background: var(--xp-face) !important;
+  border-right-color: var(--xp-border) !important;
+}
+
+.xp-app-host .todo-filter-tab:hover {
+  background: var(--xp-highlight-hover) !important;
+}
+
+.xp-app-host .todo-filter-tab.active-filter {
+  background: #fff !important;
+  border-bottom-color: #fff !important;
+  color: var(--xp-title) !important;
+  font-weight: bold;
+}
+
+.xp-app-host .todo-drag-over {
+  border-top-color: var(--xp-highlight) !important;
+}
+
+.xp-app-host .todo-item:hover,
+.xp-app-host .recyclebin-item:hover,
+.xp-app-host .mail-list-item:hover {
+  background: var(--xp-highlight-hover) !important;
+}
+
+/* Calendar */
+.xp-app-host .calendar-week-day:hover,
+.xp-app-host .calendar-week-day.cal-sel,
+.xp-app-host .cal-day:hover {
+  background: var(--xp-highlight-hover) !important;
+}
+
+.xp-app-host .calendar-week-day.cal-today,
+.xp-app-host .cal-day.today {
+  border-color: var(--xp-highlight) !important;
+  background: var(--xp-highlight) !important;
+  color: #fff !important;
+}
+
+.xp-app-host .calendar-week-day,
+.xp-app-host .cal-day {
+  border-color: var(--xp-border-input) !important;
+}
+
+.xp-app-host .cal-event-item {
+  background: var(--xp-highlight-hover) !important;
+  border-color: var(--xp-border-blue) !important;
+}
+
+.xp-app-host .cal-event-item:hover {
+  background: #d0e8ff !important;
+}
+
+.xp-app-host .journal-minical .journal-cal-grid {
+  background: var(--xp-border-input) !important;
+  border-color: var(--xp-border-input) !important;
+}
+
+.xp-app-host .journal-minical .journal-cal-day {
+  background: #fff !important;
+}
+
+.xp-app-host .journal-minical .journal-cal-day:hover {
+  background: var(--xp-highlight-hover) !important;
+}
+
+/* Kanban */
+.xp-app-host .kanban-col-header {
+  border-radius: 3px 3px 0 0;
+}
+
+.xp-app-host .kanban-col-body {
+  border: 1px solid var(--xp-border-input) !important;
+  border-radius: 0 0 3px 3px;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.06) !important;
+  background: #fff !important;
+}
+
+.xp-app-host .kanban-card:hover {
+  background: var(--xp-highlight-hover) !important;
+}
+
+/* Compare Documents */
+.xp-app-host .diff-textarea,
+.xp-app-host .diff-result {
+  border: 1px solid var(--xp-border-input) !important;
+  border-radius: 2px;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.06) !important;
+  background: #fff !important;
+}
+
+.xp-app-host .diff-panel-header,
+.xp-app-host .diff-result-header {
+  background: var(--xp-toolbar) !important;
+  border: 1px solid var(--xp-border-blue) !important;
+  border-radius: 3px;
+  box-shadow: none !important;
+  color: var(--xp-title);
+  font-weight: bold;
+}
+
+/* Pomodoro — keep LCD aesthetic, XP chrome elsewhere */
+.xp-app-host .pomodoro-progress {
+  border: 1px solid var(--xp-border-input) !important;
+  border-radius: 2px;
+  background: var(--xp-face) !important;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.08) !important;
+}
+
+.xp-app-host .pomodoro-progress-fill {
+  background: var(--xp-highlight) !important;
+}
+
+.xp-app-host .pomodoro-lcd {
+  border: 2px solid var(--xp-border-input) !important;
+  border-radius: 4px;
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* QRx tabs */
+.xp-app-host .qrtx-tabs {
+  background: var(--xp-toolbar) !important;
+  border-bottom-color: var(--xp-border-blue) !important;
+}
+
+.xp-app-host .qrtx-tab {
+  background: transparent !important;
+  border-radius: 3px 3px 0 0;
+}
+
+.xp-app-host .qrtx-tab:hover {
+  background: var(--xp-highlight-hover) !important;
+}
+
+.xp-app-host .qrtx-tab.active {
+  background: var(--xp-face) !important;
+  border: 1px solid var(--xp-border-blue) !important;
+  border-bottom-color: var(--xp-face) !important;
+  color: var(--xp-title) !important;
+}
+
+.xp-app-host .win95-trackbar::-webkit-slider-runnable-track {
+  background: var(--xp-border-input) !important;
+  border: 1px solid var(--xp-border) !important;
+  border-radius: 2px;
+}
+
+.xp-app-host .win95-trackbar::-webkit-slider-thumb {
+  background: var(--xp-btn) !important;
+  border: 1px solid #003c74 !important;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+/* Clippy / Office Assistant */
+.xp-app-host .clippy-preview-pane {
+  background: #fff !important;
+  border-left: 1px solid var(--xp-border-blue) !important;
+}
+
+.xp-app-host .clippy-preview-title {
+  color: var(--xp-title) !important;
+}
+
+.xp-app-host .clippy-speech-bubble {
+  background: #fff9e6 !important;
+  border: 1px solid #ffcc66 !important;
+  border-radius: 6px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.xp-app-host .clippy-preview-placeholder {
+  color: var(--xp-muted) !important;
+}
+
+/* My Computer explorer */
+.xp-app-host .pc-explorer-toolbar {
+  border-color: var(--xp-border-blue) !important;
+  box-shadow: none !important;
+}
+
+.xp-app-host .pc-explorer-toolbar-row + .pc-explorer-toolbar-row {
+  border-top-color: #fff !important;
+  box-shadow: none !important;
+}
+
+.xp-app-host .pc-explorer-sep {
+  border-left-color: var(--xp-border) !important;
+  border-right-color: #fff !important;
+}
+
+.xp-app-host .pc-toolbar-explorer-btn:enabled:hover {
+  border-color: #fff var(--xp-border) var(--xp-border) #fff !important;
+  background: var(--xp-highlight-hover) !important;
+  border-radius: 2px;
+}
+
+.xp-app-host .pc-address-bar {
+  border: 1px solid var(--xp-border-input) !important;
+  border-radius: 2px;
+}
+
+.xp-app-host .pc-address-label {
+  color: var(--xp-muted) !important;
+}
+
+/* Muted text */
+.xp-app-host .mail-folder-count,
+.xp-app-host .notes-sidebar-item-time,
+.xp-app-host .bible-placeholder,
+.xp-app-host .todo-drag-handle,
+.xp-app-host .recyclebin-item-date,
+.xp-app-host .clippy-preview-meta {
+  color: var(--xp-muted) !important;
+}
+
+.xp-app-host .mail-folder.active .mail-folder-count,
+.xp-app-host .mail-folder:hover .mail-folder-count,
+.xp-app-host .notes-sidebar-item.active .notes-sidebar-item-time {
+  color: #d6e8ff !important;
+}
+
+/* Lock screen dialogs */
+.xp-app-host .lock-pin-dialog,
+.xp-app-host .lock-setup-dialog {
+  background: var(--xp-face) !important;
+  border: 1px solid var(--xp-border-input) !important;
+  border-radius: 4px;
+}
+
+/* Recycle bin */
+.xp-app-host .recyclebin-item-type {
+  color: var(--xp-muted) !important;
+}
+
+/* Win95 select */
+.xp-app-host .win95-select,
+.xp-app-host select.win95-select {
+  font-family: Tahoma, sans-serif;
+  font-size: 11px;
+  border: 1px solid var(--xp-border-input);
+  border-radius: 2px;
+  background: #fff;
+  padding: 2px 4px;
+}
+
+/* Help dialog */
+.xp-app-host .win-content {
+  border: 1px solid var(--xp-border-input) !important;
+  border-radius: 3px;
+}
+
+/* QRx transmitter (overrides inline Win95 styles in template) */
+.xp-app-host .qrtx-layout {
+  background: var(--xp-face) !important;
+}
+
+.xp-app-host .qrtx-drop-zone {
+  border: 2px dashed var(--xp-border-input) !important;
+  border-radius: 4px;
+}
+
+.xp-app-host .qrtx-file-banner {
+  background: var(--xp-face-light) !important;
+  border: 1px solid var(--xp-border-input) !important;
+  border-radius: 3px;
+}
+
+.xp-app-host .qrtx-alert-box {
+  border: 1px solid #ffcc66 !important;
+  border-radius: 3px;
+}
+
+.xp-app-host .qrtx-groupbox {
+  background: var(--xp-face) !important;
+  border: 1px solid var(--xp-border-input) !important;
+  border-radius: 4px;
+}
+
+.xp-app-host .qrtx-viewport {
+  border: 1px solid var(--xp-border-input) !important;
+  border-radius: 3px;
+}
+
+.xp-app-host .qrtx-speed-label {
+  color: var(--xp-title) !important;
+}
+
+.xp-app-host .qrtx-prog-fill {
+  background: var(--xp-highlight) !important;
+}
+
+.xp-app-host .qrtx-layout fieldset > div,
+.xp-app-host .qrtx-groupbox > div[style*='background:#d4d0c8'] {
+  background: var(--xp-face-light) !important;
+  border-color: var(--xp-border-input) !important;
+  border-radius: 3px;
+}
+
+.xp-app-host .qrtx-scanline {
+  background: rgba(49, 106, 197, 0.45) !important;
+  box-shadow: 0 0 4px var(--xp-highlight) !important;
+}

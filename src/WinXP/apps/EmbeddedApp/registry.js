@@ -8,29 +8,34 @@ import computer32 from 'assets/windowsIcons/676(32x32).png';
 import computer16 from 'assets/windowsIcons/676(16x16).png';
 import controlPanel32 from 'assets/windowsIcons/300(32x32).png';
 import controlPanel16 from 'assets/windowsIcons/300(16x16).png';
-import calculator32 from 'assets/windowsIcons/74(32x32).png';
-import calculator16 from 'assets/windowsIcons/74(16x16).png';
 import help32 from 'assets/windowsIcons/747(32x32).png';
 import help16 from 'assets/windowsIcons/747(16x16).png';
 import search32 from 'assets/windowsIcons/299(32x32).png';
 import search16 from 'assets/windowsIcons/554(16x16).png';
-import ie32 from 'assets/windowsIcons/896(16x16).png';
+import run32 from 'assets/windowsIcons/743(32x32).png';
+import run16 from 'assets/windowsIcons/743(32x32).png';
+import todo32 from 'assets/windowsIcons/360(32x32).png';
+import todo16 from 'assets/windowsIcons/360(32x32).png';
+import bible32 from 'assets/windowsIcons/334(32x32).png';
+import bible16 from 'assets/windowsIcons/334(32x32).png';
+import calendar32 from 'assets/windowsIcons/301(32x32).png';
+import calendar16 from 'assets/windowsIcons/301(32x32).png';
+import pomodoro32 from 'assets/windowsIcons/716(16x16).png';
+import pomodoro16 from 'assets/windowsIcons/716(16x16).png';
+import kanban32 from 'assets/windowsIcons/358(32x32).png';
+import kanban16 from 'assets/windowsIcons/358(16x16).png';
+import clippy32 from 'assets/windowsIcons/357(16x16).png';
+import clippy16 from 'assets/windowsIcons/357(16x16).png';
+import textdiff32 from 'assets/windowsIcons/17(32x32).png';
+import textdiff16 from 'assets/windowsIcons/153(16x16).png';
+import qrtx32 from 'assets/windowsIcons/234(16x16).png';
+import qrtx16 from 'assets/windowsIcons/234(16x16).png';
 
 const P = process.env.PUBLIC_URL || '';
 const recycle32 = `${P}/apps/vendor/98/images/icons/recycle-bin-32x32.png`;
 const recycle16 = `${P}/apps/vendor/98/images/icons/recycle-bin-16x16.png`;
 const recycleFull32 = `${P}/apps/vendor/98/images/icons/recycle-bin-full-32x32.png`;
 const recycleFull16 = `${P}/apps/vendor/98/images/icons/recycle-bin-full-16x16.png`;
-const task32 = `${P}/apps/vendor/98/images/icons/task-32x32.png`;
-const task16 = `${P}/apps/vendor/98/images/icons/task-16x16.png`;
-const chm32 = `${P}/apps/vendor/98/images/icons/chm-32x32.png`;
-const chm16 = `${P}/apps/vendor/98/images/icons/chm-16x16.png`;
-const calendar32 = `${P}/apps/vendor/98/images/icons/favorites-folder-32x32.png`;
-const calendar16 = `${P}/apps/vendor/98/images/icons/favorites-folder-16x16.png`;
-const kanban32 = `${P}/apps/vendor/98/images/icons/programs-folder-32x32.png`;
-const kanban16 = `${P}/apps/vendor/98/images/icons/programs-folder-16x16.png`;
-const findFile32 = `${P}/apps/vendor/98/images/icons/find-file-32x32.png`;
-const findFile16 = `${P}/apps/vendor/98/images/icons/find-file-16x16.png`;
 
 /**
  * displayTitle — desktop icon & Start menu label (XP names where applicable)
@@ -121,8 +126,8 @@ export const embeddedAppDefs = [
     initFn: null,
     displayTitle: 'Run',
     headerTitle: 'Run',
-    desktopIcon: search32,
-    headerIcon: search16,
+    desktopIcon: run32,
+    headerIcon: run16,
     defaultSize: { width: 360, height: 165 },
     defaultOffset: { x: 240, y: 140 },
     showOnDesktop: false,
@@ -134,8 +139,8 @@ export const embeddedAppDefs = [
     initFn: 'initSearchApp',
     displayTitle: 'Search',
     headerTitle: 'Search',
-    desktopIcon: findFile32,
-    headerIcon: findFile16,
+    desktopIcon: search32,
+    headerIcon: search16,
     defaultSize: { width: 480, height: 400 },
     defaultOffset: { x: 220, y: 100 },
     showOnDesktop: false,
@@ -146,8 +151,8 @@ export const embeddedAppDefs = [
     initFn: 'initTodoApp',
     displayTitle: 'Todo Tasks',
     headerTitle: 'Todo Tasks',
-    desktopIcon: task32,
-    headerIcon: task16,
+    desktopIcon: todo32,
+    headerIcon: todo16,
     defaultSize: { width: 480, height: 400 },
     defaultOffset: { x: 80, y: 60 },
     showOnDesktop: true,
@@ -158,8 +163,8 @@ export const embeddedAppDefs = [
     initFn: 'initBibleApp',
     displayTitle: 'Bible',
     headerTitle: 'Bible',
-    desktopIcon: chm32,
-    headerIcon: chm16,
+    desktopIcon: bible32,
+    headerIcon: bible16,
     defaultSize: { width: 620, height: 480 },
     defaultOffset: { x: 90, y: 70 },
     showOnDesktop: true,
@@ -182,8 +187,8 @@ export const embeddedAppDefs = [
     initFn: 'initPomodoroApp',
     displayTitle: 'Pomodoro Timer',
     headerTitle: 'Pomodoro Timer',
-    desktopIcon: calculator32,
-    headerIcon: calculator16,
+    desktopIcon: pomodoro32,
+    headerIcon: pomodoro16,
     defaultSize: { width: 360, height: 320 },
     defaultOffset: { x: 110, y: 90 },
     showOnDesktop: true,
@@ -206,8 +211,8 @@ export const embeddedAppDefs = [
     initFn: 'initClippyApp',
     displayTitle: 'Office Assistant',
     headerTitle: 'Microsoft Office Assistant',
-    desktopIcon: help32,
-    headerIcon: help16,
+    desktopIcon: clippy32,
+    headerIcon: clippy16,
     defaultSize: { width: 720, height: 500 },
     defaultOffset: { x: 150, y: 130 },
     showOnDesktop: true,
@@ -218,8 +223,8 @@ export const embeddedAppDefs = [
     initFn: 'initTextDiffApp',
     displayTitle: 'Compare Documents',
     headerTitle: 'Compare Documents',
-    desktopIcon: search32,
-    headerIcon: search16,
+    desktopIcon: textdiff32,
+    headerIcon: textdiff16,
     defaultSize: { width: 640, height: 480 },
     defaultOffset: { x: 160, y: 140 },
     showOnDesktop: true,
@@ -230,8 +235,8 @@ export const embeddedAppDefs = [
     initFn: 'initQrtxApp',
     displayTitle: 'QRx Transmitter',
     headerTitle: 'QRx Transmitter',
-    desktopIcon: ie32,
-    headerIcon: ie32,
+    desktopIcon: qrtx32,
+    headerIcon: qrtx16,
     defaultSize: { width: 520, height: 480 },
     defaultOffset: { x: 200, y: 180 },
     showOnDesktop: true,

@@ -23,3 +23,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# lockfile (project uses npm + package-lock.json)
+yarn.lock
+
+# webpack/babel cache
+node_modules/.cache/
+
+# Windows
+Thumbs.db
+Desktop.ini

@@ -10,6 +10,3 @@ Included:
 Adapted code:
 - `vendor98.js` — icon paths, system sounds (from `src/helpers.js`, `programs/explorer/explorer.js`)
 - `explorer-toolbar.css` — toolbar styling (from `programs/explorer/explorer.css`)
-- `win98-theme.css` — theme CSS variables (from `lib/os-gui/windows-98.css`)
-- `classic-desktop.css` — desktop icon selection (from `classic.css`)
-- `window-switcher.js` — Alt+1 window switcher (from `src/window-switcher.js`, vanilla port)

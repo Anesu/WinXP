@@ -8,19 +8,20 @@ const V98_BASE = (typeof process !== 'undefined' && process.env && process.env.P
 const V98_APP_ICONS = {
   mycomputer: 'my-computer',
   bible: 'chm',
-  calendar: 'favorites-folder',
+  calendar: 'task',
   pomodoro: 'task',
-  todo: 'notepad',
+  todo: 'task',
   kanban: 'folder-open',
   recyclebin: 'recycle-bin',
   mail: 'mail',
-  journal: 'my-documents-folder',
+  journal: 'notepad',
   clippy: 'help',
-  textdiff: 'find-file',
+  textdiff: 'notepad-file',
   qrtx: 'settings',
   controlpanel: 'start-settings',
   help: 'help',
   run: 'programs-folder',
+  search: 'find-file',
 };
 
 const V98_PC_ICONS = {
@@ -36,10 +37,11 @@ const V98_PC_ICONS = {
   'folder-settings': 'settings',
   'folder-backups': 'folder',
   'shortcut-bible': 'chm',
-  'shortcut-todo': 'notepad',
+  'shortcut-todo': 'task',
   'shortcut-kanban': 'folder-open',
   'shortcut-pomodoro': 'task',
   'shortcut-clippy': 'help',
+  'shortcut-search': 'find-file',
   'shortcut-recyclebin': 'recycle-bin',
 };
 
