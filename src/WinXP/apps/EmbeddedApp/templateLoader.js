@@ -4,7 +4,7 @@ const APPS_BASE = `${PUBLIC}/apps/`;
 const loadedTemplatePaths = new Set();
 
 function rewriteTemplateHtml(html) {
-  return html.replace(/src="vendor\//g, `${APPS_BASE}vendor/`);
+  return html.replace(/src="vendor\//g, `src="${APPS_BASE}vendor/`);
 }
 
 /**
