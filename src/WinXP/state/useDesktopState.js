@@ -140,19 +140,10 @@ export function useDesktopState() {
       case 'arrange-name':
         dispatch({ type: SORT_ICONS });
         break;
-      case 'new-notepad':
-        dispatch({ type: ADD_APP, payload: appSettings.Notepad });
-        break;
-      case 'new-paint':
-        dispatch({ type: ADD_APP, payload: appSettings.Paint });
-        break;
-      case 'new-ie':
-        dispatch({ type: ADD_APP, payload: appSettings['Internet Explorer'] });
-        break;
-      case 'properties':
-        dispatch({ type: ADD_APP, payload: appSettings['Control Panel'] });
-        break;
       default:
+        if (appSettings[action]) {
+          dispatch({ type: ADD_APP, payload: appSettings[action] });
+        }
         break;
     }
   }, []);

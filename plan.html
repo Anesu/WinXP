@@ -469,6 +469,11 @@
                     <td><span class="status" style="background:#166534;color:#86efac">✅ Done</span></td>
                     <td>Refactored useElementResize into a unified algorithm. Replaced manual event subscriptions with useShellEvent across the app. Cleaned up AppShell.</td>
                 </tr>
+                <tr>
+                    <td>Phase 4: Data &amp; Polish</td>
+                    <td><span class="status" style="background:#166534;color:#86efac">✅ Done</span></td>
+                    <td>Fixed all linting errors in dropDownData.js, unified the desktop right-click menu to dynamically use appKeys, and suppressed the webamp source map warnings in .env.</td>
+                </tr>
             </table>
 
             <p><strong>Work performed in this session (after saving the review):</strong></p>
@@ -482,12 +487,11 @@
                 <li><strong>Phase 2 Implementation:</strong> Extracted `initState` and `reducer` from `WinXP/index.js` into `src/WinXP/state/reducer.js`.</li>
                 <li>Created `useDesktopState.js` hook to wrap the reducer and expose stable action dispatchers.</li>
                 <li>Unified `booted` and `shutdown` local states into an expanded `POWER_STATE` (`BOOTING`, `SHUTDOWN`, `START`, `TURN_OFF`, `LOG_OFF`), dramatically simplifying `WinXP/index.js`.</li>
-                <li><strong>Phase 3 Implementation:</strong> Rewrote `useElementResize` from ~400 lines of duplicated code into a clean, unified algorithm.</li>
-                <li>Replaced verbose `subscribeShellEvent` usage with the clean `useShellEvent` hook in `Footer`, `Icons`, and `WinXP/index.js`.</li>
-                <li>Cleaned up `AppShell` and fixed stale React refs warnings.</li>
+                <li><strong>Phase 4 Implementation:</strong> Fixed linter warnings in `dropDownData.js` across legacy apps.</li>
+                <li>Unified `DesktopContextMenu.js` actions to use `appSettings` keys directly, removing verbose switch/case maps.</li>
+                <li>Added `GENERATE_SOURCEMAP=false` to `.env` to eliminate the webamp source map build warning.</li>
             </ul>
-            <p><strong>Build verification (Phase 3):</strong> `npm run build` and `npm run lint` succeeded cleanly.</p>
-            <p><strong>Next for Phase 4:</strong> Data &amp; Polish. Standardize `dropDownData.js` across legacy apps to eliminate boilerplate, unify `DesktopContextMenu.js` strings, and fix the `webamp.bundle.js.map` build warning.</p>
+            <p><strong>Build verification (Phase 4):</strong> `npm run build` said "Compiled successfully." with 0 warnings. `npm run lint` also reported 0 warnings. The refactor is complete!</p>
         </div>
 
         <footer>

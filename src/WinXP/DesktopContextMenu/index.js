@@ -24,13 +24,13 @@ const MENU_ITEMS = [
     items: [
       { type: 'item', text: 'Shortcut', disabled: true },
       { type: 'separator' },
-      { type: 'item', text: 'Notepad', action: 'new-notepad' },
-      { type: 'item', text: 'Bitmap Image', action: 'new-paint' },
-      { type: 'item', text: 'Internet Explorer', action: 'new-ie' },
+      { type: 'item', text: 'Notepad', action: 'Notepad' },
+      { type: 'item', text: 'Bitmap Image', action: 'Paint' },
+      { type: 'item', text: 'Internet Explorer', action: 'Internet Explorer' },
     ],
   },
   { type: 'separator' },
-  { type: 'item', text: 'Properties', action: 'properties' },
+  { type: 'item', text: 'Properties', action: 'Control Panel' },
 ];
 
 const ACTION_BY_LABEL = MENU_ITEMS.reduce((map, item) => {
