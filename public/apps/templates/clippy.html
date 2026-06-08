@@ -1,0 +1,55 @@
+<template id="tpl-clippy">
+  <div class="win95-window" style="width:800px;height:500px;">
+    <div class="win-titlebar">
+      <span class="win-title">Microsoft Office Assistant</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="win-menubar">
+        <span class="win-menu-item" onclick="clippyNew()">New</span>
+        <span class="win-menu-item" onclick="clippyEdit()">Edit</span>
+        <span class="win-menu-item" onclick="clippyDelete()">Delete</span>
+        <span class="win-menu-item" onclick="clippyCopy()">Copy to Clipboard</span>
+      </div>
+      <div class="mail-toolbar">
+        <button class="win95-button" onclick="clippyNew()" style="height:22px;padding:0 8px;font-size:10px;">📎 New</button>
+        <button class="win95-button" onclick="clippyEdit()" style="height:22px;padding:0 8px;font-size:10px;">✎ Edit</button>
+        <button class="win95-button" onclick="clippyDelete()" style="height:22px;padding:0 8px;font-size:10px;">✕ Delete</button>
+        <span style="flex:1;"></span>
+        <button class="win95-button" onclick="clippyCopy()" style="height:22px;padding:0 8px;font-size:10px;">📋 Copy</button>
+        <input class="win95-input mail-search" id="clippy-search" placeholder="Search..." oninput="clippySearch()" style="width:150px;">
+      </div>
+      <div class="win-content mail-layout">
+        <div class="mail-sidebar">
+          <div class="mail-sidebar-inner" id="clippy-sidebar-inner"></div>
+        </div>
+        <div class="mail-list-pane" id="clippy-list-pane"></div>
+        <div class="clippy-preview-pane" id="clippy-preview-pane">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+    <div class="win-statusbar" id="clippy-status">Ready</div>
+  </div>
+</template>
+
+<!-- Clippy Variables Fill Dialog Template -->
+
+<template id="tpl-clippy-variables">
+  <div class="mail-var-overlay">
+    <div class="mail-var-dialog">
+      <div class="mail-var-dialog-title">Fill Prompt Variables</div>
+      <div class="mail-var-dialog-body" id="clippy-var-list"></div>
+      <div class="mail-var-dialog-buttons">
+        <button class="win95-button" onclick="clippyVarCancel()">Cancel</button>
+        <button class="win95-button" onclick="clippyVarCopy()" style="font-weight:bold;">📋 Copy to Clipboard</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- Help App -->

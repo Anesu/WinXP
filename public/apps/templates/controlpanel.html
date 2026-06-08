@@ -1,0 +1,103 @@
+<template id="tpl-controlpanel">
+  <div class="win95-window" style="width:580px;height:420px;">
+    <div class="win-titlebar">
+      <span class="win-title">🕹️ Control Panel</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+        <div class="win-menubar">
+          <span class="win-menu-item" onclick="cpTab('system')">System</span>
+          <span class="win-menu-item" onclick="cpTab('reset')">Reset</span>
+          <span class="win-menu-item" onclick="cpTab('pomodoro')">Pomodoro</span>
+          <span class="win-menu-item" onclick="cpTab('display')">Display</span>
+          <span class="win-menu-item" onclick="cpTab('mail')">Mail</span>
+          <span class="win-menu-item" onclick="cpTab('security')">Security</span>
+        </div>
+      <div class="win-content cp-content" id="cp-system-panel">
+        <div class="cp-section">
+          <div class="cp-section-title">System Information</div>
+          <div class="cp-row"><span class="cp-label">Browser:</span><span id="cp-browser">--</span></div>
+          <div class="cp-row"><span class="cp-label">localStorage Used:</span><span id="cp-storage">--</span></div>
+          <div class="cp-row"><span class="cp-label">User Agent:</span><span id="cp-useragent" style="font-size:9px;max-width:300px;overflow:hidden;text-overflow:ellipsis;"></span></div>
+          <button class="win95-button" onclick="cpClearCache()" style="margin-top:8px;">Clear Cache</button>
+        </div>
+      </div>
+      <div class="win-content cp-content" id="cp-reset-panel" style="display:none;">
+        <div class="cp-section">
+          <div class="cp-section-title">Reset Options</div>
+          <button class="win95-button" onclick="cpResetAll()" style="margin:4px 0;color:#ff0000;">Reset All Data</button>
+          <button class="win95-button" onclick="cpResetApp('journal')" style="margin:4px 0;">Reset Notepad</button>
+          <button class="win95-button" onclick="cpResetApp('mail')" style="margin:4px 0;">Reset Outlook Express</button>
+          <button class="win95-button" onclick="cpResetApp('bible')" style="margin:4px 0;">Reset Bible</button>
+          <button class="win95-button" onclick="cpResetApp('pomodoro')" style="margin:4px 0;">Reset Pomodoro</button>
+          <button class="win95-button" onclick="cpResetApp('clippy')" style="margin:4px 0;">Reset Office Assistant</button>
+        </div>
+      </div>
+      <div class="win-content cp-content" id="cp-pomodoro-panel" style="display:none;">
+        <div class="cp-section">
+          <div class="cp-section-title">Pomodoro Defaults</div>
+          <div class="cp-row"><span class="cp-label">Work Duration (min):</span><input class="win95-input" id="cp-pomodoro-work" type="number" min="1" max="60" style="width:60px;"></div>
+          <div class="cp-row"><span class="cp-label">Break Duration (min):</span><input class="win95-input" id="cp-pomodoro-break" type="number" min="1" max="30" style="width:60px;"></div>
+          <button class="win95-button" onclick="cpSavePomodoro()" style="margin-top:8px;">Save</button>
+        </div>
+      </div>
+      <div class="win-content cp-content" id="cp-display-panel" style="display:none;">
+        <div class="cp-section">
+          <div class="cp-section-title">Display Settings</div>
+          <div class="cp-row"><span class="cp-label">Clock Format:</span>
+            <select class="win95-input" id="cp-clock-format" style="width:120px;">
+              <option value="12">12-hour</option>
+              <option value="24">24-hour</option>
+            </select>
+          </div>
+          <div class="cp-row"><span class="cp-label">Show Taskbar Clock:</span><input type="checkbox" id="cp-show-clock" checked></div>
+          <div class="cp-row"><span class="cp-label">Desktop Theme:</span>
+            <select class="win95-input" id="cp-desktop-theme" style="width:120px;">
+              <option value="teal">Classic Teal</option>
+              <option value="slate">Classic Slate</option>
+              <option value="plum">Plum</option>
+              <option value="rose">Rose</option>
+              <option value="charcoal">Charcoal</option>
+            </select>
+          </div>
+          <button class="win95-button" onclick="cpSaveDisplay()" style="margin-top:8px;">Save</button>
+        </div>
+      </div>
+      <div class="win-content cp-content" id="cp-mail-panel" style="display:none;">
+        <div class="cp-section">
+          <div class="cp-section-title">Mail Defaults</div>
+          <div class="cp-row"><span class="cp-label">Default Sender:</span><input class="win95-input" id="cp-mail-sender" style="width:200px;"></div>
+          <div class="cp-row"><span class="cp-label">Signature:</span><textarea class="win95-input" id="cp-mail-sig" style="width:200px;height:60px;"></textarea></div>
+          <button class="win95-button" onclick="cpSaveMail()" style="margin-top:8px;">Save</button>
+        </div>
+      </div>
+      <div class="win-content cp-content" id="cp-security-panel" style="display:none;">
+        <div class="cp-section">
+          <div class="cp-section-title">Lock Screen PIN Security</div>
+          <div class="cp-row">
+            <span class="cp-label" style="width:140px;">Enable PIN Lock:</span>
+            <input type="checkbox" id="cp-security-enable-pin" onchange="cpTogglePin(this)">
+          </div>
+          <div id="cp-security-pin-inputs" style="display:none;flex-direction:column;gap:8px;margin-top:8px;">
+            <div class="cp-row">
+              <span class="cp-label" style="width:140px;">PIN Code (4 digits):</span>
+              <input class="win95-input" id="cp-security-pin" type="password" maxlength="4" style="width:80px;text-align:center;" placeholder="----">
+            </div>
+            <div class="cp-row">
+              <span class="cp-label" style="width:140px;">Confirm PIN:</span>
+              <input class="win95-input" id="cp-security-pin-confirm" type="password" maxlength="4" style="width:80px;text-align:center;" placeholder="----">
+            </div>
+          </div>
+          <button class="win95-button" onclick="cpSaveSecurity()" style="margin-top:12px;">Save Security Settings</button>
+        </div>
+      </div>
+    </div>
+    <div class="win-statusbar" id="cp-status">Ready</div>
+  </div>
+</template>
+
+<!-- Recycle Bin -->

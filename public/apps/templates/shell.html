@@ -1,0 +1,89 @@
+<template id="tpl-about-windows">
+  <div class="about-overlay" onclick="closeAboutWindows()">
+    <div class="about-dialog" onclick="event.stopPropagation()">
+      <div class="about-titlebar">
+        <span>About Windows</span>
+        <button class="win-btn-close" onclick="closeAboutWindows()">✕</button>
+      </div>
+      <div class="about-body">
+        <div class="about-logo">🪟</div>
+        <div class="about-version">Microsoft<span class="about-reg">&reg;</span> Windows XP</div>
+        <div class="about-ver">Version 5.1.2600</div>
+        <div class="about-copyright">Copyright &copy; 1981-2001 Microsoft Corp.</div>
+        <hr class="about-divider">
+        <div class="about-info">
+          This product is licensed to:<br>
+          <b>Anesu Mukusha</b><br><br>
+          Physical Memory Available to Windows: <span id="about-memory">64,000 KB</span><br>
+          System Resources: <span id="about-resources">85% free</span>
+        </div>
+      </div>
+      <div class="about-buttons">
+        <button class="win95-button" onclick="closeAboutWindows()">OK</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- Search Companion -->
+
+<template id="tpl-datetime-dialog">
+  <div class="datetime-overlay" onclick="closeDateTimeDialog()">
+    <div class="datetime-dialog" onclick="event.stopPropagation()">
+      <div class="datetime-dialog-titlebar">
+        <span>Date/Time Properties</span>
+        <button class="win-btn-close" onclick="closeDateTimeDialog()" style="margin-left:2px;">✕</button>
+      </div>
+      <div class="datetime-dialog-body">
+        <div class="datetime-panel">
+          <div class="datetime-calendar" id="datetime-calendar"></div>
+        </div>
+        <div class="datetime-panel">
+          <div class="datetime-clock-display">
+            <div class="datetime-clock-time" id="datetime-clock-time">12:00:00 PM</div>
+            <div class="datetime-clock-date" id="datetime-clock-date">January 1, 2026</div>
+          </div>
+        </div>
+      </div>
+      <div class="datetime-dialog-buttons">
+        <button class="win95-button" onclick="closeDateTimeDialog()">OK</button>
+        <button class="win95-button" onclick="closeDateTimeDialog()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- Lock Screen -->
+
+<template id="tpl-lockscreen">
+  <div class="lockscreen-overlay" id="lockscreen-overlay">
+    <div class="lockscreen-box">
+      <div class="lockscreen-title">Windows XP</div>
+      <div class="lockscreen-datetime" id="lockscreen-datetime"></div>
+      <div class="lockscreen-msg">This computer is in use and has been locked.</div>
+      <div class="lockscreen-submsg">Click anywhere to unlock</div>
+    </div>
+  </div>
+</template>
+
+<!-- About Windows Dialog -->
+
+<template id="tpl-lock-pin-dialog">
+  <div class="win95-window lock-pin-dialog" style="width:280px;height:130px;position:absolute;z-index:100005;left:50%;top:50%;transform:translate(-50%, -50%);box-shadow:2px 2px 10px rgba(0,0,0,0.5);">
+    <div class="win-titlebar">
+      <span class="win-title">Enter Password</span>
+    </div>
+    <div class="win-body" style="padding:12px;display:flex;flex-direction:column;gap:8px;background:#c0c0c0;flex:1;">
+      <div style="font-size:11px;color:#000;">Type your screen lock PIN:</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;width:30px;color:#000;">PIN:</span>
+        <input class="win95-input" id="lock-pin-input" type="password" maxlength="4" style="flex:1;height:20px;text-align:center;font-size:14px;letter-spacing:4px;" autofocus>
+      </div>
+      <div style="color:#ff0000;font-size:10px;height:12px;text-align:center;" id="lock-pin-error"></div>
+      <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:2px;">
+        <button class="win95-button" id="lock-pin-ok-btn" style="width:65px;font-weight:bold;height:22px;">OK</button>
+        <button class="win95-button" id="lock-pin-cancel-btn" style="width:65px;height:22px;">Cancel</button>
+      </div>
+    </div>
+  </div>
+</template>

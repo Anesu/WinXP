@@ -1,0 +1,23 @@
+<template id="tpl-search">
+  <div class="win95-window" style="width:480px;height:400px;">
+    <div class="win-titlebar">
+      <span class="win-title">Search</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body search-body">
+      <div class="search-bar">
+        <span style="font-size:11px;white-space:nowrap;">Search for:</span>
+        <input class="win95-input" id="search-query" placeholder="Files, notes, mail, tasks..." onkeydown="searchKey(event, this)" oninput="searchRun(this)">
+        <button class="win95-button" onclick="searchRun(this)" style="height:23px;padding:0 12px;font-weight:bold;">Search</button>
+      </div>
+      <div class="search-results" id="search-results"></div>
+    </div>
+    <div class="win-statusbar" id="search-status">Ready</div>
+  </div>
+</template>
+
+<!-- Run Dialog -->

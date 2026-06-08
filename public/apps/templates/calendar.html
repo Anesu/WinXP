@@ -1,0 +1,29 @@
+<template id="tpl-calendar">
+  <div class="win95-window" style="width:400px;height:500px;">
+    <div class="win-titlebar">
+      <span class="win-title">📅 Calendar</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="win-content calendar-container">
+        <div id="calendar-grid-area"></div>
+        <div class="calendar-events-panel" id="calendar-events-panel">
+          <div class="calendar-events-header">
+            <span id="calendar-events-date">Select a date</span>
+            <button class="win95-button cal-add-btn" onclick="calAddEvent()" style="height:20px;padding:0 6px;font-size:10px;">+ New</button>
+          </div>
+          <div class="calendar-events-list" id="calendar-events-list">
+            <div class="calendar-events-empty">No events. Click a date and press "+ New" to add one.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="win-statusbar" id="calendar-status">Ready</div>
+  </div>
+</template>
+
+<!-- Pomodoro App -->

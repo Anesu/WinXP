@@ -1,0 +1,78 @@
+<template id="tpl-mail">
+  <div class="win95-window" style="width:820px;height:520px;">
+    <div class="win-titlebar">
+      <span class="win-title">Outlook Express</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="win-menubar">
+        <span class="win-menu-item" onclick="mailNew()">New</span>
+        <span class="win-menu-item" onclick="mailEdit()">Edit</span>
+        <span class="win-menu-item" onclick="mailDelete()">Delete</span>
+        <span class="win-menu-item" onclick="mailCopy()">Copy to Clipboard</span>
+      </div>
+      <div class="mail-toolbar">
+        <button class="win95-button" onclick="mailNew()" style="height:22px;padding:0 8px;font-size:10px;">✉ New</button>
+        <button class="win95-button" onclick="mailEdit()" style="height:22px;padding:0 8px;font-size:10px;">✎ Edit</button>
+        <button class="win95-button" onclick="mailDelete()" style="height:22px;padding:0 8px;font-size:10px;">✕ Delete</button>
+        <span style="flex:1;"></span>
+        <button class="win95-button" onclick="mailCopy()" style="height:22px;padding:0 8px;font-size:10px;">📋 Copy</button>
+        <input class="win95-input mail-search" id="mail-search" placeholder="Search..." oninput="mailSearch()" style="width:150px;">
+      </div>
+      <div class="win-content mail-layout">
+        <div class="mail-sidebar">
+          <div class="mail-sidebar-inner" id="mail-sidebar-inner"></div>
+          <div class="mail-sidebar-footer">
+            <button class="mail-manage-btn" onclick="mailManageCategories()">⚙ Manage Categories</button>
+          </div>
+        </div>
+        <div class="mail-list-pane" id="mail-list-pane"></div>
+        <div class="mail-preview-pane" id="mail-preview-pane">
+          <div class="mail-preview-placeholder">Select a template to preview, or click <b>New</b> to create one.</div>
+        </div>
+      </div>
+    </div>
+    <div class="win-statusbar" id="mail-status">Ready</div>
+  </div>
+</template>
+
+<!-- Variable Fill Dialog Template -->
+
+<template id="tpl-mail-variables">
+  <div class="mail-var-overlay">
+    <div class="mail-var-dialog">
+      <div class="mail-var-dialog-title">Fill Template Variables</div>
+      <div class="mail-var-dialog-body" id="mail-var-list"></div>
+      <div class="mail-var-dialog-buttons">
+        <button class="win95-button" onclick="mailVarCancel()">Cancel</button>
+        <button class="win95-button" onclick="mailVarCopy()" style="font-weight:bold;">📋 Copy to Clipboard</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- Category Management Dialog -->
+
+<template id="tpl-mail-categories">
+  <div class="mail-var-overlay">
+    <div class="mail-cat-dialog">
+      <div class="mail-cat-dialog-title">Manage Categories</div>
+      <div class="mail-cat-dialog-body">
+        <div class="mail-cat-list" id="mail-cat-list"></div>
+        <div class="mail-cat-add-row">
+          <input class="win95-input" id="mail-cat-new-input" placeholder="New category name..." onkeydown="if(event.key==='Enter')mailCatAdd()">
+          <button class="win95-button" onclick="mailCatAdd()">Add</button>
+        </div>
+      </div>
+      <div class="mail-cat-dialog-buttons">
+        <button class="win95-button" onclick="mailCatSave()" style="font-weight:bold;">Done</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- Journal App (Simplified - Notes Only) -->

@@ -1,4 +1,4 @@
-// Run dialog command parser (templates.html onclick handlers).
+// Run dialog command parser (templates/run.html onclick handlers).
 
 function runCheckKey(e, inputEl) {
   if (e.key === 'Enter') {

@@ -1,0 +1,58 @@
+<template id="tpl-bible">
+  <div class="win95-window" style="width:620px;height:520px;">
+    <div class="win-titlebar">
+      <span class="win-title">📖 Bible</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="win-menubar">
+        <span class="win-menu-item" onclick="biblePrevChapter()">◀ Prev</span>
+        <span class="win-menu-item" onclick="bibleNextChapter()">Next ▶</span>
+        <span class="win-menu-item" onclick="bibleGoToBook()">Go To Book</span>
+        <span class="win-menu-item" onclick="bibleSearch()">Search</span>
+        <span class="win-menu-item" onclick="bibleToggleBookmarks()">★ Bookmarks</span>
+      </div>
+      <div class="bible-toolbar">
+        <select class="win95-select bible-book-select" id="bible-book" onchange="bibleChangeBook()"></select>
+        <button class="bible-nav-btn" onclick="biblePrevChapter()">◀</button>
+        <span class="bible-chapter-label" id="bible-chapter-label">Chapter 1</span>
+        <button class="bible-nav-btn" onclick="bibleNextChapter()">▶</button>
+        <span style="flex:1;"></span>
+        <select class="win95-select bible-translation-select" id="bible-translation" onchange="bibleChangeTranslation()">
+          <option value="NIV">NIV</option>
+          <option value="NKJV">NKJV</option>
+          <option value="KJV">KJV</option>
+          <option value="ESV">ESV</option>
+          <option value="NASB">NASB</option>
+        </select>
+        <input class="win95-input bible-search-input" id="bible-search-input" placeholder="Search..." onkeydown="bibleSearchKey(event)">
+        <button class="win95-button" onclick="bibleSearch()" style="height:22px;padding:0 6px;font-size:10px;">Find</button>
+      </div>
+      <div class="win-content bible-layout">
+        <div class="bible-sidebar" id="bible-sidebar">
+          <div class="bible-sidebar-section">
+            <div class="bible-sidebar-title">Old Testament</div>
+            <div id="bible-ot-list"></div>
+          </div>
+          <div class="bible-sidebar-section">
+            <div class="bible-sidebar-title">New Testament</div>
+            <div id="bible-nt-list"></div>
+          </div>
+        </div>
+        <div class="bible-main">
+          <div class="bible-passage-header" id="bible-passage-header">Select a book and chapter</div>
+          <div class="bible-passage" id="bible-passage">
+            <div class="bible-placeholder">📖 Choose a book from the side panel, or use the dropdown above to navigate to a passage.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="win-statusbar" id="bible-status">Ready</div>
+  </div>
+</template>
+
+<!-- Calendar App -->

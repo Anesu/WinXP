@@ -1,0 +1,36 @@
+<template id="tpl-textdiff">
+  <div class="win95-window" style="width:720px;height:480px;">
+    <div class="win-titlebar">
+      <span class="win-title">🔍 Text Diff</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="win-menubar">
+        <span class="win-menu-item" onclick="diffCompare()">Compare</span>
+        <span class="win-menu-item" onclick="diffClear()">Clear All</span>
+        <span class="win-menu-item" onclick="diffSwap()">Swap ↔</span>
+      </div>
+      <div class="win-content diff-layout">
+        <div class="diff-panel">
+          <div class="diff-panel-header">Version A (Original)</div>
+          <textarea class="diff-textarea" id="diff-text-a" placeholder="Paste original text here..."></textarea>
+        </div>
+        <div class="diff-panel">
+          <div class="diff-panel-header">Version B (Revised)</div>
+          <textarea class="diff-textarea" id="diff-text-b" placeholder="Paste revised text here..."></textarea>
+        </div>
+      </div>
+      <div class="diff-result-container" id="diff-result-container" style="display:none;">
+        <div class="diff-result-header">Differences</div>
+        <div class="diff-result" id="diff-result"></div>
+      </div>
+    </div>
+    <div class="win-statusbar" id="diff-status">Ready — paste two versions and click Compare</div>
+  </div>
+</template>
+
+<!-- Date/Time Properties Dialog -->

@@ -1,0 +1,44 @@
+<template id="tpl-mycomputer">
+  <div class="win95-window" style="width:560px;height:420px;">
+    <div class="win-titlebar">
+      <span class="win-title">My Computer</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body" style="display:flex;flex-direction:column;position:relative;">
+      <div class="win-menubar">
+        <span class="win-menu-item" onclick="pcHandleAction('backup', event)">Backup to PC</span>
+        <span class="win-menu-item" onclick="pcHandleAction('restore', event)">Restore from PC</span>
+        <span class="win-menu-item" onclick="pcHandleAction('view-icons', event)">View</span>
+        <span class="win-menu-item" onclick="pcHandleAction('help', event)">Help</span>
+      </div>
+      <div class="pc-explorer-toolbar">
+        <div class="pc-explorer-toolbar-row">
+          <button type="button" class="pc-toolbar-explorer-btn pc-tb-back" title="Back" disabled><span class="pc-tb-icon"></span></button>
+          <button type="button" class="pc-toolbar-explorer-btn pc-tb-forward" title="Forward" disabled><span class="pc-tb-icon"></span></button>
+          <span class="pc-explorer-sep" aria-hidden="true"></span>
+          <button type="button" class="pc-toolbar-explorer-btn pc-tb-up" title="Up"><span class="pc-tb-icon"></span></button>
+          <span class="pc-explorer-sep" aria-hidden="true"></span>
+          <button type="button" class="pc-toolbar-explorer-btn pc-tb-view" title="Views"><span class="pc-tb-icon"></span></button>
+          <div class="pc-address-bar">
+            <span class="pc-address-label">Address</span>
+            <img class="pc-address-icon v98-icon-img" src="vendor/98/images/icons/my-computer-16x16.png" width="16" height="16" alt="">
+            <span class="pc-address-path">My Computer</span>
+          </div>
+        </div>
+      </div>
+      <div class="pc-progress hidden">
+        <div class="pc-progress-label"></div>
+        <div class="pc-progress-track"><div class="pc-progress-fill"></div></div>
+      </div>
+      <div class="win-content mycomputer-content pc-view-icons"></div>
+      <input type="file" class="pc-restore-input" accept=".winxp,.win95,application/json" style="display:none;">
+    </div>
+    <div class="win-statusbar">0 object(s)</div>
+  </div>
+</template>
+
+<!-- Control Panel -->

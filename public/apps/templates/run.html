@@ -1,0 +1,27 @@
+<template id="tpl-run">
+  <div class="win95-window" style="width:360px;height:165px;">
+    <div class="win-titlebar">
+      <span class="win-title">Run</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body run-body" style="padding:10px;display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:32px;">🏃</span>
+        <div style="font-size:11px;line-height:1.4;">Type the name of a program, folder, or document, and Windows will open it for you.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;width:40px;">Open:</span>
+        <input class="win95-input" id="run-input" style="flex:1;height:20px;padding:2px 4px;font-size:11px;" onkeydown="runCheckKey(event, this)">
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:4px;">
+        <button class="win95-button" onclick="runExecute(this)" style="width:75px;font-weight:bold;height:23px;">OK</button>
+        <button class="win95-button" onclick="closeWindow(this)" style="width:75px;height:23px;">Cancel</button>
+        <button class="win95-button" disabled style="width:75px;height:23px;">Browse...</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- Clippy Prompts App -->

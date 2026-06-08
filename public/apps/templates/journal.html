@@ -1,0 +1,40 @@
+<template id="tpl-journal">
+  <div class="win95-window" style="width:650px;height:500px;">
+    <div class="win-titlebar">
+      <span class="win-title">Untitled - Notepad</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="win-menubar">
+        <span class="win-menu-item" onclick="journalNotesNew()">✚ New Note</span>
+        <span class="win-menu-item" onclick="journalNotesDelete()">✕ Delete</span>
+        <span class="win-menu-item" onclick="journalNotesExport()">📤 Export</span>
+        <span class="win-menu-item" onclick="journalNotesImportClick()">📥 Import</span>
+        <span style="flex:1;"></span>
+        <input class="win95-input notes-search-input" id="journal-notes-search" placeholder="Search notes..." oninput="journalNotesSearch()" style="width:140px;height:20px;font-size:10px;">
+        <input type="file" id="journal-import-input" accept=".txt" style="display:none;" onchange="journalNotesImport(event)">
+      </div>
+      <div class="win-content journal-simple-layout">
+        <div class="notes-sidebar" id="journal-notes-sidebar"></div>
+        <div class="notes-editor-container">
+          <input class="win95-input notes-title-input" id="journal-notes-title" placeholder="Note title...">
+          <div class="notes-toolbar">
+            <button class="win95-button notes-tb-btn" onclick="journalNotesFormat('bold')" title="Bold"><b>B</b></button>
+            <button class="win95-button notes-tb-btn" onclick="journalNotesFormat('italic')" title="Italic"><i>I</i></button>
+            <button class="win95-button notes-tb-btn" onclick="journalNotesFormat('underline')" title="Underline"><u>U</u></button>
+            <span style="width:1px;background:#808080;margin:2px 4px;align-self:stretch;"></span>
+            <button class="win95-button notes-tb-btn" onclick="journalNotesFormat('insertUnorderedList')" title="Bullet List">•≡</button>
+          </div>
+          <div class="notes-editor-body" id="journal-notes-editor" contenteditable="true"></div>
+        </div>
+      </div>
+    </div>
+    <div class="win-statusbar" id="journal-status">Ready</div>
+  </div>
+</template>
+
+<!-- Text Diff App -->

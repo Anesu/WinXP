@@ -1,0 +1,18 @@
+<template id="tpl-pomodoro">
+  <div class="win95-window" style="width:360px;height:380px;">
+    <div class="win-titlebar">
+      <span class="win-title">⏱️ Pomodoro</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="win-content pomodoro-container" id="pomodoro-container"></div>
+    </div>
+    <div class="win-statusbar" id="pomodoro-status"></div>
+  </div>
+</template>
+
+<!-- Todo Tasks App -->

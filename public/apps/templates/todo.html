@@ -1,0 +1,18 @@
+<template id="tpl-todo">
+  <div class="win95-window" style="width:480px;height:400px;">
+    <div class="win-titlebar">
+      <span class="win-title">✅ Todo Tasks</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="win-content todo-container" id="todo-container"></div>
+    </div>
+    <div class="win-statusbar"></div>
+  </div>
+</template>
+
+<!-- Kanban Board -->

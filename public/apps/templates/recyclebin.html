@@ -1,0 +1,22 @@
+<template id="tpl-recyclebin">
+  <div class="win95-window" style="width:500px;height:350px;">
+    <div class="win-titlebar">
+      <span class="win-title">Recycle Bin</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="win-menubar">
+        <span class="win-menu-item" onclick="restoreAllRecycleBin()">Restore All</span>
+        <span class="win-menu-item" onclick="emptyRecycleBin()">Empty Recycle Bin</span>
+      </div>
+      <div class="win-content" id="recyclebin-content" style="overflow-y:auto;"></div>
+    </div>
+    <div class="win-statusbar" id="recyclebin-status">0 object(s)</div>
+  </div>
+</template>
+
+<!-- Bible App -->

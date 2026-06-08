@@ -1,6 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { getEmbeddedScriptChain, getEmbeddedAppManifest } from './appRegistry';
+import {
+  getEmbeddedScriptChain,
+  getEmbeddedAppManifest,
+  getTemplatePathByAppKey,
+  SHELL_TEMPLATE_PATH,
+} from './appRegistry';
+import { isTemplateLoaded, loadTemplateBundle } from './templateLoader';
 
 const PUBLIC = process.env.PUBLIC_URL || '';
 const APPS_BASE = `${PUBLIC}/apps/`;
@@ -20,24 +26,27 @@ function loadScriptOnce(src) {
   });
 }
 
-let templatesReady = false;
-async function ensureTemplates() {
-  if (templatesReady || document.getElementById('tpl-todo')) {
-    templatesReady = true;
+let shellTemplatesReady = false;
+
+async function ensureShellTemplates() {
+  if (shellTemplatesReady || isTemplateLoaded('tpl-lockscreen')) {
+    shellTemplatesReady = true;
     return;
   }
-  const res = await fetch(`${APPS_BASE}templates.html`);
-  let html = await res.text();
-  html = html.replace(/src="vendor\//g, `src="${APPS_BASE}vendor/`);
-  const host = document.getElementById('app-templates') || document.body;
-  host.insertAdjacentHTML('beforeend', html);
-  templatesReady = true;
+  await loadTemplateBundle(SHELL_TEMPLATE_PATH);
+  shellTemplatesReady = true;
+}
+
+async function ensureAppTemplate(appKey, templateId) {
+  await ensureShellTemplates();
+  if (isTemplateLoaded(templateId)) return;
+  await loadTemplateBundle(getTemplatePathByAppKey(appKey));
 }
 
 let scriptsReady = false;
 
 export async function preloadEmbeddedApps() {
-  await ensureTemplates();
+  await ensureShellTemplates();
   await ensureAppScripts();
 }
 
@@ -66,7 +75,7 @@ export default function AppShell({ appKey, templateId, initFn, winId }) {
     const bridgeWinId = String(winId);
 
     async function mount() {
-      await ensureTemplates();
+      await ensureAppTemplate(appKey, templateId);
       await ensureAppScripts();
       if (!mounted || !hostRef.current) return;
 

@@ -49,6 +49,7 @@ const recycleFull16 = `${P}/apps/vendor/98/images/icons/recycle-bin-full-16x16.p
  * @property {string} headerTitle
  * @property {string} [shellTitle] — window title in embedded-bridge manifest
  * @property {string} templateId
+ * @property {string} [templatePath] — HTML bundle under public/apps/templates/
  * @property {string|null} initFn — global init function name
  * @property {string|null} [scriptPath] — app JS under public/
  * @property {number} [scriptOrder] — load order among app scripts
@@ -347,6 +348,20 @@ export const APP_REGISTRY = [
     menuAliases: ['Run...'],
   },
 ];
+
+/** Shell dialogs (datetime, lock screen, about) loaded at bootstrap. */
+export const SHELL_TEMPLATE_PATH = '/apps/templates/shell.html';
+
+/** @param {AppRegistryEntry} def */
+export function getTemplatePath(def) {
+  return def.templatePath ?? `/apps/templates/${def.appKey}.html`;
+}
+
+/** @param {string} appKey */
+export function getTemplatePathByAppKey(appKey) {
+  const def = APP_REGISTRY.find((d) => d.appKey === appKey);
+  return def ? getTemplatePath(def) : `/apps/templates/${appKey}.html`;
+}
 
 /** @type {string[]} Per-domain localStorage stores (load order matters). */
 export const STORE_SCRIPTS = [

@@ -1,0 +1,146 @@
+<template id="tpl-qrtx">
+  <div class="win95-window" style="width:720px;height:450px;">
+    <div class="win-titlebar">
+      <span class="win-title">📡 QRx Transmitter</span>
+      <div class="win-titlebar-btns">
+        <button class="win-btn-min" onclick="minimizeWindow(this)">─</button>
+        <button class="win-btn-max" onclick="maximizeWindow(this)">□</button>
+        <button class="win-btn-close" onclick="closeWindow(this)">✕</button>
+      </div>
+    </div>
+    <div class="win-body qrtx-body" style="display:flex; flex-direction:column; height:100%;">
+      <div class="win-menubar">
+        <span class="win-menu-item qrtx-menu-start" onclick="qrtxStart(this)">Start</span>
+        <span class="win-menu-item qrtx-menu-stop" onclick="qrtxStop(this)" style="display:none; color:#800000; font-weight:bold;">Stop</span>
+        <span class="win-menu-item qrtx-menu-reset" onclick="qrtxReset(this)">Reset</span>
+      </div>
+      
+      <div class="win-content qrtx-layout" style="display:flex; flex:1; background:#c0c0c0; padding:6px; gap:8px; overflow:hidden;">
+        
+        <!-- Left Column: Tabs, Input, Settings -->
+        <div class="qrtx-left-col" style="display:flex; flex-direction:column; flex:1; gap:6px; min-width:0;">
+          
+          <!-- Tabs Bar -->
+          <div class="qrtx-tabs" style="display:flex; border-bottom:2px solid #808080;">
+            <button class="qrtx-tab active" data-tab="text">Paste Text</button>
+            <button class="qrtx-tab" data-tab="file">Upload File</button>
+          </div>
+          
+          <!-- Tab Contents -->
+          <div class="qrtx-tab-contents" style="display:flex; flex:1; min-height:120px;">
+            <!-- Text Tab -->
+            <div class="qrtx-tab-panel qrtx-panel-text" style="display:flex; flex:1; flex-direction:column;">
+              <textarea class="win95-input qrtx-text-input" style="flex:1; width:100%; resize:none; font-family:monospace; font-size:11px;" placeholder="Paste text, scripts, keys, or code blocks here...&#10;Receiver uses a DotAll parser so newlines are fully preserved."></textarea>
+            </div>
+            <!-- File Tab -->
+            <div class="qrtx-tab-panel qrtx-panel-file" style="display:none; flex:1; flex-direction:column;">
+              <div class="win95-inset qrtx-drop-zone" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border:2px dashed #808080; background:#fff; cursor:pointer; padding:10px; text-align:center;">
+                <span style="font-size:24px; margin-bottom:4px;">📤</span>
+                <div style="font-size:11px; font-weight:bold; color:#000;">Drag & drop file here</div>
+                <div style="font-size:9px; color:#808080; margin-top:2px;">or click to browse</div>
+                <input type="file" class="qrtx-file-input" style="display:none;">
+              </div>
+              <div class="qrtx-file-banner" style="display:none; align-items:center; justify-content:space-between; background:#d4d0c8; border:1px solid #808080; padding:6px; font-size:11px; margin-top:4px; width:100%;">
+                <span class="qrtx-file-details" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; color:#000; text-align:left;"></span>
+                <button class="win95-button qrtx-file-remove" style="height:18px; padding:0 6px; font-size:9px;">Remove</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Base64 Encoding option -->
+          <div style="display:flex; align-items:center; gap:6px; padding:4px 0;">
+            <input type="checkbox" class="win95-checkbox qrtx-base64-checkbox" id="qrtx-b64-chk">
+            <label for="qrtx-b64-chk" style="font-size:11px; color:#000; cursor:pointer; font-weight:bold;">Base64 Payload Encoding</label>
+          </div>
+          
+          <!-- Warning alert box -->
+          <div class="win95-inset qrtx-alert-box" style="display:none; background:#ffffe1; border:1px solid #808080; padding:6px; font-size:10px; color:#800000; align-items:flex-start; gap:6px;">
+            <span>⚠️</span>
+            <div style="text-align:left;"><b>Character Conflict:</b> Input contains <code>|</code> or <code>]</code>, which could break parsing. Enable Base64 encoding.</div>
+          </div>
+          
+          <!-- Slider: Loop Frame Interval -->
+          <div style="display:flex; flex-direction:column; gap:2px; background:#d4d0c8; border:1px solid #808080; padding:6px; box-shadow:inset 1px 1px 0 #fff;">
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:#000; font-weight:bold;">
+              <span>Loop Frame Interval</span>
+              <span class="qrtx-speed-label" style="color:#000080;">300ms</span>
+            </div>
+            <input type="range" class="win95-trackbar qrtx-speed-slider" min="150" max="1000" step="50" value="300" style="width:100%;">
+          </div>
+          
+          <!-- Slider: QR Chunk Payload Size -->
+          <div style="display:flex; flex-direction:column; gap:2px; background:#d4d0c8; border:1px solid #808080; padding:6px; box-shadow:inset 1px 1px 0 #fff;">
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:#000; font-weight:bold;">
+              <span>QR Chunk Payload Size</span>
+              <span class="qrtx-chunk-label" style="color:#008000;">250 chars</span>
+            </div>
+            <input type="range" class="win95-trackbar qrtx-chunk-slider" min="200" max="300" step="10" value="250" style="width:100%;">
+          </div>
+          
+        </div>
+        
+        <!-- Right Column: QR viewport & Stats Fieldsets -->
+        <div class="qrtx-right-col" style="display:flex; flex-direction:column; width:250px; gap:6px; flex-shrink:0;">
+          
+          <!-- QR Viewport -->
+          <div class="win95-inset qrtx-viewport" style="display:flex; align-items:center; justify-content:center; background:#fff; height:190px; border:2px solid #808080; position:relative; overflow:hidden;">
+            <div class="qrtx-qrcode" style="display:flex; align-items:center; justify-content:center;"></div>
+            <!-- Scan line overlay -->
+            <div class="qrtx-scanline" style="display:none; position:absolute; left:0; top:0; width:100%; height:2px; background:rgba(0,0,128,0.5); box-shadow:0 0 4px #000080; animation:qrtx-scan 2s linear infinite;"></div>
+          </div>
+          
+          <!-- Stats Panel -->
+          <fieldset class="qrtx-groupbox" style="border:2px solid #dfdfdf; border-top-color:#dfdfdf; border-left-color:#dfdfdf; border-bottom-color:#808080; border-right-color:#808080; padding:8px; display:flex; flex-direction:column; gap:6px; flex:1; background:#c0c0c0; margin:0;">
+            <legend style="font-size:11px; font-weight:bold; color:#000; padding:0 4px;">Status & Link Stats</legend>
+            
+            <!-- Status Badge -->
+            <div style="display:flex; align-items:center; gap:6px; font-size:10px; font-weight:bold; text-transform:uppercase; color:#808080; padding-top:4px;">
+              <span class="qrtx-ping-dot" style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#808080;"></span>
+              <span class="qrtx-status-text">Idle</span>
+            </div>
+            
+            <div style="display:flex; gap:6px; text-align:left;">
+              <div style="flex:1; border:1px solid #808080; background:#d4d0c8; padding:3px; font-size:10px; color:#000; box-shadow:inset 1px 1px 0 #fff;">
+                <div style="color:#808080; font-size:9px; text-transform:uppercase;">Session ID</div>
+                <div class="qrtx-stat-tx-id" style="font-weight:bold;">----</div>
+              </div>
+              <div style="flex:1; border:1px solid #808080; background:#d4d0c8; padding:3px; font-size:10px; color:#000; box-shadow:inset 1px 1px 0 #fff;">
+                <div style="color:#808080; font-size:9px; text-transform:uppercase;">Total Frames</div>
+                <div class="qrtx-stat-total-frames" style="font-weight:bold;">0</div>
+              </div>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div style="border:1px solid #808080; background:#d4d0c8; padding:4px; display:flex; flex-direction:column; gap:3px; text-align:left; box-shadow:inset 1px 1px 0 #fff;">
+              <div style="display:flex; justify-content:space-between; font-size:10px; color:#000;">
+                <span>Frame: <b class="qrtx-prog-frame">0</b> of <b class="qrtx-prog-total">0</b></span>
+                <span class="qrtx-prog-percent">0%</span>
+              </div>
+              <!-- Retro progress bar -->
+              <div class="win95-inset" style="height:14px; background:#fff; display:flex; padding:1px; overflow:hidden;">
+                <div class="qrtx-prog-fill" style="width:0%; height:100%; background:#000080;"></div>
+              </div>
+            </div>
+            
+            <div style="display:flex; gap:6px; text-align:left;">
+              <div style="flex:1; border:1px solid #808080; background:#d4d0c8; padding:3px; font-size:10px; color:#000; box-shadow:inset 1px 1px 0 #fff;">
+                <div style="color:#808080; font-size:9px; text-transform:uppercase;">Loop Speed</div>
+                <div class="qrtx-stat-speed" style="font-weight:bold;">0 Hz</div>
+              </div>
+              <div style="flex:1; border:1px solid #808080; background:#d4d0c8; padding:3px; font-size:10px; color:#000; box-shadow:inset 1px 1px 0 #fff;">
+                <div style="color:#808080; font-size:9px; text-transform:uppercase;">Mode</div>
+                <div class="qrtx-stat-mode" style="font-weight:bold;">Plain Text</div>
+              </div>
+            </div>
+            
+          </fieldset>
+          
+        </div>
+        
+      </div>
+      <div class="win-statusbar qrtx-statusbar" style="font-size:11px; padding:2px 4px;">Ready</div>
+    </div>
+  </div>
+</template>
+
+<!-- Enter PIN Dialog for Screen Unlock -->
