@@ -47,7 +47,7 @@ const recycleFull16 = `${P}/apps/vendor/98/images/icons/recycle-bin-full-16x16.p
  * @property {string} appKey
  * @property {string} displayTitle
  * @property {string} headerTitle
- * @property {string} [shellTitle] — window title in vanilla shell-bridge
+ * @property {string} [shellTitle] — window title in embedded-bridge manifest
  * @property {string} templateId
  * @property {string|null} initFn — global init function name
  * @property {string|null} [scriptPath] — app JS under public/
@@ -351,12 +351,19 @@ export const APP_REGISTRY = [
 export const EMBEDDED_BOOTSTRAP_SCRIPTS = [
   '/apps/qrcode.js',
   '/apps/stores.js',
+  '/apps/shell-events.js',
+  '/apps/shell-state.js',
+  '/apps/shell-helpers.js',
   '/apps/vendor/98/vendor98.js',
 ];
 
 export const EMBEDDED_GLOBAL_SCRIPTS = [
+  '/apps/template-manager.js',
+  '/apps/embedded-bridge.js',
+  '/apps/run-dialog.js',
+  '/apps/shell-dialogs.js',
+  '/apps/shell-keyboard.js',
   '/apps/apps/lockscreen.js',
-  '/apps/shell-bridge.js',
 ];
 
 /** @returns {string[]} */
@@ -371,7 +378,7 @@ export function getEmbeddedScriptChain() {
   ];
 }
 
-/** Serializable manifest for shell-bridge (injected on window before bridge loads). */
+/** Serializable manifest for embedded-bridge (injected on window before global scripts load). */
 export function getEmbeddedAppManifest() {
   return APP_REGISTRY.map((def) => ({
     appKey: def.appKey,
