@@ -535,28 +535,9 @@ function openApp(app) {
 }
 
 // ============================================================
-//  APP CONTROLLER REGISTRY
-//  One entry per app. Adding a new app = one object literal.
-//  The switch statement and title lookup are gone.
+//  APP CONTROLLER REGISTRY — built from window.__winxpAppManifest
+//  (injected by React AppShell from src/.../appRegistry.js)
 // ============================================================
-const appControllers = {
-  bible:        { title: 'Bible',                    init: initBibleApp,       cleanup: null },
-  calendar:     { title: 'Calendar',                 init: initCalendarApp,    cleanup: null },
-  pomodoro:     { title: 'Pomodoro Timer',           init: initPomodoroApp,    cleanup: cleanupPomodoro },
-  todo:         { title: 'Todo Tasks',               init: initTodoApp,        cleanup: null },
-  kanban:       { title: 'Kanban Board',             init: initKanbanApp,      cleanup: null },
-  mycomputer:   { title: 'My Computer',              init: initMyComputerApp,  cleanup: null },
-  controlpanel: { title: 'Control Panel',            init: function(winId, el) { cpInit(); }, cleanup: null },
-  recyclebin:   { title: 'Recycle Bin',              init: initRecycleBinApp,  cleanup: null },
-  mail:         { title: 'Outlook Express',          init: initMailApp,        cleanup: null },
-  journal:      { title: 'Untitled - Notepad',       init: initJournalApp,     cleanup: null },
-  textdiff:     { title: 'Compare Documents',        init: initTextDiffApp,    cleanup: null },
-  run:          { title: 'Run',                      init: null,               cleanup: null },
-  search:       { title: 'Search',                   init: initSearchApp,      cleanup: null },
-  clippy:       { title: 'Microsoft Office Assistant', init: initClippyApp,    cleanup: null },
-  help:         { title: 'Help and Support',         init: null,               cleanup: null },
-  qrtx:         { title: 'QRx Transmitter',          init: initQrtxApp,        cleanup: cleanupQrtx },
-};
 function cleanupPomodoro(winId) {
   if (pomodoroState[winId]) {
     clearInterval(pomodoroState[winId].interval);
@@ -569,6 +550,37 @@ function cleanupQrtx(winId) {
     clearInterval(w.qrtxState.loopIntervalId);
   }
 }
+
+const CLEANUP_HANDLERS = {
+  pomodoro: cleanupPomodoro,
+  qrtx: cleanupQrtx,
+};
+
+function buildAppControllersFromManifest(manifest) {
+  const controllers = {};
+  if (!manifest || !Array.isArray(manifest)) return controllers;
+  manifest.forEach(function(entry) {
+    var init = null;
+    if (entry.useCpInit) {
+      init = function() {
+        if (typeof cpInit === 'function') cpInit();
+      };
+    } else if (entry.initFn) {
+      init = function(winId, el) {
+        var fn = window[entry.initFn];
+        if (typeof fn === 'function') fn(winId, el);
+      };
+    }
+    controllers[entry.appKey] = {
+      title: entry.title,
+      init: init,
+      cleanup: entry.cleanup ? CLEANUP_HANDLERS[entry.cleanup] : null,
+    };
+  });
+  return controllers;
+}
+
+const appControllers = buildAppControllersFromManifest(window.__winxpAppManifest);
 
 function getAppTitle(app) {
   const ctrl = appControllers[app];

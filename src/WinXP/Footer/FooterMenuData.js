@@ -33,7 +33,7 @@ import painter from 'assets/windowsIcons/680(16x16).png';
 import sound from 'assets/windowsIcons/690(16x16).png';
 import recent from 'assets/windowsIcons/716(16x16).png';
 import compatibility from 'assets/windowsIcons/747(16x16).png';
-import help from 'assets/windowsIcons/747(16x16).png';
+
 import magnifier from 'assets/windowsIcons/817(16x16).png';
 import mediaPlayer from 'assets/windowsIcons/846(16x16).png';
 import tour from 'assets/windowsIcons/853(32x32).png';
@@ -56,20 +56,16 @@ import pinball from 'assets/windowsIcons/pinball.png';
 import restore from 'assets/windowsIcons/restore.ico';
 import mine from 'assets/minesweeper/mine-icon.png';
 import computer from 'assets/windowsIcons/676(16x16).png';
-import controlPanel from 'assets/windowsIcons/300(16x16).png';
-import winamp from 'assets/windowsIcons/winamp.png';
-import searchApp from 'assets/windowsIcons/554(16x16).png';
-import todoApp from 'assets/windowsIcons/360(32x32).png';
-import bibleApp from 'assets/windowsIcons/334(32x32).png';
-import calendarApp from 'assets/windowsIcons/301(32x32).png';
-import pomodoroApp from 'assets/windowsIcons/716(16x16).png';
-import kanbanApp from 'assets/windowsIcons/358(16x16).png';
-import clippyApp from 'assets/windowsIcons/357(16x16).png';
-import textdiffApp from 'assets/windowsIcons/153(16x16).png';
-import qrtxApp from 'assets/windowsIcons/234(16x16).png';
 
-const P = process.env.PUBLIC_URL || '';
-const v98recycle = `${P}/apps/vendor/98/images/icons/recycle-bin-16x16.png`;
+import winamp from 'assets/windowsIcons/winamp.png';
+import {
+  appRegistryByKey,
+  buildProductivitySuiteMenuItems,
+} from '../apps/EmbeddedApp/appRegistry';
+
+const recycleBinMenuIcon =
+  appRegistryByKey.recyclebin.startMenuIcon ??
+  appRegistryByKey.recyclebin.headerIcon;
 
 export const MyRecentDocuments = [
   {
@@ -96,25 +92,7 @@ export const AllPrograms = [
     icon: menu,
     text: 'Productivity Suite',
     bottom: 'initial',
-    items: [
-      { type: 'item', icon: outlook, text: 'Outlook Express' },
-      { type: 'item', icon: notepad, text: 'Notepad' },
-      { type: 'item', icon: computer, text: 'My Computer' },
-      { type: 'item', icon: controlPanel, text: 'Control Panel' },
-      { type: 'item', icon: v98recycle, text: 'Recycle Bin' },
-      { type: 'separator' },
-      { type: 'item', icon: todoApp, text: 'Todo Tasks' },
-      { type: 'item', icon: bibleApp, text: 'Bible' },
-      { type: 'item', icon: calendarApp, text: 'Calendar' },
-      { type: 'item', icon: pomodoroApp, text: 'Pomodoro Timer' },
-      { type: 'item', icon: kanbanApp, text: 'Kanban Board' },
-      { type: 'item', icon: clippyApp, text: 'Office Assistant' },
-      { type: 'item', icon: textdiffApp, text: 'Compare Documents' },
-      { type: 'item', icon: qrtxApp, text: 'QRx Transmitter' },
-      { type: 'separator' },
-      { type: 'item', icon: searchApp, text: 'Search' },
-      { type: 'item', icon: help, text: 'Help and Support' },
-    ],
+    items: buildProductivitySuiteMenuItems(),
   },
   { type: 'separator' },
   {
@@ -294,7 +272,7 @@ export const AllPrograms = [
       },
       {
         type: 'item',
-        icon: v98recycle,
+        icon: recycleBinMenuIcon,
         text: 'Recycle Bin',
       },
       {

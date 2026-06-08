@@ -25,10 +25,9 @@ import shut from 'assets/windowsIcons/310(32x32).png';
 import logOff from 'assets/windowsIcons/restore.ico';
 import allProgramsIcon from 'assets/windowsIcons/all-programs.ico';
 import winamp from 'assets/windowsIcons/winamp.png';
-import notepad from 'assets/windowsIcons/327(32x32).png';
-import calculator from 'assets/windowsIcons/74(32x32).png';
 import empty from 'assets/empty.png';
 
+import { buildPinnedStartMenuItems } from '../apps/EmbeddedApp/appRegistry';
 import { AllPrograms, ConnectTo, MyRecentDocuments } from './FooterMenuData';
 
 function FooterMenu({ className, onClick }) {
@@ -57,25 +56,8 @@ function FooterMenu({ className, onClick }) {
           <Items
             onClick={onClick}
             items={[
-              { icon: notepad, text: 'Notepad' },
-              {
-                icon: `${process.env.PUBLIC_URL}/apps/vendor/98/images/icons/task-32x32.png`,
-                text: 'Todo Tasks',
-              },
-              {
-                icon: `${process.env.PUBLIC_URL}/apps/vendor/98/images/icons/chm-32x32.png`,
-                text: 'Bible',
-              },
-              {
-                icon: `${process.env.PUBLIC_URL}/apps/vendor/98/images/icons/favorites-folder-32x32.png`,
-                text: 'Calendar',
-              },
+              ...buildPinnedStartMenuItems(),
               { icon: mine, text: 'Minesweeper' },
-              {
-                icon: `${process.env.PUBLIC_URL}/apps/vendor/98/images/icons/programs-folder-32x32.png`,
-                text: 'Kanban Board',
-              },
-              { icon: calculator, text: 'Pomodoro Timer' },
               { icon: winamp, text: 'Winamp' },
               { icon: paint, text: 'Paint' },
             ]}

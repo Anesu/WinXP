@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { getEmbeddedScriptChain, getEmbeddedAppManifest } from './appRegistry';
 
 const PUBLIC = process.env.PUBLIC_URL || '';
 const APPS_BASE = `${PUBLIC}/apps/`;
@@ -43,27 +44,8 @@ export async function preloadEmbeddedApps() {
 async function ensureAppScripts() {
   if (scriptsReady) return;
   window.APPS_PUBLIC_BASE = APPS_BASE;
-  const chain = [
-    '/apps/qrcode.js',
-    '/apps/stores.js',
-    '/apps/vendor/98/vendor98.js',
-    '/apps/apps/recyclebin.js',
-    '/apps/apps/mycomputer.js',
-    '/apps/apps/bible.js',
-    '/apps/apps/journal.js',
-    '/apps/apps/calendar.js',
-    '/apps/apps/pomodoro.js',
-    '/apps/apps/todo.js',
-    '/apps/apps/kanban.js',
-    '/apps/apps/mail.js',
-    '/apps/apps/clippy.js',
-    '/apps/apps/textdiff.js',
-    '/apps/apps/search.js',
-    '/apps/apps/lockscreen.js',
-    '/apps/apps/controlpanel.js',
-    '/apps/apps/qrtx.js',
-    '/apps/shell-bridge.js',
-  ];
+  window.__winxpAppManifest = getEmbeddedAppManifest();
+  const chain = getEmbeddedScriptChain();
   for (const src of chain) {
     await loadScriptOnce(src);
   }

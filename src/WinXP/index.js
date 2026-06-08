@@ -18,7 +18,7 @@ import {
 } from './constants/actions';
 import { FOCUSING, POWER_STATE } from './constants';
 import { defaultIconState, defaultAppState, appSettings } from './apps';
-import { appByKey } from './apps/EmbeddedApp';
+import { appByKey, buildMenuAliasMap } from './apps/EmbeddedApp';
 import { preloadEmbeddedApps } from './apps/EmbeddedApp/AppShell';
 import Modal from './Modal';
 import Footer from './Footer';
@@ -258,32 +258,9 @@ function WinXP() {
   }, [openEmbeddedApp]);
 
   const menuAliases = {
+    ...buildMenuAliasMap(),
     Internet: 'Internet Explorer',
-    'E-mail': 'Outlook Express',
-    Mail: 'Outlook Express',
-    Journal: 'Notepad',
-    Notepad: 'Notepad',
-    'Clippy Prompts': 'Office Assistant',
-    'Text Diff': 'Compare Documents',
-    Pomodoro: 'Pomodoro Timer',
-    'Run...': 'Run',
-    Search: 'Search',
-    'Help and Support': 'Help and Support',
-    'Windows Explorer': 'My Computer',
-    'Tour Windows XP': 'Help and Support',
     'Windows Media Player': 'Winamp',
-    'My Computer': 'My Computer',
-    'Control Panel': 'Control Panel',
-    'Recycle Bin': 'Recycle Bin',
-    'Outlook Express': 'Outlook Express',
-    Bible: 'Bible',
-    Calendar: 'Calendar',
-    'Kanban Board': 'Kanban Board',
-    'Todo Tasks': 'Todo Tasks',
-    'Compare Documents': 'Compare Documents',
-    'QRx Transmitter': 'QRx Transmitter',
-    'Office Assistant': 'Office Assistant',
-    'Pomodoro Timer': 'Pomodoro Timer',
     Paint: 'Paint',
     Winamp: 'Winamp',
     Minesweeper: 'Minesweeper',
