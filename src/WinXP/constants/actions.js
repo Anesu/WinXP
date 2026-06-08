@@ -8,5 +8,7 @@ export const SELECT_ICONS = 'SELECT_ICONS';
 export const FOCUS_DESKTOP = 'FOCUS_DESKTOP';
 export const START_SELECT = 'START_SELECT';
 export const END_SELECT = 'END_SELECT';
+export const SORT_ICONS = 'SORT_ICONS';
 export const POWER_OFF = 'POWER_OFF';
 export const CANCEL_POWER_OFF = 'CANCEL_POWER_OFF';
+export const RESET_SESSION = 'RESET_SESSION';

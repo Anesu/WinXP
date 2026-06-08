@@ -2,7 +2,7 @@
 
 document.addEventListener('keydown', (e) => {
   if (document.querySelector('.lockscreen-overlay')) {
-    if (e.target && e.target.closest('.lock-pin-dialog')) {
+    if (e.target && e.target.closest('.xp-unlock-form')) {
       return;
     }
     e.preventDefault();

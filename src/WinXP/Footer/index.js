@@ -39,6 +39,9 @@ function Footer({
   onPomodoroClick,
 }) {
   const [time, setTime] = useState(getTime);
+  const [userName, setUserName] = useState(
+    () => window.ShellAPI?.getSettings?.().userName || 'User',
+  );
   const [menuOn, setMenuOn] = useState(false);
   const [pomodoro, setPomodoro] = useState(null);
   const [flashIds, setFlashIds] = useState(() => new Set());
@@ -74,6 +77,14 @@ function Footer({
     window.addEventListener('mousedown', onMouseDown);
     return () => window.removeEventListener('mousedown', onMouseDown);
   }, [menuOn]);
+
+  useEffect(() => {
+    const settings = window.ShellAPI?.getSettings?.();
+    if (settings?.userName) setUserName(settings.userName);
+    return subscribeShellEvent(ShellEvents.SETTINGS, (detail) => {
+      if (detail?.userName) setUserName(detail.userName);
+    });
+  }, []);
 
   useEffect(() => {
     const timers = flashTimers.current;
@@ -137,7 +148,9 @@ function Footer({
     <Container onMouseDown={_onMouseDown}>
       <div className="footer__items left">
         <div ref={menu} className="footer__start__menu">
-          {menuOn && <FooterMenu onClick={_onClickMenuItem} />}
+          {menuOn && (
+            <FooterMenu onClick={_onClickMenuItem} userName={userName} />
+          )}
         </div>
         <img
           src={startButton}

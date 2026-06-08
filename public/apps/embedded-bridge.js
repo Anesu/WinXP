@@ -179,8 +179,10 @@ function showAboutWindows() {
   if (!tpl) return;
   const clone = tpl.content.firstElementChild.cloneNode(true);
   document.body.appendChild(clone);
+  const userEl = clone.querySelector('#about-user-name');
   const memEl = clone.querySelector('#about-memory');
   const resEl = clone.querySelector('#about-resources');
+  if (userEl) userEl.textContent = controlPanelStore.getUserName();
   if (memEl) memEl.textContent = Math.round(window.performance?.memory?.jsHeapSizeLimit / 1024 || 65536).toLocaleString() + ' KB';
   if (resEl) resEl.textContent = Math.floor(70 + Math.random() * 25) + '% free';
 }
@@ -208,9 +210,40 @@ shellEvents.on('window:focused', winId => {
 shellEvents.on('store:recyclebin:changed', updateRecycleBinIcon);
 updateRecycleBinIcon();
 
+ShellAPI.notify(ShellAPI.events.SETTINGS, {
+  userName: controlPanelStore.getUserName(),
+});
+
+function saveSessionBeforePowerOff() {
+  if (typeof state !== 'undefined' && state.windows) {
+    Object.values(state.windows).forEach((w) => {
+      if (w.app === 'journal' && typeof journalNotesAutoSave === 'function') {
+        journalNotesAutoSave();
+      }
+    });
+  }
+  if (typeof flushFilesystem === 'function') {
+    flushFilesystem();
+  } else if (typeof saveFilesystem === 'function') {
+    saveFilesystem();
+  }
+  if (typeof saveBibleCache === 'function') {
+    saveBibleCache();
+  }
+  if (
+    typeof controlPanelStore !== 'undefined' &&
+    controlPanelStore.get('autoBackupOnExit', false) &&
+    typeof filesystem !== 'undefined' &&
+    typeof filesystem.saveAutoBackup === 'function'
+  ) {
+    filesystem.saveAutoBackup();
+  }
+}
+
 ShellAPI.registerEmbedded({
   mount: initEmbeddedApp,
   unmount: unregisterAppWindow,
+  saveSession: saveSessionBeforePowerOff,
 });
 
 setInterval(() => {

@@ -28,6 +28,8 @@ describe('shellBridge seam', () => {
     expect(ShellEvents.WINDOW_FLASH_STOP).toBe(
       window.ShellAPI.events.WINDOW_FLASH_STOP,
     );
+    expect(ShellEvents.SETTINGS).toBe(window.ShellAPI.events.SETTINGS);
+    expect(ShellEvents.POWER_OFF).toBe(window.ShellAPI.events.POWER_OFF);
   });
 
   it('wireShellBridge registers openApp on ShellAPI', () => {

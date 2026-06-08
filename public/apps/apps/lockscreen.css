@@ -1,76 +1,354 @@
-/* ===== LOCK SCREEN ===== */
-.lockscreen-overlay {
+/* ===== WINDOWS XP LOCK / WELCOME SCREEN ===== */
+
+.xp-lockscreen {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(180deg, #5a9fd4 0%, #3a7fc8 40%, #245edb 100%);
+  inset: 0;
   z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  font-family: Tahoma, 'Segoe UI', sans-serif;
+  color: #fff;
+  background: #3a6ea5 url('https://i.imgur.com/Zk6TR5k.jpg') center center / cover no-repeat;
+  cursor: default;
+  overflow: hidden;
+}
+
+.xp-lockscreen.hidden {
+  display: none;
+}
+
+/* Top welcome banner */
+.xp-lockscreen-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 82px;
+  padding: 12px 24px;
+  background: linear-gradient(
+    180deg,
+    #1c65d9 0%,
+    #1860d2 35%,
+    #0f4fbf 70%,
+    #0a3f9f 100%
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+}
+
+.xp-lockscreen-flag {
+  width: 38px;
+  height: 38px;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.xp-lockscreen-brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  flex: 1;
+}
+
+.xp-lockscreen-ms {
+  font-size: 14px;
+  font-style: italic;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+}
+
+.xp-lockscreen-win {
+  font-size: 26px;
+  font-weight: bold;
+  letter-spacing: -0.5px;
+}
+
+.xp-lockscreen-win em {
+  font-style: normal;
+  font-weight: 300;
+}
+
+.xp-lockscreen-datetime {
+  font-size: 11px;
+  color: #d6e8ff;
+  text-align: right;
+  white-space: nowrap;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35);
+}
+
+/* Main content area */
+.xp-lockscreen-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 12% 8%;
+  min-height: 0;
+}
+
+.xp-lockscreen-message {
+  margin: 0 0 28px 8px;
+  font-size: 15px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.55);
+}
+
+/* User account tile */
+.xp-lockscreen-users {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.xp-user-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #fff;
+  font-family: inherit;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.65);
+  transition: transform 0.12s ease;
+}
+
+.xp-user-tile:hover {
+  transform: scale(1.03);
+}
+
+.xp-user-tile:active {
+  transform: scale(0.98);
+}
+
+.xp-user-tile-frame {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  width: 72px;
+  height: 72px;
+  padding: 4px;
+  background: linear-gradient(180deg, #fff 0%, #ece9d8 55%, #d6d2c2 100%);
+  border: 2px solid #fff;
+  border-radius: 4px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px #aca899;
 }
-.lockscreen-overlay.hidden {
+
+.xp-user-tile-icon {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.xp-user-tile-name {
+  font-size: 13px;
+  font-weight: bold;
+  max-width: 120px;
+  text-align: center;
+  word-break: break-word;
+}
+
+/* Inline unlock form (after clicking user) */
+.xp-unlock-form {
+  width: 100%;
+  max-width: 420px;
+  margin-left: 8px;
+}
+
+.xp-unlock-form.hidden {
   display: none;
 }
-.lockscreen-box {
-  text-align: center;
-  color: #ffffff;
-  padding: 40px;
+
+.xp-unlock-form-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 18px;
+  background: rgba(10, 40, 100, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
 }
-.lockscreen-title {
-  font-size: 42px;
+
+.xp-unlock-icon-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  padding: 3px;
+  background: linear-gradient(180deg, #fff 0%, #ece9d8 100%);
+  border: 1px solid #fff;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.xp-unlock-icon {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.xp-unlock-fields {
+  flex: 1;
+  min-width: 0;
+}
+
+.xp-unlock-username {
+  font-size: 16px;
   font-weight: bold;
-  letter-spacing: -1px;
-  margin-bottom: 16px;
-  font-style: italic;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.35);
-  font-family: Tahoma, 'Segoe UI', sans-serif;
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
-.lockscreen-datetime {
-  font-size: 14px;
-  margin-bottom: 32px;
-  color: #c0c0c0;
-}
-.lockscreen-msg {
-  font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 6px;
-}
-.lockscreen-submsg {
+
+.xp-unlock-label {
+  display: block;
   font-size: 11px;
-  color: #c0c0c0;
-  margin-bottom: 24px;
-}
-.lockscreen-click-hint {
-  font-size: 10px;
-  color: #808080;
-  margin-top: 40px;
-  animation: lockscreen-blink 2s ease-in-out infinite;
-}
-@keyframes lockscreen-blink {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
+  margin-bottom: 6px;
+  color: #e8f4fd;
 }
 
+.xp-unlock-password-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-/* ===== LOCK SCREEN PIN DIALOG & SECURITY ===== */
-.lock-pin-dialog {
-  border: 2px solid;
-  border-color: #ffffff #000000 #000000 #ffffff !important;
-  background: #c0c0c0;
+.xp-unlock-password {
+  flex: 1;
+  height: 24px;
+  padding: 2px 6px;
+  font-family: Tahoma, sans-serif;
+  font-size: 12px;
+  border: 1px solid #7f9db9;
+  border-radius: 2px;
+  background: #fff;
+  color: #000;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.12);
+  outline: none;
 }
-#lock-pin-input {
-  letter-spacing: 4px;
-  font-size: 14px;
-  text-align: center;
+
+.xp-unlock-password:focus {
+  border-color: #316ac5;
+  outline: 1px solid #316ac5;
 }
-#lock-pin-error {
-  color: #ff0000;
-  font-size: 10px;
-  height: 12px;
-  text-align: center;
+
+.xp-unlock-submit {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  background: radial-gradient(
+    circle at 35% 30%,
+    #b8e86a 0%,
+    #7cc142 45%,
+    #4a9e28 75%,
+    #2d6e14 100%
+  );
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  position: relative;
 }
-#cp-security-pin-inputs {
+
+.xp-unlock-submit::after {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 8px;
+  width: 10px;
+  height: 10px;
+  border-top: 3px solid #fff;
+  border-right: 3px solid #fff;
+  transform: rotate(45deg);
+  filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.25));
+}
+
+.xp-unlock-submit:hover {
+  filter: brightness(1.08);
+}
+
+.xp-unlock-submit:active {
+  filter: brightness(0.92);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.xp-unlock-error {
+  min-height: 16px;
+  margin-top: 8px;
+  font-size: 11px;
+  color: #ffcccc;
+  font-weight: bold;
+}
+
+.xp-lockscreen-users.hidden {
+  display: none;
+}
+
+/* Footer */
+.xp-lockscreen-footer {
+  flex-shrink: 0;
+  padding: 0 24px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.xp-turn-off {
+  font-family: Tahoma, sans-serif;
+  font-size: 11px;
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  padding: 4px 0;
+}
+
+.xp-turn-off:hover {
+  color: #e8f4fd;
+}
+
+/* XP-style login progress bar */
+.xp-lockscreen-progress {
+  width: 100%;
+  height: 14px;
+  background: #1a3f7a;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+.xp-lockscreen-progress.hidden {
+  display: none;
+}
+
+.xp-lockscreen-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: repeating-linear-gradient(
+    90deg,
+    #9ee85a 0px,
+    #9ee85a 12px,
+    #f0e442 12px,
+    #f0e442 24px
+  );
+  transition: width 1.4s ease-in-out;
+}
+
+/* Control Panel security panel */
+#cp-security-password-inputs {
   border-top: 1px solid #808080;
   padding-top: 8px;
 }

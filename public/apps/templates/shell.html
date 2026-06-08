@@ -3,7 +3,7 @@
     <div class="about-dialog" onclick="event.stopPropagation()">
       <div class="about-titlebar">
         <span>About Windows</span>
-        <button class="win-btn-close" onclick="closeAboutWindows()">✕</button>
+        <button class="win-btn-close" onclick="closeAboutWindows()" title="Close" aria-label="Close"></button>
       </div>
       <div class="about-body">
         <div class="about-logo">🪟</div>
@@ -13,7 +13,7 @@
         <hr class="about-divider">
         <div class="about-info">
           This product is licensed to:<br>
-          <b>Anesu Mukusha</b><br><br>
+          <b id="about-user-name">User</b><br><br>
           Physical Memory Available to Windows: <span id="about-memory">64,000 KB</span><br>
           System Resources: <span id="about-resources">85% free</span>
         </div>
@@ -32,7 +32,7 @@
     <div class="datetime-dialog" onclick="event.stopPropagation()">
       <div class="datetime-dialog-titlebar">
         <span>Date/Time Properties</span>
-        <button class="win-btn-close" onclick="closeDateTimeDialog()" style="margin-left:2px;">✕</button>
+        <button class="win-btn-close" onclick="closeDateTimeDialog()" title="Close" aria-label="Close"></button>
       </div>
       <div class="datetime-dialog-body">
         <div class="datetime-panel">
@@ -53,37 +53,56 @@
   </div>
 </template>
 
-<!-- Lock Screen -->
+<!-- Windows XP Lock / Welcome Screen -->
 
 <template id="tpl-lockscreen">
-  <div class="lockscreen-overlay" id="lockscreen-overlay">
-    <div class="lockscreen-box">
-      <div class="lockscreen-title">Windows XP</div>
-      <div class="lockscreen-datetime" id="lockscreen-datetime"></div>
-      <div class="lockscreen-msg">This computer is in use and has been locked.</div>
-      <div class="lockscreen-submsg">Click anywhere to unlock</div>
-    </div>
+  <div class="xp-lockscreen lockscreen-overlay" id="lockscreen-overlay">
+    <header class="xp-lockscreen-header">
+      <img class="xp-lockscreen-flag" id="lockscreen-flag" alt="" draggable="false">
+      <div class="xp-lockscreen-brand">
+        <span class="xp-lockscreen-ms">Microsoft</span>
+        <span class="xp-lockscreen-win">Windows <em>XP</em></span>
+      </div>
+      <div class="xp-lockscreen-datetime" id="lockscreen-datetime"></div>
+    </header>
+
+    <main class="xp-lockscreen-main">
+      <p class="xp-lockscreen-message" id="lockscreen-message">To begin, click your user name</p>
+
+      <div class="xp-lockscreen-users" id="lockscreen-users">
+        <button type="button" class="xp-user-tile" id="lockscreen-user-tile">
+          <span class="xp-user-tile-frame">
+            <img class="xp-user-tile-icon" id="lockscreen-user-icon" alt="" draggable="false">
+          </span>
+          <span class="xp-user-tile-name" id="lockscreen-user-name"></span>
+        </button>
+      </div>
+
+      <div class="xp-unlock-form hidden" id="lockscreen-unlock-form">
+        <div class="xp-unlock-form-inner">
+          <span class="xp-unlock-icon-frame">
+            <img class="xp-unlock-icon" id="lockscreen-unlock-icon" alt="" draggable="false">
+          </span>
+          <div class="xp-unlock-fields">
+            <div class="xp-unlock-username" id="lockscreen-unlock-username"></div>
+            <label class="xp-unlock-label" for="lockscreen-password">Type your password:</label>
+            <div class="xp-unlock-password-row">
+              <input type="password" id="lockscreen-password" class="xp-unlock-password" autocomplete="off" spellcheck="false">
+              <button type="button" class="xp-unlock-submit" id="lockscreen-submit" title="Log On" aria-label="Log On"></button>
+            </div>
+            <div class="xp-unlock-error" id="lockscreen-error" role="alert"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="xp-lockscreen-footer">
+      <button type="button" class="xp-turn-off" id="lockscreen-turn-off">Turn off computer</button>
+      <div class="xp-lockscreen-progress hidden" id="lockscreen-progress" aria-hidden="true">
+        <div class="xp-lockscreen-progress-fill" id="lockscreen-progress-fill"></div>
+      </div>
+    </footer>
   </div>
 </template>
 
 <!-- About Windows Dialog -->
-
-<template id="tpl-lock-pin-dialog">
-  <div class="win95-window lock-pin-dialog" style="width:280px;height:130px;position:absolute;z-index:100005;left:50%;top:50%;transform:translate(-50%, -50%);box-shadow:2px 2px 10px rgba(0,0,0,0.5);">
-    <div class="win-titlebar">
-      <span class="win-title">Enter Password</span>
-    </div>
-    <div class="win-body" style="padding:12px;display:flex;flex-direction:column;gap:8px;background:#c0c0c0;flex:1;">
-      <div style="font-size:11px;color:#000;">Type your screen lock PIN:</div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span style="font-size:11px;width:30px;color:#000;">PIN:</span>
-        <input class="win95-input" id="lock-pin-input" type="password" maxlength="4" style="flex:1;height:20px;text-align:center;font-size:14px;letter-spacing:4px;" autofocus>
-      </div>
-      <div style="color:#ff0000;font-size:10px;height:12px;text-align:center;" id="lock-pin-error"></div>
-      <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:2px;">
-        <button class="win95-button" id="lock-pin-ok-btn" style="width:65px;font-weight:bold;height:22px;">OK</button>
-        <button class="win95-button" id="lock-pin-cancel-btn" style="width:65px;height:22px;">Cancel</button>
-      </div>
-    </div>
-  </div>
-</template>

@@ -12,56 +12,8 @@ import winamp from 'assets/windowsIcons/winamp.png';
 import paintLarge from 'assets/windowsIcons/680(32x32).png';
 import paint from 'assets/windowsIcons/680(16x16).png';
 
-const gen = () => {
-  let id = -1;
-  return () => {
-    id += 1;
-    return id;
-  };
-};
-const genId = gen();
-const genIndex = gen();
-
-const MyComputerApp = embeddedAppSettings['My Computer'].component;
-
-export const defaultAppState = [
-  {
-    component: InternetExplorer,
-    header: {
-      title: 'Internet Explorer',
-      icon: iePaper,
-    },
-    defaultSize: { width: 700, height: 500 },
-    defaultOffset: { x: 130, y: 20 },
-    resizable: true,
-    minimized: false,
-    maximized: window.innerWidth < 800,
-    id: genId(),
-    zIndex: genIndex(),
-  },
-  {
-    component: Minesweeper,
-    header: { title: 'Minesweeper', icon: mine },
-    defaultSize: { width: 0, height: 0 },
-    defaultOffset: { x: 180, y: 170 },
-    resizable: false,
-    minimized: false,
-    maximized: false,
-    id: genId(),
-    zIndex: genIndex(),
-  },
-  {
-    component: MyComputerApp,
-    header: embeddedAppSettings['My Computer'].header,
-    defaultSize: embeddedAppSettings['My Computer'].defaultSize,
-    defaultOffset: embeddedAppSettings['My Computer'].defaultOffset,
-    resizable: true,
-    minimized: false,
-    maximized: window.innerWidth < 800,
-    id: genId(),
-    zIndex: genIndex(),
-  },
-];
+/** Clean desktop on startup — apps open only when the user launches them. */
+export const defaultAppState = [];
 
 const productivityDesktopIcons = desktopEmbeddedApps.map((def, index) => ({
   id: 100 + index,

@@ -6,6 +6,8 @@ export const ShellEvents = {
   RECYCLEBIN: 'recyclebin',
   WINDOW_FLASH_START: 'window-flash-start',
   WINDOW_FLASH_STOP: 'window-flash-stop',
+  SETTINGS: 'settings',
+  POWER_OFF: 'power-off',
 };
 
 /**

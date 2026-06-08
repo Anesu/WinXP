@@ -14,6 +14,13 @@ function saveFilesystem() {
   }, 250);
 }
 
+function flushFilesystem() {
+  clearTimeout(_saveTimer);
+  _saveTimer = null;
+  try { localStorage.setItem(FILESYSTEM_KEY, JSON.stringify(fs)); }
+  catch (e) { /* quota exceeded — silent */ }
+}
+
 function fmtDate(d) {
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }

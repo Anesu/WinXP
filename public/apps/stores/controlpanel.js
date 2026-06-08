@@ -13,9 +13,20 @@ function createControlPanelStore() {
     getDesktopTheme() { return this.get('desktopTheme', 'teal'); },
     getMailSender() { return this.get('mailSender', ''); },
     getMailSignature() { return this.get('mailSignature', ''); },
-    getPinEnabled() { return this.get('lockPinEnabled', false); },
-    getPinCode() { return this.get('lockPin', ''); },
-    setPin(code) { this.set('lockPin', code); this.set('lockPinEnabled', !!code); },
-    clearPin() { this.set('lockPin', ''); this.set('lockPinEnabled', false); },
+    getUserName() { return this.get('userName', 'User'); },
+    getPinEnabled() { return this.getPasswordEnabled(); },
+    getPinCode() { return this.getPassword(); },
+    setPin(code) { this.setPassword(code); },
+    clearPin() { this.clearPassword(); },
+    getPasswordEnabled() { return this.get('lockPinEnabled', false); },
+    getPassword() { return this.get('lockPin', ''); },
+    setPassword(password) {
+      this.set('lockPin', password);
+      this.set('lockPinEnabled', true);
+    },
+    clearPassword() {
+      this.set('lockPin', '');
+      this.set('lockPinEnabled', false);
+    },
   };
 }

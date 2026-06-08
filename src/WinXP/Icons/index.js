@@ -108,22 +108,26 @@ function Icon({
 
 const IconsContainer = styled.div`
   position: absolute;
-  margin-top: 24px;
-  margin-left: 24px;
-  display: grid;
-  grid-template-columns: repeat(4, 76px);
-  grid-auto-rows: minmax(72px, auto);
-  gap: 12px 20px;
-  align-items: start;
-  max-width: calc(100vw - 48px);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 30px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 2px;
+  pointer-events: none;
 `;
 
 const StyledIcon = styled(Icon)`
-  width: 76px;
+  width: 72px;
   margin-bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  pointer-events: auto;
   &__text__container {
     width: 100%;
     font-size: 10px;

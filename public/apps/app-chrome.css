@@ -295,18 +295,12 @@ body {
   border-color: #cc8800;
 }
 
-/* System tray */
+/* System tray — layout only; XP visuals come from React Footer styled-components */
 #taskbar-tray {
   flex-shrink: 0;
-  height: 22px;
+  height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 8px;
-  border-top: 2px solid #808080;
-  border-left: 2px solid #808080;
-  border-bottom: 2px solid #ffffff;
-  border-right: 2px solid #ffffff;
-  background: #c0c0c0;
 }
 #clock {
   font-size: 11px;

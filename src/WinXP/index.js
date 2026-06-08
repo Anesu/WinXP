@@ -1,4 +1,10 @@
-import React, { useReducer, useRef, useCallback, useEffect } from 'react';
+import React, {
+  useReducer,
+  useRef,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import styled, { keyframes } from 'styled-components';
 import useMouse from 'react-use/lib/useMouse';
 
@@ -13,14 +19,22 @@ import {
   FOCUS_DESKTOP,
   START_SELECT,
   END_SELECT,
+  SORT_ICONS,
   POWER_OFF,
   CANCEL_POWER_OFF,
+  RESET_SESSION,
 } from './constants/actions';
 import { FOCUSING, POWER_STATE } from './constants';
 import { defaultIconState, defaultAppState, appSettings } from './apps';
 import { appByKey, buildMenuAliasMap } from './apps/EmbeddedApp';
-import { preloadEmbeddedApps } from './apps/EmbeddedApp/AppShell';
-import { wireShellBridge } from './apps/EmbeddedApp/shellBridge';
+import {
+  wireShellBridge,
+  subscribeShellEvent,
+  ShellEvents,
+} from './apps/EmbeddedApp/shellBridge';
+import BootScreen from './BootScreen';
+import ShutdownScreen from './ShutdownScreen';
+import DesktopContextMenu from './DesktopContextMenu';
 import Modal from './Modal';
 import Footer from './Footer';
 import Windows from './Windows';
@@ -31,7 +45,7 @@ const initState = {
   apps: defaultAppState,
   nextAppID: defaultAppState.length,
   nextZIndex: defaultAppState.length,
-  focusing: FOCUSING.WINDOW,
+  focusing: defaultAppState.length ? FOCUSING.WINDOW : FOCUSING.DESKTOP,
   icons: defaultIconState,
   selecting: false,
   powerState: POWER_STATE.START,
@@ -162,6 +176,13 @@ const reducer = (state, action = { type: '' }) => {
         ...state,
         selecting: null,
       };
+    case SORT_ICONS:
+      return {
+        ...state,
+        icons: [...state.icons].sort((a, b) =>
+          a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }),
+        ),
+      };
     case POWER_OFF:
       return {
         ...state,
@@ -172,11 +193,19 @@ const reducer = (state, action = { type: '' }) => {
         ...state,
         powerState: POWER_STATE.START,
       };
+    case RESET_SESSION:
+      return {
+        ...initState,
+        icons: state.icons,
+      };
     default:
       return state;
   }
 };
 function WinXP() {
+  const [booted, setBooted] = useState(false);
+  const [shutdown, setShutdown] = useState(false);
+  const [contextMenu, setContextMenu] = useState(null);
   const [state, dispatch] = useReducer(reducer, initState);
   const ref = useRef(null);
   const mouse = useMouse(ref);
@@ -251,12 +280,20 @@ function WinXP() {
   );
 
   useEffect(() => {
+    if (!booted) return;
     wireShellBridge(openEmbeddedApp);
-    preloadEmbeddedApps().catch(() => {});
+    const unsubPowerOff = subscribeShellEvent(ShellEvents.POWER_OFF, (detail) => {
+      const mode =
+        detail && detail.mode === 'LOG_OFF'
+          ? POWER_STATE.LOG_OFF
+          : POWER_STATE.TURN_OFF;
+      dispatch({ type: POWER_OFF, payload: mode });
+    });
     return () => {
+      unsubPowerOff();
       if (window.ShellAPI) window.ShellAPI.registerShell(null);
     };
-  }, [openEmbeddedApp]);
+  }, [booted, openEmbeddedApp, dispatch]);
 
   const menuAliases = {
     ...buildMenuAliasMap(),
@@ -301,6 +338,36 @@ function WinXP() {
         payload: { x: mouse.docX, y: mouse.docY },
       });
   }
+  function onContextMenuDesktop(e) {
+    e.preventDefault();
+    if (e.target !== e.currentTarget) return;
+    dispatch({ type: FOCUS_DESKTOP });
+    setContextMenu({ x: e.clientX, y: e.clientY });
+  }
+  function onDesktopMenuAction(action) {
+    switch (action) {
+      case 'refresh':
+        window.location.reload();
+        break;
+      case 'arrange-name':
+        dispatch({ type: SORT_ICONS });
+        break;
+      case 'new-notepad':
+        dispatch({ type: ADD_APP, payload: appSettings.Notepad });
+        break;
+      case 'new-paint':
+        dispatch({ type: ADD_APP, payload: appSettings.Paint });
+        break;
+      case 'new-ie':
+        dispatch({ type: ADD_APP, payload: appSettings['Internet Explorer'] });
+        break;
+      case 'properties':
+        dispatch({ type: ADD_APP, payload: appSettings['Control Panel'] });
+        break;
+      default:
+        break;
+    }
+  }
   function onMouseUpDesktop(e) {
     dispatch({ type: END_SELECT });
   }
@@ -312,65 +379,95 @@ function WinXP() {
   );
   function onClickModalButton(text) {
     dispatch({ type: CANCEL_POWER_OFF });
-    dispatch({
-      type: ADD_APP,
-      payload: appSettings.Error,
-    });
+
+    switch (text) {
+      case 'Turn Off':
+        if (window.ShellAPI) window.ShellAPI.saveSession();
+        setShutdown(true);
+        break;
+      case 'Restart':
+        window.setTimeout(() => window.location.reload(), 400);
+        break;
+      case 'Log Off':
+        dispatch({ type: RESET_SESSION });
+        setShutdown(false);
+        setBooted(false);
+        break;
+      case 'Switch User':
+        if (window.ShellAPI) window.ShellAPI.showLockScreen();
+        break;
+      default:
+        break;
+    }
   }
   function onModalClose() {
     dispatch({ type: CANCEL_POWER_OFF });
   }
   return (
-    <Container
-      ref={ref}
-      onMouseUp={onMouseUpDesktop}
-      onMouseDown={onMouseDownDesktop}
-      state={state.powerState}
-    >
-      <Icons
-        icons={state.icons}
-        onMouseDown={onMouseDownIcon}
-        onDoubleClick={onDoubleClickIcon}
-        displayFocus={state.focusing === FOCUSING.ICON}
-        appSettings={appSettings}
-        mouse={mouse}
-        selecting={state.selecting}
-        setSelectedIcons={onIconsSelected}
-      />
-      <DashedBox startPos={state.selecting} mouse={mouse} />
-      <Windows
-        apps={state.apps}
-        onMouseDown={onFocusApp}
-        onClose={onCloseApp}
-        onMinimize={onMinimizeWindow}
-        onMaximize={onMaximizeWindow}
-        focusedAppId={focusedAppId}
-      />
-      <Footer
-        apps={state.apps}
-        onMouseDownApp={onMouseDownFooterApp}
-        focusedAppId={focusedAppId}
-        onMouseDown={onMouseDownFooter}
-        onClickMenuItem={onClickMenuItem}
-        onPomodoroClick={() => {
-          const pomodoroWin = state.apps.find(
-            (app) => app.header.title === 'Pomodoro Timer' && !app.minimized,
-          );
-          if (pomodoroWin) {
-            dispatch({ type: FOCUS_APP, payload: pomodoroWin.id });
-          } else {
-            openEmbeddedApp('pomodoro');
-          }
-        }}
-      />
-      {state.powerState !== POWER_STATE.START && (
-        <Modal
-          onClose={onModalClose}
-          onClickButton={onClickModalButton}
-          mode={state.powerState}
+    <>
+      {!booted && <BootScreen onComplete={() => setBooted(true)} />}
+      {shutdown && <ShutdownScreen onWake={() => setShutdown(false)} />}
+      {contextMenu && (
+        <DesktopContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          onClose={() => setContextMenu(null)}
+          onAction={onDesktopMenuAction}
         />
       )}
-    </Container>
+      <Container
+        ref={ref}
+        onMouseUp={onMouseUpDesktop}
+        onMouseDown={onMouseDownDesktop}
+        onContextMenu={onContextMenuDesktop}
+        state={state.powerState}
+        $booted={booted}
+      >
+        <Icons
+          icons={state.icons}
+          onMouseDown={onMouseDownIcon}
+          onDoubleClick={onDoubleClickIcon}
+          displayFocus={state.focusing === FOCUSING.ICON}
+          appSettings={appSettings}
+          mouse={mouse}
+          selecting={state.selecting}
+          setSelectedIcons={onIconsSelected}
+        />
+        <DashedBox startPos={state.selecting} mouse={mouse} />
+        <Windows
+          apps={state.apps}
+          onMouseDown={onFocusApp}
+          onClose={onCloseApp}
+          onMinimize={onMinimizeWindow}
+          onMaximize={onMaximizeWindow}
+          focusedAppId={focusedAppId}
+        />
+        <Footer
+          apps={state.apps}
+          onMouseDownApp={onMouseDownFooterApp}
+          focusedAppId={focusedAppId}
+          onMouseDown={onMouseDownFooter}
+          onClickMenuItem={onClickMenuItem}
+          onPomodoroClick={() => {
+            const pomodoroWin = state.apps.find(
+              (app) => app.header.title === 'Pomodoro Timer' && !app.minimized,
+            );
+            if (pomodoroWin) {
+              dispatch({ type: FOCUS_APP, payload: pomodoroWin.id });
+            } else {
+              openEmbeddedApp('pomodoro');
+            }
+          }}
+        />
+        {state.powerState !== POWER_STATE.START && (
+          <Modal
+            onClose={onModalClose}
+            onClickButton={onClickModalButton}
+            mode={state.powerState}
+          />
+        )}
+      </Container>
+    </>
   );
 }
 
@@ -399,6 +496,8 @@ const Container = styled.div`
   position: relative;
   background: url(https://i.imgur.com/Zk6TR5k.jpg) no-repeat center center fixed;
   background-size: cover;
+  opacity: ${({ $booted }) => ($booted ? 1 : 0)};
+  transition: opacity 0.4s ease-in;
   animation: ${({ state }) => animation[state]} 5s forwards;
   *:not(input):not(textarea) {
     user-select: none;

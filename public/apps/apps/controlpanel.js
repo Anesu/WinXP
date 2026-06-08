@@ -37,21 +37,23 @@ function cpInit() {
   if (mailSig) mailSig.value = cp.mailSig || '';
   const desktopTheme = el.querySelector('#cp-desktop-theme');
   if (desktopTheme) desktopTheme.value = cp.desktopTheme || 'teal';
-  
-  // Security PIN settings
-  const securityEnablePin = el.querySelector('#cp-security-enable-pin');
-  const securityPin = el.querySelector('#cp-security-pin');
-  const securityPinConfirm = el.querySelector('#cp-security-pin-confirm');
-  const securityPinInputs = el.querySelector('#cp-security-pin-inputs');
-  if (securityEnablePin) {
-    const pinEnabled = cp.lockPinEnabled || false;
-    securityEnablePin.checked = pinEnabled;
-    if (securityPinInputs) {
-      securityPinInputs.style.display = pinEnabled ? 'flex' : 'none';
+  const userName = el.querySelector('#cp-user-name');
+  if (userName) userName.value = cp.userName || 'User';
+
+  // Security password settings
+  const securityEnablePassword = el.querySelector('#cp-security-enable-password');
+  const securityPassword = el.querySelector('#cp-security-password');
+  const securityPasswordConfirm = el.querySelector('#cp-security-password-confirm');
+  const securityPasswordInputs = el.querySelector('#cp-security-password-inputs');
+  if (securityEnablePassword) {
+    const passwordEnabled = cp.lockPinEnabled || false;
+    securityEnablePassword.checked = passwordEnabled;
+    if (securityPasswordInputs) {
+      securityPasswordInputs.style.display = passwordEnabled ? 'flex' : 'none';
     }
   }
-  if (securityPin) securityPin.value = cp.lockPin || '';
-  if (securityPinConfirm) securityPinConfirm.value = cp.lockPin || '';
+  if (securityPassword) securityPassword.value = cp.lockPin || '';
+  if (securityPasswordConfirm) securityPasswordConfirm.value = cp.lockPin || '';
 }
 
 function cpResetAll() {
@@ -65,6 +67,17 @@ function cpResetApp(app) {
   filesystem.resetDomain(app);
   const el = findWinEl('controlpanel');
   if (el) el.querySelector('#cp-status').textContent = app + ' reset complete';
+}
+
+function cpSaveSystem() {
+  const el = findWinEl('controlpanel');
+  if (!el) return;
+  const name = (el.querySelector('#cp-user-name').value || '').trim() || 'User';
+  controlPanelStore.set('userName', name);
+  if (typeof ShellAPI !== 'undefined') {
+    ShellAPI.notify(ShellAPI.events.SETTINGS, { userName: name });
+  }
+  el.querySelector('#cp-status').textContent = 'User account settings saved';
 }
 
 function cpSavePomodoro() {
@@ -101,35 +114,39 @@ function cpSaveMail() {
   el.querySelector('#cp-status').textContent = 'Outlook Express defaults saved';
 }
 
-function cpTogglePin(checkbox) {
+function cpTogglePassword(checkbox) {
   const el = findWinEl('controlpanel');
   if (!el) return;
-  const pinInputs = el.querySelector('#cp-security-pin-inputs');
-  if (pinInputs) {
-    pinInputs.style.display = checkbox.checked ? 'flex' : 'none';
+  const passwordInputs = el.querySelector('#cp-security-password-inputs');
+  if (passwordInputs) {
+    passwordInputs.style.display = checkbox.checked ? 'flex' : 'none';
   }
 }
 
 function cpSaveSecurity() {
   const el = findWinEl('controlpanel');
   if (!el) return;
-  const enablePin = el.querySelector('#cp-security-enable-pin').checked;
-  const pin = el.querySelector('#cp-security-pin').value;
-  const confirmPin = el.querySelector('#cp-security-pin-confirm').value;
+  const enablePassword = el.querySelector('#cp-security-enable-password').checked;
+  const password = el.querySelector('#cp-security-password').value;
+  const confirmPassword = el.querySelector('#cp-security-password-confirm').value;
   const statusEl = el.querySelector('#cp-status');
-  
-  if (enablePin) {
-    if (!/^\d{4}$/.test(pin)) {
-      if (statusEl) statusEl.textContent = 'Error: PIN must be exactly 4 digits.';
+
+  if (enablePassword) {
+    if (!password) {
+      if (statusEl) statusEl.textContent = 'Error: Enter a password.';
       return;
     }
-    if (pin !== confirmPin) {
-      if (statusEl) statusEl.textContent = 'Error: PIN codes do not match.';
+    if (password.length > 32) {
+      if (statusEl) statusEl.textContent = 'Error: Password must be 32 characters or fewer.';
       return;
     }
-    controlPanelStore.setPin(pin);
+    if (password !== confirmPassword) {
+      if (statusEl) statusEl.textContent = 'Error: Passwords do not match.';
+      return;
+    }
+    controlPanelStore.setPassword(password);
   } else {
-    controlPanelStore.clearPin();
+    controlPanelStore.clearPassword();
   }
   if (statusEl) statusEl.textContent = 'Security settings saved';
 }

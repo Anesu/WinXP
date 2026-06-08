@@ -9,6 +9,8 @@ const ShellOutboundEvents = {
   RECYCLEBIN: 'recyclebin',
   WINDOW_FLASH_START: 'window-flash-start',
   WINDOW_FLASH_STOP: 'window-flash-stop',
+  SETTINGS: 'settings',
+  POWER_OFF: 'power-off',
 };
 
 /** @typedef {{ openApp?: (appKey: string) => void, onEmbeddedReady?: () => void }} ShellHandlers */
@@ -19,6 +21,7 @@ const ShellOutboundEvents = {
  *   showDateTimeDialog?: () => void,
  *   showLockScreen?: () => void,
  *   initLockScreen?: () => void,
+ *   saveSession?: () => void,
  * }} EmbeddedHandlers */
 
 /** @type {ShellHandlers|null} */
@@ -32,7 +35,13 @@ let manifest = null;
 
 let lockScreenInitialized = false;
 
+/** @type {{ userName: string }} */
+let cachedSettings = { userName: 'User' };
+
 function notifyShell(event, detail) {
+  if (event === ShellOutboundEvents.SETTINGS && detail) {
+    cachedSettings = Object.assign({}, cachedSettings, detail);
+  }
   window.dispatchEvent(new CustomEvent('winxp:' + event, { detail }));
 }
 
@@ -77,6 +86,10 @@ const ShellAPI = {
 
   notify: notifyShell,
 
+  getSettings() {
+    return Object.assign({}, cachedSettings);
+  },
+
   // --- Shell → Embedded ---
 
   mount(appKey, winId, el) {
@@ -113,6 +126,12 @@ const ShellAPI = {
 
   isLockScreenInitialized() {
     return lockScreenInitialized;
+  },
+
+  saveSession() {
+    if (typeof embeddedHandlers.saveSession === 'function') {
+      embeddedHandlers.saveSession();
+    }
   },
 };
 

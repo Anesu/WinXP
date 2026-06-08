@@ -24,6 +24,8 @@ describe('ShellAPI seam', () => {
       RECYCLEBIN: 'recyclebin',
       WINDOW_FLASH_START: 'window-flash-start',
       WINDOW_FLASH_STOP: 'window-flash-stop',
+      SETTINGS: 'settings',
+      POWER_OFF: 'power-off',
     });
   });
 
@@ -75,6 +77,13 @@ describe('ShellAPI seam', () => {
     expect(events).toHaveLength(1);
     expect(events[0].type).toBe('winxp:recyclebin');
     expect(events[0].detail).toEqual({ full: true });
+  });
+
+  it('caches settings and exposes them via getSettings', () => {
+    const { ShellAPI } = freshShellAPI();
+    expect(ShellAPI.getSettings()).toEqual({ userName: 'User' });
+    ShellAPI.notify(ShellAPI.events.SETTINGS, { userName: 'Anesu' });
+    expect(ShellAPI.getSettings()).toEqual({ userName: 'Anesu' });
   });
 
   it('calls onEmbeddedReady when both sides register', () => {

@@ -19,6 +19,14 @@
         </div>
       <div class="win-content cp-content" id="cp-system-panel">
         <div class="cp-section">
+          <div class="cp-section-title">User Account</div>
+          <div class="cp-row">
+            <span class="cp-label">User Name:</span>
+            <input class="win95-input" id="cp-user-name" style="width:200px;" maxlength="32" placeholder="User">
+          </div>
+          <button class="win95-button" onclick="cpSaveSystem()" style="margin-top:8px;">Save</button>
+        </div>
+        <div class="cp-section" style="margin-top:12px;">
           <div class="cp-section-title">System Information</div>
           <div class="cp-row"><span class="cp-label">Browser:</span><span id="cp-browser">--</span></div>
           <div class="cp-row"><span class="cp-label">localStorage Used:</span><span id="cp-storage">--</span></div>
@@ -77,19 +85,20 @@
       </div>
       <div class="win-content cp-content" id="cp-security-panel" style="display:none;">
         <div class="cp-section">
-          <div class="cp-section-title">Lock Screen PIN Security</div>
+          <div class="cp-section-title">User Account Security</div>
+          <p style="font-size:11px;margin:0 0 8px;line-height:1.4;">Require a password when unlocking the computer from the Windows XP welcome screen.</p>
           <div class="cp-row">
-            <span class="cp-label" style="width:140px;">Enable PIN Lock:</span>
-            <input type="checkbox" id="cp-security-enable-pin" onchange="cpTogglePin(this)">
+            <span class="cp-label" style="width:160px;">Password protected:</span>
+            <input type="checkbox" id="cp-security-enable-password" onchange="cpTogglePassword(this)">
           </div>
-          <div id="cp-security-pin-inputs" style="display:none;flex-direction:column;gap:8px;margin-top:8px;">
+          <div id="cp-security-password-inputs" style="display:none;flex-direction:column;gap:8px;margin-top:8px;">
             <div class="cp-row">
-              <span class="cp-label" style="width:140px;">PIN Code (4 digits):</span>
-              <input class="win95-input" id="cp-security-pin" type="password" maxlength="4" style="width:80px;text-align:center;" placeholder="----">
+              <span class="cp-label" style="width:160px;">Password:</span>
+              <input class="win95-input" id="cp-security-password" type="password" maxlength="32" style="width:160px;" autocomplete="new-password">
             </div>
             <div class="cp-row">
-              <span class="cp-label" style="width:140px;">Confirm PIN:</span>
-              <input class="win95-input" id="cp-security-pin-confirm" type="password" maxlength="4" style="width:80px;text-align:center;" placeholder="----">
+              <span class="cp-label" style="width:160px;">Confirm password:</span>
+              <input class="win95-input" id="cp-security-password-confirm" type="password" maxlength="32" style="width:160px;" autocomplete="new-password">
             </div>
           </div>
           <button class="win95-button" onclick="cpSaveSecurity()" style="margin-top:12px;">Save Security Settings</button>
