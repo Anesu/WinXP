@@ -9,6 +9,8 @@ import sound from 'assets/windowsIcons/690(16x16).png';
 import usb from 'assets/windowsIcons/394(16x16).png';
 import risk from 'assets/windowsIcons/229(16x16).png';
 
+import { useDesktopDispatch } from '../state/useDesktopState';
+
 const getTime = () => {
   const date = new Date();
   let hour = date.getHours();
@@ -27,14 +29,15 @@ const getTime = () => {
   return `${hour}:${min} ${hourPostFix}`;
 };
 
-function Footer({
-  onMouseDownApp,
-  apps,
-  focusedAppId,
-  onMouseDown,
-  onClickMenuItem,
-  onPomodoroClick,
-}) {
+function Footer({ apps }) {
+  const {
+    onMouseDownFooterApp,
+    focusedAppId,
+    onMouseDownFooter,
+    onClickMenuItem,
+    openEmbeddedApp,
+    onFocusApp,
+  } = useDesktopDispatch();
   const [time, setTime] = useState(getTime);
   const [userName, setUserName] = useState(
     () => window.ShellAPI?.getSettings?.().userName || 'User',
@@ -50,12 +53,23 @@ function Footer({
   }
   function _onMouseDown(e) {
     if (e.target.closest('.footer__window')) return;
-    onMouseDown();
+    onMouseDownFooter();
   }
   function _onClickMenuItem(name) {
     onClickMenuItem(name);
     setMenuOn(false);
   }
+
+  const onPomodoroClick = () => {
+    const pomodoroWin = apps.find(
+      (app) => app.header.title === 'Pomodoro Timer' && !app.minimized,
+    );
+    if (pomodoroWin) {
+      onFocusApp(pomodoroWin.id);
+    } else {
+      openEmbeddedApp('pomodoro');
+    }
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -156,7 +170,7 @@ function Footer({
                 id={app.id}
                 icon={app.header.icon}
                 title={app.header.title}
-                onMouseDown={onMouseDownApp}
+                onMouseDown={onMouseDownFooterApp}
                 isFocus={focusedAppId === app.id}
                 isFlashing={flashIds.has(String(app.id))}
               />

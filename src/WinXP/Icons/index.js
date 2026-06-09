@@ -2,34 +2,26 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { ShellEvents, useShellEvent } from '../apps/EmbeddedApp/shellBridge';
 
-function Icons({
-  icons,
-  onMouseDown,
-  onDoubleClick,
-  displayFocus,
-  mouse,
-  selecting,
-  setSelectedIcons,
-}) {
+import { useDesktopDispatch } from '../state/useDesktopState';
+
+function Icons({ icons, displayFocus, selectionRect }) {
+  const { onIconsSelected } = useDesktopDispatch();
   const [iconsRect, setIconsRect] = useState([]);
   function measure(rect) {
     if (iconsRect.find((r) => r.id === rect.id)) return;
     setIconsRect((iconsRect) => [...iconsRect, rect]);
   }
   useEffect(() => {
-    if (!selecting) return;
-    const sx = Math.min(selecting.x, mouse.docX);
-    const sy = Math.min(selecting.y, mouse.docY);
-    const sw = Math.abs(selecting.x - mouse.docX);
-    const sh = Math.abs(selecting.y - mouse.docY);
+    if (!selectionRect) return;
+    const { x: sx, y: sy, w: sw, h: sh } = selectionRect;
     const selectedIds = iconsRect
       .filter((rect) => {
         const { x, y, w, h } = rect;
         return x - sx < sw && sx - x < w && y - sy < sh && sy - y < h;
       })
       .map((icon) => icon.id);
-    setSelectedIcons(selectedIds);
-  }, [iconsRect, setSelectedIcons, selecting, mouse.docX, mouse.docY]);
+    onIconsSelected(selectedIds);
+  }, [iconsRect, onIconsSelected, selectionRect]);
   return (
     <IconsContainer>
       {icons.map((icon) => (
@@ -37,8 +29,6 @@ function Icons({
           key={icon.id}
           {...icon}
           displayFocus={displayFocus}
-          onMouseDown={onMouseDown}
-          onDoubleClick={onDoubleClick}
           measure={measure}
         />
       ))}
@@ -48,8 +38,6 @@ function Icons({
 
 function Icon({
   title,
-  onMouseDown,
-  onDoubleClick,
   icon,
   iconFull,
   appKey,
@@ -58,6 +46,7 @@ function Icon({
   component,
   measure,
 }) {
+  const { onMouseDownIcon, onDoubleClickIcon } = useDesktopDispatch();
   const ref = useRef(null);
   const [displayIcon, setDisplayIcon] = useState(icon);
 
@@ -70,10 +59,10 @@ function Icon({
     setDisplayIcon(detail?.full ? iconFull : icon);
   });
   function _onMouseDown() {
-    onMouseDown(id);
+    onMouseDownIcon(id);
   }
   function _onDoubleClick() {
-    onDoubleClick(component);
+    onDoubleClickIcon(component);
   }
   useEffect(() => {
     const target = ref.current;

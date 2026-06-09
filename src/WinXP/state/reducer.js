@@ -16,7 +16,10 @@ import {
   SET_POWER_STATE,
 } from '../constants/actions';
 import { FOCUSING, POWER_STATE } from '../constants';
-import { defaultIconState, defaultAppState } from '../apps';
+import {
+  defaultIconState,
+  defaultAppState,
+} from '../apps/EmbeddedApp/registry';
 
 export const initState = {
   apps: defaultAppState,

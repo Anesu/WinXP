@@ -24,7 +24,7 @@ import logOff from 'assets/windowsIcons/restore.ico';
 import allProgramsIcon from 'assets/windowsIcons/all-programs.ico';
 import empty from 'assets/empty.png';
 
-import { buildPinnedStartMenuItems } from '../apps';
+import { buildPinnedStartMenuItems } from '../apps/EmbeddedApp/appRegistry';
 import { AllPrograms, ConnectTo, MyRecentDocuments } from './FooterMenuData';
 
 function FooterMenu({ className, onClick, userName = 'User' }) {

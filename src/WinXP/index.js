@@ -15,38 +15,27 @@ import Modal from './Modal';
 import Footer from './Footer';
 import Windows from './Windows';
 import Icons from './Icons';
-import { DashedBox } from 'components';
-import { useDesktopState } from './state/useDesktopState';
+import { useDesktopState, DesktopContext } from './state/useDesktopState';
 
 function WinXP() {
   const [contextMenu, setContextMenu] = useState(null);
   const ref = useRef(null);
   const mouse = useMouse(ref);
 
+  const desktopState = useDesktopState();
   const {
     state,
-    focusedAppId,
     onFocusApp,
-    onMaximizeWindow,
-    onMinimizeWindow,
-    onCloseApp,
-    onMouseDownFooterApp,
-    onMouseDownIcon,
-    onDoubleClickIcon,
-    onMouseDownFooter,
     openEmbeddedApp,
-    onClickMenuItem,
-    onDesktopMenuAction,
     onClickModalButton,
     onModalClose,
     onBootComplete,
     onShutdownWake,
     onStartSelect,
     onEndSelect,
-    onIconsSelected,
     focusDesktop,
     triggerPowerOff,
-  } = useDesktopState();
+  } = desktopState;
 
   useEffect(() => {
     if (state.powerState === POWER_STATE.BOOTING) return;
@@ -80,8 +69,17 @@ function WinXP() {
     onEndSelect();
   }
 
+  const selectionRect = state.selecting
+    ? {
+        x: Math.min(state.selecting.x, mouse.docX),
+        y: Math.min(state.selecting.y, mouse.docY),
+        w: Math.abs(state.selecting.x - mouse.docX),
+        h: Math.abs(state.selecting.y - mouse.docY),
+      }
+    : null;
+
   return (
-    <>
+    <DesktopContext.Provider value={desktopState}>
       {state.powerState === POWER_STATE.BOOTING && (
         <BootScreen onComplete={onBootComplete} />
       )}
@@ -93,7 +91,6 @@ function WinXP() {
           x={contextMenu.x}
           y={contextMenu.y}
           onClose={() => setContextMenu(null)}
-          onAction={onDesktopMenuAction}
         />
       )}
       <Container
@@ -106,28 +103,23 @@ function WinXP() {
       >
         <Icons
           icons={state.icons}
-          onMouseDown={onMouseDownIcon}
-          onDoubleClick={onDoubleClickIcon}
           displayFocus={state.focusing === FOCUSING.ICON}
-          mouse={mouse}
-          selecting={state.selecting}
-          setSelectedIcons={onIconsSelected}
+          selectionRect={selectionRect}
         />
-        <DashedBox startPos={state.selecting} mouse={mouse} />
-        <Windows
-          apps={state.apps}
-          onMouseDown={onFocusApp}
-          onClose={onCloseApp}
-          onMinimize={onMinimizeWindow}
-          onMaximize={onMaximizeWindow}
-          focusedAppId={focusedAppId}
-        />
+        {selectionRect && (
+          <div
+            style={{
+              transform: `translate(${selectionRect.x}px,${selectionRect.y}px)`,
+              width: selectionRect.w,
+              height: selectionRect.h,
+              position: 'absolute',
+              border: '1px dotted gray',
+            }}
+          />
+        )}
+        <Windows apps={state.apps} />
         <Footer
           apps={state.apps}
-          onMouseDownApp={onMouseDownFooterApp}
-          focusedAppId={focusedAppId}
-          onMouseDown={onMouseDownFooter}
-          onClickMenuItem={onClickMenuItem}
           onPomodoroClick={() => {
             const pomodoroWin = state.apps.find(
               (app) => app.header.title === 'Pomodoro Timer' && !app.minimized,
@@ -148,7 +140,7 @@ function WinXP() {
           />
         ) : null}
       </Container>
-    </>
+    </DesktopContext.Provider>
   );
 }
 

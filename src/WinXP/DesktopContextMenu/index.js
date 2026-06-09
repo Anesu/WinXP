@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 
+import { useDesktopDispatch } from '../state/useDesktopState';
+
 const MENU_ITEMS = [
   {
     type: 'menu',
@@ -43,7 +45,8 @@ const ACTION_BY_LABEL = MENU_ITEMS.reduce((map, item) => {
   return map;
 }, {});
 
-function DesktopContextMenu({ x, y, onClose, onAction }) {
+function DesktopContextMenu({ x, y, onClose }) {
+  const { onDesktopMenuAction } = useDesktopDispatch();
   const menuRef = useRef(null);
   const [activeSubmenu, setActiveSubmenu] = useState(null);
   const pos = clampPosition(x, y);
@@ -67,7 +70,7 @@ function DesktopContextMenu({ x, y, onClose, onAction }) {
   function onMenuClick(label) {
     const action = ACTION_BY_LABEL[label];
     if (!action) return;
-    onAction(action);
+    onDesktopMenuAction(action);
     onClose();
   }
 

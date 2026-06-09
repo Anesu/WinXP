@@ -4,15 +4,10 @@ import styled from 'styled-components';
 
 import { useElementResize } from 'hooks';
 import HeaderButtons from './HeaderButtons';
+import { useDesktopDispatch } from '../state/useDesktopState';
 
-function Windows({
-  apps,
-  onMouseDown,
-  onClose,
-  onMinimize,
-  onMaximize,
-  focusedAppId,
-}) {
+function Windows({ apps }) {
+  const { focusedAppId } = useDesktopDispatch();
   return (
     <div style={{ position: 'relative', zIndex: 0 }}>
       {apps.map((app) => (
@@ -20,10 +15,6 @@ function Windows({
           show={!app.minimized}
           key={app.id}
           id={app.id}
-          onMouseDown={onMouseDown}
-          onMouseUpClose={onClose}
-          onMouseUpMinimize={onMinimize}
-          onMouseUpMaximize={onMaximize}
           isFocus={focusedAppId === app.id} // for styledWindow
           {...app}
         />
@@ -35,10 +26,6 @@ function Windows({
 const Window = memo(function ({
   injectProps,
   id,
-  onMouseDown,
-  onMouseUpClose,
-  onMouseUpMinimize,
-  onMouseUpMaximize,
   header,
   defaultSize,
   defaultOffset,
@@ -49,17 +36,20 @@ const Window = memo(function ({
   isFocus,
   className,
 }) {
+  const { onFocusApp, onCloseApp, onMinimizeWindow, onMaximizeWindow } =
+    useDesktopDispatch();
+
   function _onMouseDown() {
-    onMouseDown(id);
+    onFocusApp(id);
   }
   function _onMouseUpClose() {
-    onMouseUpClose(id);
+    onCloseApp(id);
   }
   function _onMouseUpMinimize() {
-    onMouseUpMinimize(id);
+    onMinimizeWindow(id);
   }
   function _onMouseUpMaximize() {
-    if (resizable) onMouseUpMaximize(id);
+    if (resizable) onMaximizeWindow(id);
   }
   function onDoubleClickHeader(e) {
     if (e.target !== dragRef.current) return;

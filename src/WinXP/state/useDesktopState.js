@@ -1,4 +1,4 @@
-import { useReducer, useCallback } from 'react';
+import { useReducer, useCallback, createContext, useContext } from 'react';
 import { initState, reducer } from './reducer';
 import {
   ADD_APP,
@@ -18,8 +18,14 @@ import {
   SET_POWER_STATE,
 } from '../constants/actions';
 import { POWER_STATE, FOCUSING } from '../constants';
-import { appSettings } from '../apps';
+import { appSettings } from '../apps/EmbeddedApp/registry';
 import { appByKey, buildMenuAliasMap } from '../apps/EmbeddedApp';
+
+export const DesktopContext = createContext(null);
+
+export function useDesktopDispatch() {
+  return useContext(DesktopContext);
+}
 
 export function useDesktopState() {
   const [state, dispatch] = useReducer(reducer, initState);

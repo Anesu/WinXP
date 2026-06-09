@@ -31,7 +31,8 @@ export const appSettings = {};
 /**
  * Icons that should appear on the desktop by default (both native + embedded).
  */
-export const defaultIconState = [];
+const generatedDefaultIconState = [];
+export const defaultAppState = [];
 
 APP_REGISTRY.forEach((def) => {
   let component;
@@ -101,7 +102,7 @@ APP_REGISTRY.filter((def) => def.showOnDesktop !== false).forEach(
     const settings = appSettings[def.displayTitle];
     if (!settings) return;
 
-    defaultIconState.push({
+    generatedDefaultIconState.push({
       id: 100 + index, // will be adjusted by consumer if needed
       icon: def.desktopIcon,
       iconFull: def.desktopIconFull,
@@ -112,6 +113,16 @@ APP_REGISTRY.filter((def) => def.showOnDesktop !== false).forEach(
     });
   },
 );
+
+const preferredOrder = ['Internet Explorer', 'Minesweeper', 'Winamp', 'Paint'];
+const preferred = preferredOrder
+  .map((t) => generatedDefaultIconState.find((i) => i.title === t))
+  .filter(Boolean);
+const rest = generatedDefaultIconState.filter(
+  (i) => !preferredOrder.includes(i.title),
+);
+
+export const defaultIconState = [...preferred, ...rest];
 
 // Legacy hard-coded non-productivity icons (IE, Minesweeper, Winamp, Paint) are now also in APP_REGISTRY
 // The filter above + APP_REGISTRY entries will include them.
